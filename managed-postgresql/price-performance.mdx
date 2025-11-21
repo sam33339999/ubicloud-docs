@@ -1,38 +1,38 @@
 ---
-title: 'Price-Performance'
+title: '價格效能比'
 ---
 
-Ubicloud Managed PostgreSQL provides **10x** better price-performance compared to similar managed PostgreSQL services thanks to its unique architecture based on NVMe SSD storage. The following benchmarks compare Ubicloud PostgreSQL with AWS Aurora and AWS RDS PostgreSQL.
+由於其基於 NVMe SSD 儲存的獨特架構，Ubicloud 受管理 PostgreSQL 相較於類似的受管理 PostgreSQL 服務提供 **10 倍**更好的價格效能比。以下基準測試比較了 Ubicloud PostgreSQL 與 AWS Aurora 和 AWS RDS PostgreSQL。
 
-## TPC-C Benchmark
-Ubicloud PostgreSQL runs **1.4x** more transactions than AWS Aurora and costs **5.8x** less. Similarly, Ubicloud Postgres runs **4.6x** more transactions than AWS RDS and costs **2.8x** less. Ubicloud PostgreSQL also has **1.91x** lower latency compared to AWS Aurora and **7.65x** lower latency than AWS RDS PostgreSQL.
+## TPC-C 基準測試
+Ubicloud PostgreSQL 執行的交易數量比 AWS Aurora 多 **1.4 倍**，成本降低 **5.8 倍**。同樣地，Ubicloud Postgres 執行的交易數量比 AWS RDS 多 **4.6 倍**，成本降低 **2.8 倍**。Ubicloud PostgreSQL 的延遲也比 AWS Aurora 低 **1.91 倍**，比 AWS RDS PostgreSQL 低 **7.65 倍**。
 
-Benchmark Configuration:
-- **Ubicloud**: standard-8 (8 vCPUs, 32 GB RAM) instance with 1 TB SSD storage
-- **AWS Aurora**: db.r8g.2xlarge (8 vCPUs, 64 GB RAM) instance with 1 TB SSD storage
-- **AWS RDS**: db.m7g.2xlarge (8 vCPUs, 32 GB RAM) instance with I/O optimized storage
-- **Tables**: 32
-- **Number of Warehouses**: 256
-- **Number of Clients**: 64
+基準測試設定：
+- **Ubicloud**：standard-8（8 vCPUs，32 GB RAM）執行個體，配備 1 TB SSD 儲存
+- **AWS Aurora**：db.r8g.2xlarge（8 vCPUs，64 GB RAM）執行個體，配備 1 TB SSD 儲存
+- **AWS RDS**：db.m7g.2xlarge（8 vCPUs，32 GB RAM）執行個體，配備 I/O 最佳化儲存
+- **資料表數量**：32
+- **倉庫數量**：256
+- **用戶端數量**：64
 
 |                         | Ubicloud |  Aurora  |   RDS   |
 |:-----------------------:|:--------:|:--------:|:-------:|
 |         **TPS**         |   873.25 |   636.31 |  188.31 |
-|       **Latency**       |   314.45 |   601.29 | 2405.65 |
-|        **Price**        |   259.92 |  1501.00 |  725.02 |
-|    **TPS Difference**   |     -    |    1.37x |   4.64x |
-|      **Price-TPS**      |     -    |    7.93x |  12.94x |
-|  **Latency Difference** |     -    |    1.91x |   7.65x |
-|    **Price-Latency**    |     -    |   11.04x |  21.34x |
+|       **延遲**          |   314.45 |   601.29 | 2405.65 |
+|        **價格**         |   259.92 |  1501.00 |  725.02 |
+|    **TPS 差異**         |     -    |    1.37x |   4.64x |
+|      **價格-TPS**       |     -    |    7.93x |  12.94x |
+|  **延遲差異**           |     -    |    1.91x |   7.65x |
+|    **價格-延遲**        |     -    |   11.04x |  21.34x |
 
-## TPC-H Benchmark
-Ubicloud PostgreSQL runs 22 TPC-H queries **2.42x** faster than AWS Aurora and **2.96x** faster than AWS RDS PostgreSQL, while costing **6.40x** less than AWS Aurora and **3.00x** less than AWS RDS PostgreSQL.  
+## TPC-H 基準測試
+Ubicloud PostgreSQL 執行 22 個 TPC-H 查詢的速度比 AWS Aurora 快 **2.42 倍**，比 AWS RDS PostgreSQL 快 **2.96 倍**，同時成本比 AWS Aurora 低 **6.40 倍**，比 AWS RDS PostgreSQL 低 **3.00 倍**。
 
-Benchmark Configuration:
-- **Ubicloud**: standard-8 (8 vCPUs, 32 GB RAM) instance with 512 GB SSD storage
-- **AWS Aurora**: db.r8g.2xlarge (8 vCPUs, 64 GB RAM) instance with 512 GB SSD storage
-- **AWS RDS**: db.m7g.2xlarge (8 vCPUs, 32 GB RAM) instance with I/O optimized storage
-- **Scale Factor**: 100
+基準測試設定：
+- **Ubicloud**：standard-8（8 vCPUs，32 GB RAM）執行個體，配備 512 GB SSD 儲存
+- **AWS Aurora**：db.r8g.2xlarge（8 vCPUs，64 GB RAM）執行個體，配備 512 GB SSD 儲存
+- **AWS RDS**：db.m7g.2xlarge（8 vCPUs，32 GB RAM）執行個體，配備 I/O 最佳化儲存
+- **規模因子**：100
 
 |                                  | Ubicloud | Aurora      |     RDS     |
 |:--------------------------------:|----------|-------------|:-----------:|
@@ -58,7 +58,7 @@ Benchmark Configuration:
 |              **Q20**             |  1825.97 |    10666.92 |     9866.06 |
 |              **Q21**             |   103.87 |      729.29 |      213.65 |
 |              **Q22**             |     9.88 |       30.37 |       10.49 |
-|   **Geometric Mean (seconds)**   |    79.72 |      193.23 |      235.61 |
-|           **Price ($)**          |   218.96 |     1401.57 |      654.87 |
-|    **Performance Difference**    |     -    |       2.42x |       2.96x |
-|      **Price-Performance**       |     -    |      15.48x |       8.88x |
+|   **幾何平均值（秒）**           |    79.72 |      193.23 |      235.61 |
+|           **價格（$）**          |   218.96 |     1401.57 |      654.87 |
+|    **效能差異**                  |     -    |       2.42x |       2.96x |
+|      **價格效能比**              |     -    |      15.48x |       8.88x |

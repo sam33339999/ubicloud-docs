@@ -1,101 +1,101 @@
 ---
-title: 'Tutorial: Self-Hosting Windmill on Ubicloud for Production'
+title: '教學：在 Ubicloud 上自行託管 Windmill 用於生產環境'
 ---
 
-[Windmill](https://www.windmill.dev/) is an open-source platform that transforms scripts into UIs, APIs, and workflows. Supporting languages like Python and TypeScript, it simplifies internal tool creation, automation, and scaling for teams. This guide will help you set up Windmill on Ubicloud, with Ubicloud managed Kubernetes and PostgreSQL services.
+[Windmill](https://www.windmill.dev/) 是一個開源平台，可將腳本轉換為 UI、API 和工作流程。它支援 Python 和 TypeScript 等語言，簡化了團隊的內部工具創建、自動化和擴展。本指南將幫助您在 Ubicloud 上設置 Windmill，使用 Ubicloud 託管的 Kubernetes 和 PostgreSQL 服務。
 
-## Preparing the Ubicloud Environment
-To prepare the Ubicloud environment for running Windmill, follow the steps outlined in the Ubicloud documentation:
-- [Setup your Ubicloud account](https://www.ubicloud.com/docs/quick-start/managed-services) and enter your billing details.
-- [Create a Managed PostgreSQL server](https://www.ubicloud.com/docs/managed-postgresql/overview#create-managed-postgresql): Start with a burstable compute option and scale your database as needed.
-- [Set up a Managed Kubernetes cluster](https://www.ubicloud.com/docs/managed-kubernetes/quickstart): Configure one control plane node and three worker nodes as a good initial setup.
+## 準備 Ubicloud 環境
+要準備用於運行 Windmill 的 Ubicloud 環境，請按照 Ubicloud 文件中概述的步驟操作：
+- [設置您的 Ubicloud 帳戶](https://www.ubicloud.com/docs/quick-start/managed-services)並輸入您的帳單詳細資訊。
+- [創建託管 PostgreSQL 伺服器](https://www.ubicloud.com/docs/managed-postgresql/overview#create-managed-postgresql)：從可突發運算選項開始，並根據需要擴展您的資料庫。
+- [設置託管 Kubernetes 叢集](https://www.ubicloud.com/docs/managed-kubernetes/quickstart)：配置一個控制平面節點和三個工作節點作為良好的初始設置。
 
-## Preparing Your Environment
-### Step 0: Ensure that your shell environment has [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) and [helm](https://helm.sh/) installed.
+## 準備您的環境
+### 步驟 0：確保您的 shell 環境已安裝 [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) 和 [helm](https://helm.sh/)。
 
-Use the commands to verify that `kubectl` and `helm` are installed:
+使用以下命令驗證 `kubectl` 和 `helm` 是否已安裝：
 ```bash
 kubectl version
 helm version
 ```
-### Step 1: Obtain the kubeconfig File
-- [Download the kubeconfig](https://www.ubicloud.com/docs/managed-kubernetes/quickstart#download-the-kubeconfig): Access the Kubernetes cluster in the Ubicloud console and download the kubeconfig file.
-- Copy the file to the default kubeconfig location (`$HOME/.kube/config`) or set the `KUBECONFIG` environment variable to [configure your Kubernetes client](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/) (e.g., kubectl).
+### 步驟 1：取得 kubeconfig 文件
+- [下載 kubeconfig](https://www.ubicloud.com/docs/managed-kubernetes/quickstart#download-the-kubeconfig)：在 Ubicloud 控制台中訪問 Kubernetes 叢集並下載 kubeconfig 文件。
+- 將文件複製到預設的 kubeconfig 位置（`$HOME/.kube/config`）或設置 `KUBECONFIG` 環境變數以[配置您的 Kubernetes 用戶端](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/)（例如 kubectl）。
 
-### Step 2: Create a Namespace for Windmill
-Create a namespace for the Windmill deployment:
+### 步驟 2：為 Windmill 創建命名空間
+為 Windmill 部署創建一個命名空間：
 ```bash
 kubectl create namespace windmill
 ```
 
-### Step 3: Store the Database Connection String in a Secret
-[Retrieve the connection string for your PostgreSQL database](https://www.ubicloud.com/docs/managed-postgresql/overview#connect-to-managed-postgresql) from the Ubicloud console and create a secret:
+### 步驟 3：將資料庫連接字串儲存在 Secret 中
+從 Ubicloud 控制台[檢索 PostgreSQL 資料庫的連接字串](https://www.ubicloud.com/docs/managed-postgresql/overview#connect-to-managed-postgresql)並創建一個 secret：
 ```bash
 kubectl create secret generic -n windmill pg-db-credentials \
 --from-literal=url='<postgres connection string copied from Ubicloud console>'
 ```
 
-## Deploying Windmill
-Add Windmill Helm repo:
+## 部署 Windmill
+添加 Windmill Helm 存儲庫：
 
 ```bash
 helm repo add windmill https://windmill-labs.github.io/windmill-helm-charts/
 ```
 
-Download the `values.yaml` file for the Windmill chart:
+下載 Windmill chart 的 `values.yaml` 文件：
 ```bash
 curl -O https://raw.githubusercontent.com/windmill-labs/windmill-helm-charts/refs/heads/main/charts/windmill/values.yaml
 ```
 
-Disable the built-in PostgreSQL database in `values.yaml`:
+在 `values.yaml` 中禁用內建的 PostgreSQL 資料庫：
 ```yaml
 postgresql:
   enabled: false
 ```
 
-Set the secret name for the database connection string:
+設置資料庫連接字串的 secret 名稱：
 ```yaml
 windmill:
 ...
   databaseUrlSecretName: "pg-db-credentials"
 ```
 
-Install the Windmill chart with the modified values.yaml file:
+使用修改後的 values.yaml 文件安裝 Windmill chart：
 ```bash
 helm -n windmill install my-windmill windmill/windmill -f values.yaml
 ```
 
-Wait for all pods to start running:
+等待所有 Pod 開始運行：
 
 ```bash
 kubectl -n windmill get pods
 ```
 
 
-## Exposing Windmill to the Internet
-By default, Windmill chart restricts the windmill-app service to internal cluster access. To access the Windmill UI via a browser, expose the service externally using a load balancer:
+## 將 Windmill 公開到網際網路
+預設情況下，Windmill chart 將 windmill-app 服務限制為叢集內部訪問。要通過瀏覽器訪問 Windmill UI，請使用負載平衡器將服務公開到外部：
 ```bash
 kubectl -n windmill patch svc windmill-app -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 
-Wait for the service to get an external host assigned:
+等待服務獲得分配的外部主機：
 ```bash
 kubectl -n windmill get service windmill-app
 ```
 
-## Connecting to Windmill
-The application will be accessible via your cluster's load balancer URL at port 8000 a few minutes after the `EXTERNAL-IP` is assigned. Run the following command to retrieve the address for your Windmill deployment.
+## 連接到 Windmill
+在 `EXTERNAL-IP` 分配後幾分鐘，應用程式將可通過叢集的負載平衡器 URL 在連接埠 8000 上訪問。運行以下命令以檢索 Windmill 部署的地址。
 ```bash
 echo "http://$(kubectl -n windmill get service windmill-app --output jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8000"
 ```
 
-Congratulations—Windmill is now running on Ubicloud!
+恭喜 - Windmill 現在正在 Ubicloud 上運行！
 
-## Configuring TLS for Secure Access
-To expose Windmill securely via HTTPS, we'll employ `cert-manager`, `ingress-nginx`, and Let's Encrypt.
+## 配置 TLS 以實現安全訪問
+要通過 HTTPS 安全地公開 Windmill，我們將使用 `cert-manager`、`ingress-nginx` 和 Let's Encrypt。
 
-### Installing and Setting Up `ingress-nginx` & `cert-manager`
-Use the following commands to install `ingress-nginx` and `cert-manager`:
+### 安裝和設置 `ingress-nginx` 和 `cert-manager`
+使用以下命令安裝 `ingress-nginx` 和 `cert-manager`：
 ```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo add jetstack https://charts.jetstack.io
@@ -105,7 +105,7 @@ helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create
 helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set crds.enabled=true
 ```
 
-Next, create an issuer in the `windmill` namespace to obtain certificates from Let's Encrypt:
+接下來，在 `windmill` 命名空間中創建一個發行者，以從 Let's Encrypt 取得證書：
 ```bash
 kubectl apply -n windmill -f <(cat <<EOF
 apiVersion: cert-manager.io/v1
@@ -126,46 +126,46 @@ EOF
 )
 ```
 
-### Setting Up DNS Records for Traffic Routing
-Retrieve the external IP address of the ingress-nginx controller service:
+### 設置 DNS 記錄以路由流量
+檢索 ingress-nginx 控制器服務的外部 IP 地址：
 ```bash
 kubectl -n ingress-nginx get service ingress-nginx-controller
 ```
 
-You should get a result in the form `u8ic10u08e-services.k8s.ubicloud.com`. We will use this address in the following step to route traffic to the cluster securely.
+您應該會得到類似 `u8ic10u08e-services.k8s.ubicloud.com` 的結果。我們將在下一步中使用此地址來安全地將流量路由到叢集。
 
-<Note>If you want to use your your domain such as `windmill.yourdomain.com`, create a CNAME record with your DNS provider to route `windmill.yourdomain.com` to the `EXTERNAL-IP` associated with the `ingress-nginx-controller` service and use that address in the following steps.</Note>
+<Note>如果您想使用您的網域（例如 `windmill.yourdomain.com`），請使用您的 DNS 提供商創建一個 CNAME 記錄，將 `windmill.yourdomain.com` 路由到與 `ingress-nginx-controller` 服務關聯的 `EXTERNAL-IP`，並在以下步驟中使用該地址。</Note>
 
-### Updating Windmill Chart Values for TLS
-Modify `values.yaml` file as follows:
+### 更新 Windmill Chart 值以支援 TLS
+按如下方式修改 `values.yaml` 文件：
 ```yaml
 windmill:
-  baseDomain: xxxxxxxxxx-services.k8s.ubicloud.com # Replace with your service URL or domain
+  baseDomain: xxxxxxxxxx-services.k8s.ubicloud.com # 替換為您的服務 URL 或網域
   baseProtocol: https
 
 ingress:
   className: "nginx"
-  annotations: 
+  annotations:
     cert-manager.io/issuer: "letsencrypt-windmill"
     nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/affinity-mode: "persistent"
     nginx.ingress.kubernetes.io/session-cookie-name: "route"
-  tls: 
+  tls:
     - hosts:
-        - "xxxxxxxxxx-services.k8s.ubicloud.com" # Replace with your service URL or domain
+        - "xxxxxxxxxx-services.k8s.ubicloud.com" # 替換為您的服務 URL 或網域
       secretName: windmill-tls-cert
 ```
 
-Apply the updated values to the Windmill installation:
+將更新的值應用到 Windmill 安裝：
 ```bash
 helm -n windmill upgrade my-windmill windmill/windmill -f values.yaml
 ```
 
-### Verifying the Certificate Status
+### 驗證證書狀態
 
-Check the readiness of the TLS certificate for the Windmill application:
+檢查 Windmill 應用程式的 TLS 證書的準備狀態：
 ```bash
 kubectl -n windmill describe cert windmill-tls-cert
 ```
 
-Once the certificate is ready, you can access your Windmill application securely at https://xxxxxxxxxx-services.k8s.ubicloud.com or https://windmill.yourdomain.com.
+證書準備好後，您可以在 https://xxxxxxxxxx-services.k8s.ubicloud.com 或 https://windmill.yourdomain.com 安全地訪問您的 Windmill 應用程式。

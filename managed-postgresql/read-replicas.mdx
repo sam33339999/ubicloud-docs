@@ -1,11 +1,11 @@
 ---
-title: 'Read Replicas'
+title: '讀取副本'
 ---
 
-Read replicas allow you to create one or more copies of your primary PostgreSQL database instance. These replicas continuously follow your primary database using replication mechanisms of PostgreSQL to stay up to date with changes. With Ubicloud, you can now spin up read replicas with a single click from the Read Replica view of your PostgreSQL instance.
+讀取副本允許您建立一個或多個主要 PostgreSQL 資料庫執行個體的副本。這些副本使用 PostgreSQL 的複製機制持續追蹤主要資料庫，以保持與變更同步。使用 Ubicloud，您現在可以從 PostgreSQL 執行個體的讀取副本檢視中一鍵啟動讀取副本。
 
-## Why Read Replicas Matter?
+## 為什麼讀取副本很重要？
 
-- **Scalability:** Read replicas allow you to scale your database horizontally, distributing read-heavy workloads-such as reporting, analytics, and real-time dashboards-across multiple dedicated replicas.
-- **Isolation:** By directing analytical and business intelligence queries to these replicas, you keep your primary instance focused and responsive for write operations and critical transactional workloads. This separation not only boosts overall system performance and predictability but also ensures that you don't need to give write access to analytical or reporting tools.
-- **Business continuity and disaster recovery (BCDR):** Read replicas can play a critical role in case of a primary database failure, a read replica can be promoted to primary, ensuring minimal downtime and data loss.  
+- **可擴展性：** 讀取副本允許您水平擴展資料庫，將讀取密集型工作負載（如報告、分析和即時儀表板）分散到多個專用副本上。
+- **隔離：** 透過將分析和商業智慧查詢導向這些副本，您可以讓主要執行個體專注於寫入操作和關鍵交易工作負載並保持回應。這種分離不僅提升整體系統效能和可預測性，還確保您不需要將寫入存取權限授予分析或報告工具。
+- **業務連續性和災難復原 (BCDR)：** 讀取副本可以在主要資料庫故障時發揮關鍵作用，讀取副本可以提升為主要資料庫，確保最小的停機時間和資料遺失。

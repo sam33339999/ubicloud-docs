@@ -1,17 +1,17 @@
 ---
-title: 'Persistent Volumes'
+title: '持久化儲存卷'
 ---
 
-## Overview
+## 概述
 
-This document describes how PersistentVolumeClaims (PVCs) work in Ubicloud Managed Kubernetes, including usage, limitations and behavior during failures.
+本文件說明 Ubicloud 託管 Kubernetes 中持久化儲存卷宣告 (PVC) 的工作原理，包括使用方式、限制和故障期間的行為。
 
 
-All Ubicloud Kubernetes nodes include bundled local NVMe storage. Persistent volumes are supported in preview via the UbiCSI implementation using the local NVMe storage. Generic ephemeral volumes are also available for temporary storage tied to pod lifecycles.
+所有 Ubicloud Kubernetes 節點都包含內建的本地 NVMe 儲存。持久化儲存卷通過使用本地 NVMe 儲存的 UbiCSI 實作以預覽版形式提供支援。通用臨時儲存卷也可用於與 Pod 生命週期綁定的臨時儲存。
 
-## Quickstart
+## 快速入門
 
-For a quickstart example, we will install [prometheus-stack](https://prometheus-community.github.io/helm-charts/) using its helm chart.
+對於快速入門範例，我們將使用 helm chart 安裝 [prometheus-stack](https://prometheus-community.github.io/helm-charts/)。
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -20,7 +20,7 @@ kubectl create namespace monitoring
 helm install prometheus prometheus-community/prometheus --namespace monitoring
 ```
 
-Once the installation is complete, run the following command to list the PVCs:
+安裝完成後，運行以下命令列出 PVC：
 ```bash
 $ kubectl -n monitoring get pvc
 NAME                                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS        VOLUMEATTRIBUTESCLASS   AGE
@@ -28,17 +28,17 @@ prometheus-server                   Bound    pvc-6c92f4d4-7db2-4229-be1a-8826739
 storage-prometheus-alertmanager-0   Bound    pvc-4d6d879d-0961-4b29-a0d7-d4954a8c9476   2Gi        RWO            ubicloud-standard   <unset>                 69s
 ```
 
-## Limitations and Considerations
+## 限制和注意事項
 
-- UbiCSI is in **preview**, so features and behavior may evolve over time.
+- UbiCSI 處於**預覽版**，因此功能和行為可能會隨時間演變。
 
-- PVCs are limited to 10 GB by default to ensure reliable data migration and avoid network strain. Larger volumes can be requested via support@ubicloud.com.
+- PVC 預設限制為 10 GB，以確保可靠的資料遷移並避免網路壓力。可以通過 support@ubicloud.com 請求更大的儲存卷。
 
-- Data is stored locally and not replicated. If a node is permanently lost due to critical hardware failure, any data on that node is also lost.
+- 資料儲存在本地且不會複製。如果節點因嚴重硬體故障而永久丟失，該節點上的任何資料也會丟失。
 
-- Volume Expansion is not supported yet.
+- 尚不支援儲存卷擴展。
 
-Every Ubicloud Kubernetes Cluster comes with the UbiCSI add-on pre-installed and a StorageClass is defined for creating PVCs:
+每個 Ubicloud Kubernetes 叢集都預先安裝了 UbiCSI 附加元件，並定義了一個 StorageClass 用於創建 PVC：
 
 ```bash
 $ kubectl get storageclass
@@ -46,17 +46,17 @@ NAME                          PROVISIONER        RECLAIMPOLICY   VOLUMEBINDINGMO
 ubicloud-standard (default)   csi.ubicloud.com   Delete          WaitForFirstConsumer   false                  2h
 ```
 
-All UbiCSI components are deployed in the `ubicsi` namespace to separate them from other workloads. The source code for UbiCSI is available in [Ubicloud repository](https://github.com/ubicloud/ubicloud/tree/main/kubernetes/csi).
+所有 UbiCSI 組件都部署在 `ubicsi` 命名空間中，以將它們與其他工作負載分開。UbiCSI 的原始碼可在 [Ubicloud 存儲庫](https://github.com/ubicloud/ubicloud/tree/main/kubernetes/csi)中取得。
 
 
-## How it works
+## 工作原理
 
-UbiCSI driver provisions PersistentVolumeClaims on local volumes for speed and automatically migrating data when a node becomes unschedulable. This combines the performance of local storage with the reliability of managed persistence.
+UbiCSI 驅動程式在本地儲存卷上佈建持久化儲存卷宣告以提高速度，並在節點變得無法調度時自動遷移資料。這結合了本地儲存的性能和託管持久化的可靠性。
 
-By using node affinities on the PersistentVolume, the PVC stays bound to that node, ensuring the pod always runs on the same node during normal restarts and as long as the node remains schedulable.
+通過在 PersistentVolume 上使用節點親和性，PVC 保持綁定到該節點，確保在正常重啟期間以及只要節點保持可調度狀態，Pod 始終在同一節點上運行。
 
-## Data Durability and Migration
+## 資料持久性和遷移
 
-For data durability, UbiCSI continuously monitors node health. When a pod’s node becomes unschedulable, UbiCSI automatically reschedules the pod onto a healthy node and transfers its data. This process ensures workloads stay available and data persists even when nodes fail or are taken out of service.
+對於資料持久性，UbiCSI 持續監控節點健康狀況。當 Pod 的節點變得無法調度時，UbiCSI 會自動將 Pod 重新調度到健康的節點並傳輸其資料。此過程確保即使節點故障或停止服務，工作負載仍保持可用且資料持久化。
 
-When migration begins, data is copied in the background to the new node. During this time, the pod may temporarily return errors such as "Old PV data is not copied yet" - these indicate that migration is still in progress. Users should not force delete or restart the pod, as this can interrupt the copy. Once migration completes, the pod resumes normal operation with its data fully restored on the new node.
+當遷移開始時，資料會在背景中複製到新節點。在此期間，Pod 可能會暫時返回錯誤，例如「舊 PV 資料尚未複製」- 這些錯誤表示遷移仍在進行中。使用者不應強制刪除或重新啟動 Pod，因為這可能會中斷複製。一旦遷移完成，Pod 將恢復正常操作，其資料將完全恢復到新節點上。

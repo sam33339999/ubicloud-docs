@@ -1,35 +1,35 @@
 ---
-title: 'Quickstart'
+title: '快速入門'
 ---
 
-In this guide, you’re going to, create a Kubernetes cluster, connect to your cluster using `kubectl`, deploy a sample app and expose it to public. For this dedicated cluster, you’ll pay about 3x lower than you would with AWS or Azure.
+在本指南中，您將創建一個 Kubernetes 叢集，使用 `kubectl` 連接到您的叢集，部署一個範例應用程式並將其公開給公眾。對於這個專用叢集，您支付的費用比使用 AWS 或 Azure 低約 3 倍。
 
-### Navigate to Kubernetes Service
-From the left menu on the console and select the **Kubernetes** option and click on the **Create Kubernetes Cluster** button. This will take you to a new page where you can select the cluster details.
+### 導航到 Kubernetes 服務
+從控制台的左側選單中選擇 **Kubernetes** 選項，然後點擊 **Create Kubernetes Cluster** 按鈕。這將帶您進入一個新頁面，您可以在其中選擇叢集詳細資訊。
 
-### Configure the Cluster
-- Enter your desired cluster name.
-- Select the preferred location.
-- Choose the specifications for the control plane and worker node pools.
+### 配置叢集
+- 輸入您想要的叢集名稱。
+- 選擇首選位置。
+- 選擇控制平面和工作節點池的規格。
 
-### Launch the Cluster
-After completing the configuration, click the **Create** button. Your Kubernetes cluster will be up and running in a few minutes based on the specified size.
+### 啟動叢集
+完成配置後，點擊 **Create** 按鈕。根據指定的大小，您的 Kubernetes 叢集將在幾分鐘內啟動並運行。
 
-![Create](/managed-kubernetes/create-screenshot.png)
+![建立](/managed-kubernetes/create-screenshot.png)
 
-### Download the kubeconfig
-Once the `Download` button appears, click it to download the kubeconfig file. Then, run the following command to start using it:
+### 下載 kubeconfig
+一旦 `Download` 按鈕出現，點擊它以下載 kubeconfig 文件。然後，運行以下命令開始使用它：
 ```bash
 export KUBECONFIG=/path/to/kubeconfig
 ```
 
-Kubernetes clients like [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) will automatically use this file to connect to your cluster. Check the connection with the following command:
+像 [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) 這樣的 Kubernetes 用戶端將自動使用此文件連接到您的叢集。使用以下命令檢查連接：
 ```bash
 kubectl get nodes
 ```
 
-### Create an Nginx deployment
-Use the following command to deploy the Nginx application
+### 創建 Nginx 部署
+使用以下命令部署 Nginx 應用程式
 ```yaml
 kubectl apply -f - <<EOF
 apiVersion: apps/v1
@@ -51,8 +51,8 @@ spec:
 EOF
 ```
 
-### Expose the Application
-Use the following command to expose your Nginx deployment via a LoadBalancer service
+### 公開應用程式
+使用以下命令通過 LoadBalancer 服務公開您的 Nginx 部署
 ```yaml
 kubectl apply -f - <<EOF
 apiVersion: v1
@@ -68,9 +68,9 @@ spec:
 EOF
 ```
 
-### Access Your Application
-Run the following command to retrieve the external domain assigned to your LoadBalancer service
+### 訪問您的應用程式
+運行以下命令以檢索分配給您的 LoadBalancer 服務的外部網域
 ```bash
 kubectl get service nginx
 ```
-Look for the `EXTERNAL-IP` or the Service URL in the cluster's panel. This URL sits behind a load balancer and it takes about a minute for it to become available. Once it does, you can access your application by opening up this URL in your browser
+查找 `EXTERNAL-IP` 或叢集面板中的 Service URL。此 URL 位於負載平衡器後面，大約需要一分鐘才能可用。一旦可用，您可以在瀏覽器中打開此 URL 來訪問您的應用程式

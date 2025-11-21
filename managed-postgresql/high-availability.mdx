@@ -1,31 +1,31 @@
 ---
-title: 'High Availability'
+title: '高可用性'
 ---
 
-Ubicloud Managed PostgreSQL offers different levels of high availability. Depending on your needs, you can add one or two of high availability standbys during the provisioning of your database. Simply select the number standbys you want to have from the High Availability view.
+Ubicloud 受管理 PostgreSQL 提供不同等級的高可用性。根據您的需求，您可以在佈建資料庫時新增一個或兩個高可用性備用節點。只需從高可用性檢視中選擇您想要的備用節點數量即可。
 
 ![High Availability](/managed-postgresql/high-availability-1.png)
 
-## Differences between High Availability options
+## 高可用性選項之間的差異
 
-#### No Standby
+#### 無備用節點
 
-In this option, we only provision a primary node in the size of your preference. No standby node is provisioned. We still monitor your primary node against possible failures, however recovery might take a long time depending on the nature of the problem.
+在此選項中，我們只佈建您偏好大小的主節點。不會佈建備用節點。我們仍會監控主節點以防可能的故障，但復原可能需要較長時間，具體取決於問題的性質。
 
-#### 1 Standby
+#### 1 個備用節點
 
-In this option, we provision a standby node along with your primary node. The standby node will be in the same size with the primary and it waits ready to take over the place of the primary node in case of a failure.
+在此選項中，我們會與主節點一起佈建一個備用節點。備用節點將與主節點大小相同，並在主節點發生故障時隨時準備接管。
 
-By default, in this option, the data will be replicated to the standby node with asynchronous replication. This means writes can be committed to the primary node without needing acknowledgement from the standby node. This ensures that having high availability does not slow down your writes due to additional network hop. However, it also means that the standby might not have a chance to see the most recent data at the time of the primary failure. For most applications, additional risk is worth the performance gain, however if this is not the case for you, you can also opt-in to use synchronous replication.
+預設情況下，在此選項中，資料將使用非同步複製複製到備用節點。這意味著寫入可以提交到主節點而無需等待備用節點的確認。這確保了高可用性不會因額外的網路跳躍而降低寫入速度。然而，這也意味著備用節點可能在主節點故障時沒有機會看到最新的資料。對於大多數應用程式而言，額外的風險值得效能提升，但如果您的情況並非如此，您也可以選擇使用同步複製。
 
-#### 2 Standbys
+#### 2 個備用節點
 
-In this option, we provision two standby nodes along with your primary node. The standby nodes will be in the same size with the primary and they wait ready to take over the place of the primary node in case of a failure.
+在此選項中，我們會與主節點一起佈建兩個備用節點。備用節點將與主節點大小相同，並在主節點發生故障時隨時準備接管。
 
-By default, in this option, the data will be replicated to the standby node with synchronous replication and the primary node will wait for acknowledgement from at least one of the standbys. This provides higher durability guarantees than the asynchronous replication. Also since one acknowledgement is enough, it suffers less from the performance penalty of additional network hop (compared to using synchronous replication with just one standby). Still, if you prefer using asynchronous replication, you can change the default configuration.
+預設情況下，在此選項中，資料將使用同步複製複製到備用節點，主節點將等待至少一個備用節點的確認。這提供了比非同步複製更高的持久性保證。此外，由於只需要一個確認即可，因此與僅使用一個備用節點的同步複製相比，它受額外網路跳躍的效能影響較小。不過，如果您偏好使用非同步複製，可以變更預設設定。
 
-## Handling Failures
+## 處理故障
 
-We monitor all the PostgreSQL servers in our fleet, no matter if high availability is enabled or not. In all cases, our system tries to heal from failures automatically.
+我們監控所有 PostgreSQL 伺服器，無論是否啟用高可用性。在所有情況下，我們的系統都會嘗試自動從故障中復原。
 
-However, if there is a standby available, automatic healing is faster and more straightforward. In such cases, the system usually recovers itself in the matter of a few minutes. In cases where high availability is not enabled, healing might require operator intervention and that would significantly increase the unavailable duration.
+然而，如果有可用的備用節點，自動修復會更快且更直接。在這種情況下，系統通常會在幾分鐘內自行復原。在未啟用高可用性的情況下，修復可能需要操作員介入，這將顯著增加不可用的時間。

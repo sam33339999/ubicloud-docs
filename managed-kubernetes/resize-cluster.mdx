@@ -1,43 +1,43 @@
 ---
-title: 'Resize Your Cluster'
+title: '調整叢集大小'
 ---
 
-You can resize your Kubernetes cluster at any time to meet changing workload demands, improve resource utilization, or reduce infrastructure costs. Resizing your Kubernetes cluster changes the number of nodes in your worker node pool by adding or removing nodes. This can be done through the web interface, CLI, or API.
+您可以隨時調整 Kubernetes 叢集的大小，以滿足不斷變化的工作負載需求、提高資源利用率或降低基礎設施成本。調整 Kubernetes 叢集大小會通過添加或移除節點來更改工作節點池中的節點數量。這可以通過網頁介面、CLI 或 API 完成。
 
-## See the Current Size of Your Cluster
+## 查看叢集的當前大小
 
-You can see the set size of your cluster in the **Overview** tab of your cluster's page and details of your nodes in the **Nodes** tab.
+您可以在叢集頁面的 **Overview** 選項卡中查看叢集的設定大小，並在 **Nodes** 選項卡中查看節點的詳細資訊。
 
-![Nodes](/managed-kubernetes/nodes-screenshot.png)
+![節點](/managed-kubernetes/nodes-screenshot.png)
 
-## Resize via Web Interface
+## 通過網頁介面調整大小
 
-1. Navigate to the Kubernetes page in the [Ubicloud Console](https://console.ubicloud.com).
-2. Click on the name of the cluster you want to resize.
-3. Click the **Settings** tab.
-4. In the **Resize Worker Node Pool** section, select the desired number of nodes and click the **Resize** button.
+1. 在 [Ubicloud 控制台](https://console.ubicloud.com)中導航到 Kubernetes 頁面。
+2. 點擊您要調整大小的叢集名稱。
+3. 點擊 **Settings** 選項卡。
+4. 在 **Resize Worker Node Pool** 部分，選擇所需的節點數量並點擊 **Resize** 按鈕。
 
-![Resize Worker Node Pool](/managed-kubernetes/resize-screenshot.png)
+![調整工作節點池大小](/managed-kubernetes/resize-screenshot.png)
 
-## Resize via CLI
+## 通過 CLI 調整大小
 
-You can also resize your cluster using the [`ubi`](https://www.ubicloud.com/docs/quick-start/cli) CLI tool with the `resize-nodepool` command:
+您也可以使用 [`ubi`](https://www.ubicloud.com/docs/quick-start/cli) CLI 工具的 `resize-nodepool` 命令來調整叢集大小：
 
 ```bash
 ubi kc (location/kc-name | kc-id) resize-nodepool (np-name | np-id) node-count
-``` 
+```
 
-## Resize via API
+## 通過 API 調整大小
 
-To resize your cluster using the API, send a `POST` request to the `kubernetes-cluster/{cluster_ref}/nodepool/{nodepool_ref}/resize` endpoint with the desired number of nodes in the request body:
+要使用 API 調整叢集大小，請向 `kubernetes-cluster/{cluster_ref}/nodepool/{nodepool_ref}/resize` 端點發送 `POST` 請求，並在請求正文中包含所需的節點數量：
 
 ```http
 POST https://api.ubicloud.com/project/{project_id}/location/{location}/kubernetes-cluster/{kubernetes_cluster_reference}/nodepool/{kubernetes_nodepool_reference}/resize
-Content-Type: application/json  
+Content-Type: application/json
 
 {
   "node_count": <node-count>
 }
 ```
 
-You can find more information in the API documentation: [Change number of nodes of a Kubernetes Nodepool](https://www.ubicloud.com/docs/api-reference/kubernetes-cluster/change-number-of-nodes-of-a-kubernetes-nodepool).
+您可以在 API 文件中找到更多資訊：[更改 Kubernetes 節點池的節點數量](https://www.ubicloud.com/docs/api-reference/kubernetes-cluster/change-number-of-nodes-of-a-kubernetes-nodepool)。

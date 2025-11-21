@@ -1,26 +1,26 @@
 ---
-title: 'Expose an Application Securely Using TLS'
+title: '使用 TLS 安全地公開應用程式'
 ---
 
-In this guide, we'll walk through the standard process of deploying a simple HTTP server secured with TLS and exposed via Ingress.
+在本指南中，我們將介紹部署使用 TLS 保護的簡單 HTTP 伺服器並通過 Ingress 公開的標準流程。
 
-To securely deploy your applications on Ubicloud Kubernetes clusters using TLS, simply set up an Ingress controller along with Cert-Manager. This setup handles all your TLS needs.
+要在 Ubicloud Kubernetes 叢集上使用 TLS 安全地部署應用程式，只需設置 Ingress 控制器和 Cert-Manager。此設置可處理您所有的 TLS 需求。
 
-Follow this step-by-step guide to deploy and expose an HTTPS application on your Kubernetes cluster. Before you begin, ensure that Helm is installed on your system.
+按照本逐步指南在 Kubernetes 叢集上部署和公開 HTTPS 應用程式。開始之前，請確保系統已安裝 Helm。
 
-### Prerequisites
-To complete this tutorial, Helm must be installed. You can follow the official installation guide available on the [Helm website](https://helm.sh/docs/intro/install/)
+### 前置條件
+要完成本教學，必須安裝 Helm。您可以按照 [Helm 網站](https://helm.sh/docs/intro/install/)上提供的官方安裝指南進行操作。
 
-You’ll also need an active domain and access to the control panel for managing DNS records in order to complete this guide.
+您還需要一個有效的網域，並能夠訪問管理 DNS 記錄的控制面板，以完成本指南。
 
-### Installing the required addons
-You'll need an email to register yourself with letsencrypt.
+### 安裝所需的附加元件
+您需要一個電子郵件地址來向 letsencrypt 註冊。
 ```bash
 export KUBECONFIG=/path/to/your/kubeconfig
 export CLUSTER_ISSUER_EMAIL=email@yourcompany.com
 ```
 
-Next, we'll add the ingress-nginx and jetstack Helm repositories to install the Ingress NGINX Controller and Cert Manager.
+接下來，我們將添加 ingress-nginx 和 jetstack Helm 存儲庫，以安裝 Ingress NGINX Controller 和 Cert Manager。
 
 ```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
@@ -31,7 +31,7 @@ helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create
 helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set crds.enabled=true
 ```
 
-We'll also create a ClusterIssuer in order to get certificates from letsencrypt for our service
+我們還將創建一個 ClusterIssuer，以便為我們的服務從 letsencrypt 取得證書
 ```bash
 kubectl apply -f <(cat <<EOF
 apiVersion: cert-manager.io/v1
@@ -51,23 +51,23 @@ spec:
 EOF
 )
 ```
-Once all the commands have been executed, you’ll notice a Service named `ingress-nginx-controller` created in the `ingress-nginx` namespace. This Service is of type LoadBalancer, and the `EXTERNAL-IP` column will display a domain that resolves to the IPs of your worker nodes.
+一旦所有命令都已執行，您會注意到在 `ingress-nginx` 命名空間中創建了一個名為 `ingress-nginx-controller` 的 Service。此 Service 的類型為 LoadBalancer，`EXTERNAL-IP` 欄會顯示一個解析到您的工作節點 IP 的網域。
 
-You can see this service using the command below
+您可以使用以下命令查看此服務
 ```bash
 kubectl -n ingress-nginx get service ingress-nginx-controller
 ```
 
-Here's a sample output of the command:
+以下是命令的範例輸出：
 ```
 NAME                       TYPE           CLUSTER-IP      EXTERNAL-IP                            PORT(S)                      AGE
 ingress-nginx-controller   LoadBalancer   10.105.61.236   xgmdaw248d-services.k8s.ubicloud.com   80:32271/TCP,443:30363/TCP   8m15s
 ```
 
-### Add DNS record to route the traffic to the cluster
-Next, create a CNAME record with your DNS provider pointing *.ingress.yourdomain.com to the domain listed in the EXTERNAL-IP. Feel free to use any subdomain that best suits your setup.
+### 添加 DNS 記錄以將流量路由到叢集
+接下來，使用您的 DNS 提供商創建一個 CNAME 記錄，將 *.ingress.yourdomain.com 指向 EXTERNAL-IP 中列出的網域。您可以使用最適合您設置的任何子網域。
 
-### Deploy your application
+### 部署您的應用程式
 ```bash
 export DOMAIN_SUFFIX=ingress.yourdomain.com
 
@@ -130,4 +130,4 @@ spec:
 EOF
 ```
 
-Now you can visit https://hello-world.ingress.yourdomain.com!
+現在您可以訪問 https://hello-world.ingress.yourdomain.com！

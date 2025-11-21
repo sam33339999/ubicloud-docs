@@ -1,35 +1,35 @@
 ---
-title: 'ParadeDB on Ubicloud'
+title: 'Ubicloud 上的 ParadeDB'
 ---
 
-## Getting Started
+## 開始使用
 
-ParadeDB is an Elasticsearch alternative built on Postgres. It provides powerful search and analytics capabilities built on top of PostgreSQL and now it is available on Ubicloud as a managed service.
+ParadeDB 是基於 Postgres 建構的 Elasticsearch 替代方案。它提供建立在 PostgreSQL 之上的強大搜尋和分析功能，現在可以在 Ubicloud 上作為受管理服務使用。
 
-Our managed ParadeDB service combines the unique expertise of both Ubicloud and ParadeDB teams. Underlying infrastructure is managed by the Ubicloud team and the ParadeDB instances are managed by the ParadeDB team. This allows you to access both teams' technical expertise as needed.
+我們的受管理 ParadeDB 服務結合了 Ubicloud 和 ParadeDB 團隊的獨特專業知識。底層基礎設施由 Ubicloud 團隊管理，ParadeDB 執行個體由 ParadeDB 團隊管理。這讓您可以根據需要存取兩個團隊的技術專業知識。
 
-ParadeDB is a good fit for:
-- Developers who trust Postgres and don't want to operate a non-Postgres database / query engine
-- Elasticsearch users who want to consolidate their data stack on Postgres
-- Full-text, similarity, or hybrid search over large volumes of operational data with zero ETL
-- Building rich search experiences with analytical queries and facets
+ParadeDB 適用於：
+- 信任 Postgres 且不想操作非 Postgres 資料庫/查詢引擎的開發人員
+- 希望在 Postgres 上整合資料堆疊的 Elasticsearch 使用者
+- 對大量運營資料進行全文、相似性或混合搜尋，無需 ETL
+- 使用分析查詢和多面向搜尋建立豐富的搜尋體驗
 
-**Navigate to ParadeDB Service:** To create a ParadeDB instance, start by clicking to the "PostgreSQL" option from the left menu on the dashboard and then click “Create ParadeDB PostgreSQL Database”.
+**導航至 ParadeDB 服務：** 要建立 ParadeDB 執行個體，首先按一下儀表板左側選單中的「PostgreSQL」選項，然後按一下「建立 ParadeDB PostgreSQL 資料庫」。
 
 ![ParadeDB on Ubicloud](/managed-postgresql/overview-1-screenshot.png)
 
-**Instance Configuration:** Type the desired database server name and choose the desired instance type. Since this database will be managed by the ParadeDB team as well, you will need to accept terms of service and privacy policy of ParadeDB. You don't need to set anything else. A secure password will be automatically generated.
+**執行個體設定：** 輸入所需的資料庫伺服器名稱並選擇所需的執行個體類型。由於此資料庫也將由 ParadeDB 團隊管理，您需要接受 ParadeDB 的服務條款和隱私政策。您不需要設定其他任何內容。安全密碼將自動產生。
 
-**Instance Creation:** After selecting the instance type, click the "Create" button. Your managed PostgreSQL instance will be set up and ready for use in a few minutes.
+**執行個體建立：** 選擇執行個體類型後，按一下「建立」按鈕。您的受管理 PostgreSQL 執行個體將在幾分鐘內設定完成並準備就緒。
 
-## Connect to managed ParadeDB instance
+## 連線到受管理 ParadeDB 執行個體
 
-**Get Connection Details:** Once your ParadeDB instance is ready, go to the database details view to find the connection string. The connection string will be masked. You can reveal it or copy it to your clipboard directly.
+**取得連線詳細資訊：** ParadeDB 執行個體準備就緒後，前往資料庫詳細資訊檢視以找到連線字串。連線字串將被隱藏。您可以顯示它或直接將其複製到剪貼簿。
 
-**Use Connection String:** You can use `psql` or any other database client to establish a connection to your PostgreSQL instance.
+**使用連線字串：** 您可以使用 `psql` 或任何其他資料庫用戶端來建立與 PostgreSQL 執行個體的連線。
 
-Ubicloud managed ParadeDB service provides superuser access to users. This connection string is for accessing the database as a superuser. You can use it to create new users.
+Ubicloud 受管理 ParadeDB 服務為使用者提供超級使用者存取權限。此連線字串用於以超級使用者身分存取資料庫。您可以使用它來建立新使用者。
 
-## Getting most out of your ParadeDB instance
+## 充分利用您的 ParadeDB 執行個體
 
-You can learn more about ParadeDB's capabilities and how to use them in [this quick start guide](https://docs.paradedb.com/documentation/getting-started/quickstart).
+您可以在[此快速入門指南](https://docs.paradedb.com/documentation/getting-started/quickstart)中了解更多有關 ParadeDB 的功能以及如何使用它們。

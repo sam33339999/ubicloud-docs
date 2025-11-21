@@ -1,20 +1,20 @@
 ---
-title: 'Overview'
+title: '概述'
 ---
 
-Ubicloud Kubernetes offers a fully-managed Kubernetes service on top Ubicloud compute and networking infrastructure. Ubicloud Kubernetes takes care of cluster management, node monitoring, and various other aspects of Kubernetes administration, allowing you to focus solely on your application.
+Ubicloud Kubernetes 在 Ubicloud 運算和網路基礎設施之上提供完全託管的 Kubernetes 服務。Ubicloud Kubernetes 負責叢集管理、節點監控和 Kubernetes 管理的各個方面，讓您可以專注於您的應用程式。
 
-With Ubicloud Kubernetes, you can enjoy several key benefits:
-* 2-3x lower costs compared to similar public cloud solutions.
-* Availability in Germany (Hetzner) and Virginia, US for reliable hosting.
-* Open-source option for self-hosting Ubicloud Managed Kubernetes.
+使用 Ubicloud Kubernetes，您可以享受多項關鍵優勢：
+* 與類似的公有雲解決方案相比，成本降低 2-3 倍。
+* 在德國（Hetzner）和美國維吉尼亞州提供服務，確保可靠的託管。
+* 提供開源選項，可自行託管 Ubicloud 託管 Kubernetes。
 
-![Overview](/managed-kubernetes/overview-screenshot.png)
+![概述](/managed-kubernetes/overview-screenshot.png)
 
-## Limitations
+## 限制
 
-While Ubicloud Kubernetes offers numerous advantages, it currently has the following limitations:
+雖然 Ubicloud Kubernetes 提供了許多優勢，但目前存在以下限制：
 
-- **Preview**: Ubicloud Kubernetes is currently in public beta. For feedback, feature requests, or support inquiries, please contact us at support@ubicloud.com.
-- **Persistent Volumes**: Persistent volumes utilizing the local NVMe SSDs are available in preview with our container storage interface implementation (UbiCSI).
-- **Single Load Balancer**: Each Kubernetes cluster is limited to one load balancer for exposing services to the internet. This means multiple services cannot share the same port.
+- **預覽版**：Ubicloud Kubernetes 目前處於公開測試階段。如有反饋、功能請求或支援查詢，請通過 support@ubicloud.com 與我們聯繫。
+- **持久化儲存卷**：利用本地 NVMe SSD 的持久化儲存卷可通過我們的容器儲存介面實作（UbiCSI）以預覽版形式提供。
+- **單一負載平衡器**：每個 Kubernetes 叢集僅限使用一個負載平衡器來將服務公開到網際網路。這意味著多個服務無法共享相同的連接埠。

@@ -1,44 +1,29 @@
 ---
-title: 'Configuration and Settings'
+title: '設定與選項'
 ---
 
-You can change the configuration parameters of your Ubicloud PostgreSQL instance
-by using the Configuration view. Here, you can configure both PostgreSQL and
-PgBouncer parameters.
+您可以使用設定檢視來變更 Ubicloud PostgreSQL 執行個體的設定參數。在這裡，您可以同時設定 PostgreSQL 和 PgBouncer 參數。
 
 ![Configuration view](/managed-postgresql/configuration-screenshot.png)
 
-## Changing Configuration Parameters
+## 變更設定參數
 
-To configure a new parameter, enter the paramter name and value in the new key
-and value input fields.  Confirm the addition by clicking the "Save" button. You
-can add multiple parameters in one go by using the "+" button.
+要設定新參數，請在新的鍵和值輸入欄位中輸入參數名稱和值。按一下「儲存」按鈕確認新增。您可以使用「+」按鈕一次新增多個參數。
 
-To change a configuration parameter, change the key or value in the input
-fields.  You can also reset a parameter to its default value by clicking the
-"Delete" button next to it. Confirm your changes by clicking the "Save" button.
+要變更設定參數，請在輸入欄位中變更鍵或值。您也可以按一下參數旁邊的「刪除」按鈕，將參數重設為預設值。按一下「儲存」按鈕確認您的變更。
 
-We support configuring basically all PostgreSQL and PgBouncer parameters. For a
-list of supported parameters, see the [PostgreSQL documentation](https://www.postgresql.org/docs/current/runtime-config.html)
-and the [PgBouncer documentation](https://www.pgbouncer.org/config.html).
+我們基本上支援所有 PostgreSQL 和 PgBouncer 參數的設定。有關支援的參數清單，請參閱 [PostgreSQL 文件](https://www.postgresql.org/docs/current/runtime-config.html)和 [PgBouncer 文件](https://www.pgbouncer.org/config.html)。
 
-All changes made to the configuration parameters are typically persisted to the
-instance within one minute. If modifying a parameter requires a restart of the
-database server, the change will be applied after the next restart. You
-can trigger a restart manually from the Settings view, described below.
+對設定參數所做的所有變更通常會在一分鐘內保存到執行個體。如果修改參數需要重新啟動資料庫伺服器，則變更將在下次重新啟動後套用。您可以從下面描述的設定檢視手動觸發重新啟動。
 
-## Instance Settings
+## 執行個體設定
 
-The Settings view allows you to setup maintenance windows, update superuser
-password, restart or delete the Ubicloud PostgreSQL instance.
+設定檢視允許您設定維護時段、更新超級使用者密碼、重新啟動或刪除 Ubicloud PostgreSQL 執行個體。
 
 ![Settings view](/managed-postgresql/settings-screenshot.png)
 
-### Maintenance Windows
+### 維護時段
 
-Maintenance Windows are periods during which Ubicloud can perform maintenance
-tasks on your instance. This can be used to decrease the impact of maintenance
-tasks like resizing on your database.
+維護時段是 Ubicloud 可以在您的執行個體上執行維護任務的期間。這可用於減少維護任務（如調整大小）對資料庫的影響。
 
-You can set up a maintenance window by selecting a 2-hour window from the
-provided dropdown. The time window uses the UTC timezone.
+您可以從提供的下拉選單中選擇一個 2 小時的時段來設定維護時段。時間視窗使用 UTC 時區。

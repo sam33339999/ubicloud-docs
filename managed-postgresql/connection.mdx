@@ -1,60 +1,40 @@
 ---
-title: 'Connection'
+title: '連線'
 ---
 
-To connect your applications to Ubicloud PostgreSQL, find the connection details
-in the Connection view.
+要將應用程式連線到 Ubicloud PostgreSQL，請在連線檢視中查找連線詳細資訊。
 
-Ubicloud Managed PostgreSQL provides superuser access to users. This connection
-string provided is for accessing the database as a superuser. You can use it to
-create new users.
+Ubicloud 受管理 PostgreSQL 為使用者提供超級使用者存取權限。提供的連線字串用於以超級使用者身分存取資料庫。您可以使用它來建立新使用者。
 
 ![PostgreSQL Connection details](/managed-postgresql/connection-screenshot.png)
 
-## Connection string
+## 連線字串
 
-For security reasons, the connection string is masked by default. You can reveal
-it or copy it to your clipboard directly.  You can view the connection string in
-different formats by selecting the desired format from the dropdown.
+基於安全考量，連線字串預設為隱藏狀態。您可以顯示它或直接將其複製到剪貼簿。您可以透過從下拉選單中選擇所需格式來查看不同格式的連線字串。
 
-Supported formats are:
+支援的格式有：
 
-- **URL**: connection URL, in the format `postgres://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>`.
-- **psql**: `psql` command which can be used in the command line to connect to the databse.
-- **env**: connection details as environment variables, useful for connecting
-`libpq` based clients.
-- **yaml**: connection details in the YAML format.
-- **jdbc**: connection details in the JDBC format, for connecting with
-Java-based clients.
+- **URL**：連線 URL，格式為 `postgres://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>`。
+- **psql**：可在命令列中使用的 `psql` 命令來連線到資料庫。
+- **env**：以環境變數形式呈現的連線詳細資訊，適用於連線基於 `libpq` 的用戶端。
+- **yaml**：以 YAML 格式呈現的連線詳細資訊。
+- **jdbc**：以 JDBC 格式呈現的連線詳細資訊，用於連線基於 Java 的用戶端。
 
 
 ## PgBouncer
 
-Ubicloud PostgreSQL provides a bundled [PgBouncer](https://www.pgbouncer.org/) instance for server side
-connection pooling. PgBouncer helps improve connection management, performance,
-and resource utilization for your instance, especially those handling a high
-number of connections. To use PgBouncer for your PostgreSQL connections, check
-the "Use pgBouncer?" checkbox to obtain the connection string for PgBouncer.
+Ubicloud PostgreSQL 提供內建的 [PgBouncer](https://www.pgbouncer.org/) 執行個體以進行伺服器端連線池。PgBouncer 有助於改善連線管理、效能和執行個體的資源利用率，特別是處理大量連線的執行個體。要為您的 PostgreSQL 連線使用 PgBouncer，請勾選「使用 pgBouncer？」核取方塊以取得 PgBouncer 的連線字串。
 
 ## TLS
 
-Ubicloud PostgreSQL instances are secured with TLS. By default, **TLS v1.3** is
-the minimum supported version. We recommend using at least `sslmode=require`
-when connecting applications to your instance, to ensure that the connection is
-encrypted.
+Ubicloud PostgreSQL 執行個體採用 TLS 安全保護。預設情況下，最低支援版本為 **TLS v1.3**。我們建議在將應用程式連線到執行個體時至少使用 `sslmode=require`，以確保連線經過加密。
 
-For production workloads, it is recommened that you connect to your instance
-using a verified TLS connection. To do this, download the CA certificate bundle
-from the Connection view, and add them to your database client's trusted
-certificates. 
+對於生產環境工作負載，建議您使用已驗證的 TLS 連線來連線到執行個體。要執行此操作，請從連線檢視下載 CA 憑證套件，並將其新增到資料庫用戶端的受信任憑證中。
 
-For example, to connect to your PostgreSQL instance with "psql" using a verified
-TLS connection, you can add `sslmode=verify-full` and
-`sslrootcert=<PATH_TO_DOWNLOADED_CA_CERT>` to the connection string provided:
+例如，要使用已驗證的 TLS 連線透過「psql」連線到 PostgreSQL 執行個體，您可以在提供的連線字串中新增 `sslmode=verify-full` 和 `sslrootcert=<PATH_TO_DOWNLOADED_CA_CERT>`：
 
 ```bash
 psql 'postgres://postgres:s3cret@test-pg.postgres.ubicloud.com?sslmode=verify-full&sslrootcert=/home/user/Downloads/postgresql-demo.pem'
 ```
 
-The CA certificates are valid for 10 years. If you need to renew them, you can
-download the new certificates from the database details view.
+CA 憑證的有效期為 10 年。如果您需要更新憑證，可以從資料庫詳細資訊檢視下載新憑證。

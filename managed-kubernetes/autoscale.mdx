@@ -1,70 +1,70 @@
 ---
-title: 'Autoscaling'
+title: '自動擴展'
 ---
 
-Autoscaling in Kubernetes is essential for running resilient, cost-efficient, and performance-optimized cloud-native applications. Kubernetes autoscaling lets your infrastructure adapt to changing demand by automatically adjusting resources. By enabling methods like Horizontal Pod Autoscaling and Vertical Pod Autoscaling, Ubicloud Kubernetes ensures performance and efficiency for your applications..
+Kubernetes 中的自動擴展對於運行具有彈性、成本效益和性能優化的雲原生應用程式至關重要。Kubernetes 自動擴展讓您的基礎設施能夠通過自動調整資源來適應不斷變化的需求。通過啟用水平 Pod 自動擴展和垂直 Pod 自動擴展等方法，Ubicloud Kubernetes 確保您的應用程式具有性能和效率。
 
-## Horizontal Pod Autoscaling (HPA)
-Horizontal pod autoscaling is a built-in feature in Kubernetes. It allows you to automatically scale the number of pods in a deployment based on usage.
+## 水平 Pod 自動擴展 (HPA)
+水平 Pod 自動擴展是 Kubernetes 的內建功能。它允許您根據使用情況自動擴展部署中的 Pod 數量。
 
-<Note>HPA requires `metrics-server` to be installed in K8s clusters, which is handled by Ubicloud Kubernetes by default for you.</Note>
+<Note>HPA 需要在 K8s 叢集中安裝 `metrics-server`，Ubicloud Kubernetes 預設會為您處理這個問題。</Note>
 
-Here's a quick walkthrough about seeing HPA in action, taken from [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/), assuming you have a Ubicloud Kubernetes cluster booted up and set your terminal with the kubeconfig file:
+以下是查看 HPA 運作的快速演練，摘自 [Kubernetes 文件](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)，假設您已經啟動了 Ubicloud Kubernetes 叢集並使用 kubeconfig 文件設置了終端：
 
-**Deploy a sample web application**
+**部署範例網頁應用程式**
 ```bash
 kubectl apply -f https://k8s.io/examples/application/php-apache.yaml
 ```
 
-This will create a sample web application and a service to expose it within the cluster.
+這將創建一個範例網頁應用程式和一個服務，以在叢集內公開它。
 
-**Create a horizontal pod autoscaler rule**
+**創建水平 Pod 自動擴展規則**
 ```bash
 kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
 ```
 
-**Observe the horizontal pod autoscaling behavior**
+**觀察水平 Pod 自動擴展行為**
 ```bash
 kubectl get hpa --watch
 ```
 
-**Generate load**
+**生成負載**
 
-On a different terminal window, run the following command to generate load on the web application and see the horizontal pod autoscaler increasing the number of replicas in a few minutes
+在另一個終端視窗中，運行以下命令為網頁應用程式生成負載，並在幾分鐘內查看水平 Pod 自動擴展器增加副本數量
 ```bash
 kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
 ```
 
-As you generate the load, the CPU usage of the pods should increase as well as the number of replicas.
+當您生成負載時，Pod 的 CPU 使用率應該會增加，副本數量也會增加。
 
-When you cancel the load generator command, you can observe that the number of replicas will be automatically reduced by the HPA.`
+當您取消負載生成器命令時，您可以觀察到 HPA 會自動減少副本數量。
 
-## Vertical Pod Autoscaling (VPA)
-Vertical Pod Autoscaler (VPA) in Kubernetes automatically adjusts CPU and memory requests for pods based on observed usage. It’s ideal for workloads with unpredictable resource needs or those that don’t scale well horizontally, helping ensure stability and efficient utilization without manual tuning. Unlike HPA, Vertical Pod Autoscaler isn’t bundled with Kubernetes out of the box and needs to be installed separately via the [official VPA repository](
-https://github.com/kubernetes/autoscaler/tree/9f87b78df0f1d6e142234bb32e8acbd71295585a/vertical-pod-autoscaler).
+## 垂直 Pod 自動擴展 (VPA)
+Kubernetes 中的垂直 Pod 自動擴展器 (VPA) 會根據觀察到的使用情況自動調整 Pod 的 CPU 和記憶體請求。它非常適合資源需求不可預測或不適合水平擴展的工作負載，有助於確保穩定性和高效利用，而無需手動調整。與 HPA 不同，垂直 Pod 自動擴展器並未內建在 Kubernetes 中，需要通過[官方 VPA 存儲庫](
+https://github.com/kubernetes/autoscaler/tree/9f87b78df0f1d6e142234bb32e8acbd71295585a/vertical-pod-autoscaler)單獨安裝。
 
 ```bash
-# Obtain VPA
+# 取得 VPA
 git clone https://github.com/kubernetes/autoscaler.git
 cd autoscaler/vertical-pod-autoscaler
 
-# Install VPA components in your cluster
+# 在叢集中安裝 VPA 組件
 ./hack/vpa-up.sh
 
-# Verify VPA installation
+# 驗證 VPA 安裝
 kubectl get pods -n kube-system | grep vpa
 ```
 
-At this point you should see three VPA components running in the `kube-system` namespace: `vpa-admission-controller`, `vpa-recommender`, and `vpa-updater`. 
+此時，您應該會在 `kube-system` 命名空間中看到三個 VPA 組件正在運行：`vpa-admission-controller`、`vpa-recommender` 和 `vpa-updater`。
 
-**Create sample application**
+**創建範例應用程式**
 
 ```bash
 kubectl apply -f https://k8s.io/examples/application/php-apache.yaml
 kubectl scale deployment php-apache --replicas=2
 ```
 
-**Create a VPA object for the sample application**
+**為範例應用程式創建 VPA 物件**
 
 ```bash
 kubectl apply -f <(cat <<EOF
@@ -83,24 +83,24 @@ EOF
 )
 ```
 
-**Generate load**
+**生成負載**
 
-On a different terminal window, run the following command to generate load on the web application:
+在另一個終端視窗中，運行以下命令為網頁應用程式生成負載：
 ```bash
 kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
 ```
 
-Watch the vertical pod autoscaler for recommendations on the deployment and events about recreated pods with higher resource limits
+觀察垂直 Pod 自動擴展器對部署的建議以及有關使用更高資源限制重新創建 Pod 的事件
 
 ```bash
 kubectl describe vpa php-apache-vpa
 ```
 
-You can uninstall VPA if you want to clean up your cluster:
+如果您想清理叢集，可以卸載 VPA：
 
 ```bash
 ./hack/vpa-down.sh
 ```
 
-## Cluster Autoscaling (Node Autoscaling)
-Cluster autoscaling dynamically adjusts the number of nodes in a Kubernetes cluster based on workload demand. While this feature isn't currently supported in Ubicloud Kubernetes, we are working on enabling cluster autoscaling. You can reach out with your feedback and feature requests at [support@ubicloud.com](mailto:support@ubicloud.com).
+## 叢集自動擴展（節點自動擴展）
+叢集自動擴展根據工作負載需求動態調整 Kubernetes 叢集中的節點數量。雖然 Ubicloud Kubernetes 目前不支持此功能，但我們正在努力啟用叢集自動擴展。您可以通過 [support@ubicloud.com](mailto:support@ubicloud.com) 與我們聯繫，提供您的反饋和功能請求。

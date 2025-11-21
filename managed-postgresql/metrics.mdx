@@ -1,145 +1,88 @@
 ---
-title: 'Metrics'
+title: '指標'
 ---
 
-The Metrics view of your Ubicloud PostgreSQL instance provides various signals
-for monitoring the performance and health of your PostgreSQL instances.
+Ubicloud PostgreSQL 執行個體的指標檢視提供各種訊號，用於監控 PostgreSQL 執行個體的效能和健康狀態。
 
 ![Metrics dashboard](/managed-postgresql/metrics-1-screenshot.png)
 
-The time-range dropdown allows you to choose a time-frame for the graphs,
-ranging from 30 minutes to 30 days. Each graph displays about 480 datapoints.
-The graphs auto-update every 5 minutes. You can also manually update the graphs
-with the refresh button.
+時間範圍下拉選單可讓您選擇圖表的時間範圍，從 30 分鐘到 30 天不等。每個圖表顯示約 480 個資料點。圖表每 5 分鐘自動更新一次。您也可以使用重新整理按鈕手動更新圖表。
 
-If you recently provisioned the PostgreSQL database, it might take a few minutes
-for the metrics to become available. For databases with HA enabled, the metrics
-from the primary node are displayed.
+如果您最近才佈建 PostgreSQL 資料庫，可能需要幾分鐘才能使用指標。對於啟用 HA 的資料庫，會顯示主節點的指標。
 
-Here are some of the key metrics provided and details on how to interpret them.
+以下是提供的一些關鍵指標以及如何解讀它們的詳細資訊。
 
-## Resource Usage Metrics
+## 資源使用指標
 
-### CPU Usage
+### CPU 使用率
 
-This shows the CPU usage, broken down into percentage of CPU time
-spent in `user`, `system`, `iowait`, `softirq` and `steal` modes. The `user` time
-reflects processing in the Postgres instance, while the `system` time reflects
-operating system (i.e., kernel) operations.
+顯示 CPU 使用率，細分為 `user`、`system`、`iowait`、`softirq` 和 `steal` 模式下 CPU 時間的百分比。`user` 時間反映 Postgres 執行個體中的處理，而 `system` 時間反映作業系統（即核心）操作。
 
-### Load average
+### 負載平均值
 
-Load Average shows average CPU usage over the last 1, 5, and 15 minutes.
-Typically, a load average equal to the number of CPU cores indicates full
-utilization of all CPUs. A load average higher than the number of CPU cores
-indicates that the system is overloaded, and processes are waiting for CPU time.
+負載平均值顯示過去 1、5 和 15 分鐘的平均 CPU 使用率。通常，負載平均值等於 CPU 核心數量表示所有 CPU 完全利用。負載平均值高於 CPU 核心數量表示系統過載，處理程序正在等待 CPU 時間。
 
-If you are consistently seeing high load averages, you might want to consider
-upgrading to a larger database size.
+如果您持續看到高負載平均值，可能需要考慮升級到更大的資料庫大小。
 
-### Memory Usage
+### 記憶體使用量
 
-This shows the memory usage, broken down into Used, Cached & Buffered memory. A
-high amount of memory usage for Cache & Buffers is normal and indicates that the
-database is using the available memory efficiently. A consistently high (> 90%)
-value for Used memory indicates that the database might be running low on
-available memory, which can lead to performance issues.
+顯示記憶體使用量，細分為已使用、快取和緩衝記憶體。大量記憶體用於快取和緩衝區是正常的，表示資料庫有效地使用可用記憶體。已使用記憶體持續偏高（> 90%）表示資料庫可能記憶體不足，這可能導致效能問題。
 
-### Disk Usage
+### 磁碟使用量
 
-Disk Usage is the disk space utilization for the database, specifically the
-Postgres `data_directory`. This includes the database contents, log files, and
-WAL files, among other things. If your instance is approaching 100% disk usage,
-you might want to consider upgrading to a larger database size.
+磁碟使用量是資料庫的磁碟空間利用率，特別是 Postgres `data_directory`。這包括資料庫內容、日誌檔案和 WAL 檔案等。如果您的執行個體接近 100% 的磁碟使用量，可能需要考慮升級到更大的資料庫大小。
 
-### Disk I/O
+### 磁碟 I/O
 
-This metric shows the disk read and write operations per second for the database
-instance. High values for this metric can indicate that the database is
-experiencing high I/O load, which can lead to performance issues.
+此指標顯示資料庫執行個體每秒的磁碟讀寫操作。此指標的高值可能表示資料庫正在經歷高 I/O 負載，這可能導致效能問題。
 
-### Network Traffic
+### 網路流量
 
-This metric shows the incoming and outgoing network traffic for the database
-instance. Generally, this should match the behavior of other metrics for the
-instance. Unusual activity in this metric might indicate a problem with the
-network or the database instance itself.
+此指標顯示資料庫執行個體的傳入和傳出網路流量。通常，這應該與執行個體的其他指標行為相符。此指標中的異常活動可能表示網路或資料庫執行個體本身存在問題。
 
-## Database Performance Metrics
+## 資料庫效能指標
 
 ![Database Performance Metrics](/managed-postgresql/metrics-2-screenshot.png)
 
-### Connection Count
+### 連線數
 
-This shows the Active and Total number of connected Postgres clients. Total
-connection count refers to all currently connected clients, while Active
-connection count refers to clients that are currently executing a query. By
-default, the maximum number of connections is set to 500. If your database is
-consistently at or near this limit, you might want to consider increasing this
-limit or using connection pooling via PgBouncer.
+顯示已連線的 Postgres 用戶端的活動和總數。總連線數是指所有當前連線的用戶端，而活動連線數是指當前正在執行查詢的用戶端。預設情況下，最大連線數設定為 500。如果您的資料庫持續達到或接近此限制，可能需要考慮增加此限制或透過 PgBouncer 使用連線池。
 
-### Cache Hit Ratio
+### 快取命中率
 
-This metric indicates how many content requests were served from the cache. For
-normal workloads, this should typically be above 99%. If this value is low, it
-might indicate that the database performance might improve with a larger
-instance with more memory.
+此指標表示有多少內容請求是從快取提供的。對於正常工作負載，此值通常應該高於 99%。如果此值較低，可能表示資料庫效能可能會透過使用具有更多記憶體的較大執行個體而得到改善。
 
-### Operation Throughput
+### 操作吞吐量
 
-This graph shows the rate of row fetches, inserts, updates, and deletes per
-second. This can be useful for identifying unexpected changes in usage patterns
-and their effects on database performance.
+此圖表顯示每秒資料列擷取、插入、更新和刪除的速率。這對於識別使用模式的意外變化及其對資料庫效能的影響非常有用。
 
-### Deadlocks
+### 死鎖
 
-This metric shows the rate of deadlocks detected per second in the database.
-Deadlocks occur when two or more transactions are waiting on resources held by
-others, resulting in a situation where none of them can proceed. A non-zero or
-high value indicates bad transaction design, which can lead to degraded
-performance.
+此指標顯示資料庫中每秒偵測到的死鎖速率。當兩個或多個交易正在等待其他交易持有的資源時，就會發生死鎖，導致它們都無法繼續。非零或高值表示交易設計不良，這可能導致效能下降。
 
-### Database Size
+### 資料庫大小
 
-This graph shows the size of the 5 largest databases in the instance. This can
-be useful in identifying databases that are growing unexpectedly or are due for
-cleanup or archiving.
+此圖表顯示執行個體中 5 個最大資料庫的大小。這對於識別意外成長或需要清理或封存的資料庫非常有用。
 
-### Transactions
+### 交易
 
-This graph shows the rate of transactions committed and rolled back per second.
-This can be useful for identifying unexpected changes in usage patterns and
-their effects on database performance.
+此圖表顯示每秒提交和回復的交易速率。這對於識別使用模式的意外變化及其對資料庫效能的影響非常有用。
 
 
-## Metric destinations
+## 指標目的地
 
-It is possible to send various metrics such as CPU usage, disk IO, database
-locks from your database to external targets. Metrics destinations use
-Prometheus' remote-write protocol to send metrics. Any destination that supports
-remote-write protocol, can be used as a destination of Ubicloud PostgreSQL
-metrics. You can find destinations that support remote-write protocol
-[here](https://prometheus.io/docs/operating/integrations/#remote-endpoints-and-storage).
+可以將各種指標（如 CPU 使用率、磁碟 I/O、資料庫鎖定）從您的資料庫傳送到外部目標。指標目的地使用 Prometheus 的遠端寫入協定來傳送指標。任何支援遠端寫入協定的目的地都可以用作 Ubicloud PostgreSQL 指標的目的地。您可以在[這裡](https://prometheus.io/docs/operating/integrations/#remote-endpoints-and-storage)找到支援遠端寫入協定的目的地。
 
-### Setting Up
-Setting up a metric destination is easy. Just open the PostgreSQL server details
-page. You can enter connection details of the remote destination in the “Metric
-Destinations” section.
+### 設定
+
+設定指標目的地很簡單。只需開啟 PostgreSQL 伺服器詳細資訊頁面。您可以在「指標目的地」部分輸入遠端目的地的連線詳細資訊。
 
 ![Metric Destinations](/managed-postgresql/metric-destinations-1.png)
 
-We need 3 pieces of information; URL for sending metrics to, and also
-username/password for authentication. We only accept https:// endpoints. In this
-way we ensure that the data we are sending is encrypted at transit.
+我們需要 3 項資訊：傳送指標的 URL，以及用於身分驗證的使用者名稱/密碼。我們只接受 https:// 端點。這樣我們確保傳送的資料在傳輸過程中經過加密。
 
-### Type of Metrics
+### 指標類型
 
-We are sending two types of metrics:
-- **Metrics from the database itself:** Database metrics are collected by
-[postgres_exporter](https://github.com/prometheus-community/postgres_exporter).
-It contains information about database size, active connections, write/read
-activity, replication, WAL archival, autovacuum and many more.
-- **Metrics from the underlying virtual machine:** Virtual machine metrics are
-collected by [node_exporter](https://github.com/prometheus/node_exporter). It
-contains information about CPU usage, disk IO, filesystem usage, memory
-consumption and network transfe
+我們傳送兩種類型的指標：
+- **來自資料庫本身的指標：** 資料庫指標由 [postgres_exporter](https://github.com/prometheus-community/postgres_exporter) 收集。它包含有關資料庫大小、活動連線、寫入/讀取活動、複製、WAL 封存、自動清理等的資訊。
+- **來自底層虛擬機器的指標：** 虛擬機器指標由 [node_exporter](https://github.com/prometheus/node_exporter) 收集。它包含有關 CPU 使用率、磁碟 I/O、檔案系統使用量、記憶體消耗和網路傳輸的資訊。
