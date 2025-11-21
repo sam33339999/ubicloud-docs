@@ -1,57 +1,57 @@
 ---
-title: 'Managed Services'
+title: '託管服務'
 ---
 
-In this guide, you're going to sign up to Ubicloud, create a virtual machine (VM) and virtual network, and connect to your VM using SSH. For this dedicated VM, you'll pay about 3x lower than you would with AWS or Azure.
+在本指南中，您將註冊 Ubicloud，建立虛擬機器（VM）和虛擬網路，並使用 SSH 連接到您的 VM。對於這個專用 VM，您支付的費用比 AWS 或 Azure 低約 3 倍。
 
-## Sign up and sign in
+## 註冊並登入
 
-You can use Ubicloud without installing anything: [https://console.ubicloud.com/create-account](https://console.ubicloud.com/create-account). The first time you use Ubicloud, you'll need to create a new account. Once you do that and sign in, you'll be directed to Ubicloud's home page.
+您可以在不安裝任何東西的情況下使用 Ubicloud：[https://console.ubicloud.com/create-account](https://console.ubicloud.com/create-account)。首次使用 Ubicloud 時，您需要建立一個新帳戶。完成後並登入，您將被導向到 Ubicloud 的首頁。
 
-## Enter billing details
+## 輸入帳單詳細資訊
 
-Ubicloud console's homepage shows you available cloud services. It also lets you collaborate with others using Projects, where you can invite new users and define fine-grained permissions.
+Ubicloud 控制台的首頁向您顯示可用的雲端服務。它還讓您使用專案與他人協作，您可以在其中邀請新使用者並定義細粒度權限。
 
-By default, Ubicloud projects use Hetzner as the bare metal hosting provider. Each hosting provider has different prices, instance types, and geolocation availability.
+預設情況下，Ubicloud 專案使用 Hetzner 作為裸機託管提供商。每個託管提供商都有不同的價格、實例類型和地理位置可用性。
 
 ![Enter billing Details](/quick-start/managed-services-1-screenshot.png)
 
-We require an active, valid credit card on file before you can create resources.
+我們要求在您建立資源之前檔案中有一張有效的信用卡。
 
 <Note>
-  Pre-authorization up to $5 is required to verify your card. This amount will not be charged and will be canceled after verification. Depending on your bank, it may take up to two weeks to refund the money.
+  需要預先授權最多 $5 以驗證您的卡。此金額不會被收費，並將在驗證後取消。根據您的銀行，可能需要長達兩週的時間才能退款。
 </Note>
 
-This is primarily a means to prevent abuse and ensure that we can collect payment at the end of the month. From the navigation menu on the left, choose Billing. Then, enter your credit card information.
+這主要是為了防止濫用並確保我們可以在月底收取付款。從左側導航選單中，選擇 Billing。然後，輸入您的信用卡資訊。
 
-## Create Virtual Machine (VM)
+## 建立虛擬機器（VM）
 
-On the navigation menu, choose Compute service and then click on New Virtual Machine. This will take you to the VM creation page.
+在導航選單上，選擇 Compute 服務，然後點擊 New Virtual Machine。這將帶您進入 VM 建立頁面。
 
-Here, you can choose your region, server family and size, and Linux distribution. You also need to add your public SSH key so that you can connect to the VM after creation.
+在這裡，您可以選擇您的區域、伺服器系列和大小以及 Linux 發行版。您還需要新增您的公共 SSH 金鑰，以便在建立後可以連接到 VM。
 
-We offer two server families - Standard and Burstable. Standard provides a dedicated CPU and 4GB of memory per vCPU. It is best suited for your general purpose and the most demanding workloads. Burstable provides a shared CPU with 2GB of memory per vCPU. It works best for variable workloads, low-traffic websites, development and testing workloads, and AI agents. 
+我們提供兩個伺服器系列 - Standard 和 Burstable。Standard 提供專用 CPU 和每個 vCPU 4GB 記憶體。它最適合您的通用和最苛刻的工作負載。Burstable 提供共享 CPU 和每個 vCPU 2GB 記憶體。它最適合可變工作負載、低流量網站、開發和測試工作負載以及 AI 代理。
 
-By default, we create a private subnet for each VM. If you have an existing private subnet, you can also choose to create your VM in that subnet. Each VM gets a private IPv4 and IPv6 address in your virtual network. The VM also gets a public IPv6 address for free and by default gets a public IPv4 address for a small fee.
+預設情況下，我們為每個 VM 建立一個私有子網路。如果您有現有的私有子網路，也可以選擇在該子網路中建立 VM。每個 VM 在您的虛擬網路中獲得一個私有 IPv4 和 IPv6 位址。VM 還免費獲得一個公共 IPv6 位址，預設情況下以小額費用獲得一個公共 IPv4 位址。
 
-Once you've completed all required fields, click Create to create your VM. In 1-2 minutes, your VM should be ready to connect.
+完成所有必填欄位後，點擊 Create 建立您的 VM。在 1-2 分鐘內，您的 VM 應該準備好連接。
 
 ![Create virtual machine](/quick-start/managed-services-2-screenshot.png)
 
-## Connect to your VM
+## 連接到您的 VM
 
-After your VM gets created, you can connect to it using SSH.
+建立 VM 後，您可以使用 SSH 連接到它。
 
-First, you must copy the public IPv4 (or IPv6) address from your console. Then in your terminal, simply type:
+首先，您必須從控制台複製公共 IPv4（或 IPv6）位址。然後在您的終端機中，只需輸入：
 
 ```bash
 ssh <user_name>@<ip_address>
 
-# If you didn't change default user name when creating the VM, you can run:
+# 如果您在建立 VM 時沒有更改預設使用者名稱，可以執行：
 
 ssh ubi@<ip_address>
 ```
 
 <Info>
-  **Summary:** You created a VM in this quick start guide. The VM comes with local block storage and has its own virtual private network. The data gets encrypted at rest and in transit; and you can collaborate with others using Attribute-Based Access Control (ABAC). If you used the default provider, this VM will cost you 3x lower than it would with AWS in similar cloud regions.
+  **摘要：** 在本快速入門指南中，您建立了一個 VM。VM 附帶本地區塊儲存，並有自己的虛擬私有網路。資料在靜態和傳輸中都經過加密；您可以使用基於屬性的存取控制（ABAC）與他人協作。如果您使用預設提供商，此 VM 的成本比在類似雲端區域中使用 AWS 低 3 倍。
 </Info>

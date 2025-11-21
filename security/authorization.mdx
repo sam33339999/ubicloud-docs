@@ -1,96 +1,96 @@
 ---
-title: 'Authorization'
-description: "Ubicloud's authorization system is designed to be easy to use for simple cases, while still giving you full control over what actions your users can perform in the system."
+title: '授權'
+description: "Ubicloud 的授權系統旨在讓簡單的情況易於使用，同時仍然讓您完全控制使用者可以在系統中執行的操作。"
 ---
 
-## Transparent By Default
+## 預設透明
 
-Every project in Ubicloud uses Ubicloud's access control system.  Even if you are the only account with access to the project, all actions you take in the system are checked by the access control system to see if they are allowed.  This is transparent by default, because the account that creates the project is made an admin of the project, and project admins are allowed to take any action on any object in the project.
+Ubicloud 中的每個專案都使用 Ubicloud 的存取控制系統。即使您是唯一有權存取該專案的帳戶，您在系統中執行的所有操作都會由存取控制系統檢查是否允許。這在預設情況下是透明的，因為建立專案的帳戶會成為專案的管理員，而專案管理員可以對專案中的任何物件執行任何操作。
 
-## User Management
+## 使用者管理
 
-When you create a project, you are the sole user and admin of the project.  From the users page, you can invite new and existing Ubicloud users to the project:
+建立專案時，您是專案的唯一使用者和管理員。從使用者頁面，您可以邀請新的和現有的 Ubicloud 使用者加入專案：
 
 ![Users](/security/users-1-screenshot.png)
 
-By default, users you invite to the project are invited as members of the project.  Members have more limited access rights than admins.  By default, members can take all actions on virtual machines, PostgreSQL databases, private subnets, firewalls, and load balancers.  They can also setup GitHub Runners in the project, as well as view AI inference endpoints.
+預設情況下，您邀請到專案的使用者會作為專案的成員受邀。成員的存取權限比管理員更有限。預設情況下，成員可以對虛擬機器、PostgreSQL 資料庫、私有子網路、防火牆和負載平衡器執行所有操作。他們還可以在專案中設定 GitHub Runner，以及檢視 AI 推論端點。
 
-You can change access for users from during the invitation process, or at any point after inviting the user.  On the user management page, you can choose from either Admin, Member, or No Access for users:
+您可以在邀請過程中或邀請使用者後的任何時間更改使用者的存取權限。在使用者管理頁面上，您可以為使用者選擇 Admin、Member 或 No Access：
 
 ![Users](/security/users-2-screenshot.png)
 
-The per-user Admin/Member/No Access setting is sufficient for many projects.  However, some projects need more control over access, and those can use the Access Control system for full control over access.
+對於許多專案來說，按使用者的 Admin/Member/No Access 設定就足夠了。但是，某些專案需要對存取進行更多控制，這些專案可以使用存取控制系統來完全控制存取。
 
-## Access Control
+## 存取控制
 
-The Access Control tab on the User Management page gives you full control to manage access to the system:
+使用者管理頁面上的存取控制標籤讓您完全控制對系統的存取管理：
 
 ![Users](/security/access-control-1-screenshot.png)
 
-In order to use the access system properly, you need to understand how it works.  All access control in Ubicloud boils down to the question of whether the subject has access to perform a particular action, on a particular object.  Ubicloud stores such information in access control entries.  Each access control entry for the project has a subject, action, and object.
+為了正確使用存取系統，您需要了解它的運作方式。Ubicloud 中的所有存取控制歸結為主體是否有權對特定物件執行特定操作的問題。Ubicloud 將此類資訊儲存在存取控制條目中。專案的每個存取控制條目都有一個主體、操作和物件。
 
-Subjects are generally users, roles, or groups.  Actions are either specific actions (such as Vm:view to view virtual machines), groups of actions, or all actions.  Objects are either specific objects (such as a specific virtual machine), groups of objects, or all objects.
+主體通常是使用者、角色或群組。操作可以是特定操作（例如 Vm:view 以檢視虛擬機器）、操作群組或所有操作。物件可以是特定物件（例如特定虛擬機器）、物件群組或所有物件。
 
-To group multiple subjects, actions, or objects, you use tags.  Ubicloud has subject tags for grouping multiple subjects, action tags for grouping multiple actions, and object tags for grouping multiple objects.
+要將多個主體、操作或物件分組，您可以使用標籤。Ubicloud 有用於分組多個主體的主體標籤、用於分組多個操作的操作標籤以及用於分組多個物件的物件標籤。
 
-By default, projects in Ubicloud have 2 access control entries:
+預設情況下，Ubicloud 中的專案有 2 個存取控制條目：
 
-* Members of the Admin subject tag (i.e. project admins) can perform all actions on all objects (this access control entry is not modifiable, but you can modify which users are in the Admin subject tag)
-* Members of the Member subject tag (the default for invited users) can perform all actions in the Member action tag, on all objects.
+* Admin 主體標籤的成員（即專案管理員）可以對所有物件執行所有操作（此存取控制條目不可修改，但您可以修改 Admin 主體標籤中的使用者）
+* Member 主體標籤的成員（受邀使用者的預設值）可以對所有物件執行 Member 操作標籤中的所有操作。
 
-The recommended way to manage access control in Ubicloud is to create appropriate subject tags, action tags, and object tags, and then using those tags, add the minimum number of access control entries for the access you want to enforce.
+在 Ubicloud 中管理存取控制的建議方法是建立適當的主體標籤、操作標籤和物件標籤，然後使用這些標籤，新增最少數量的存取控制條目以實施您想要的存取。
 
-### Example: Different Types of Administrators
+### 範例：不同類型的管理員
 
-Let's say you have three groups:
+假設您有三個群組：
 
-* System Administrators
-* Network Administrators
-* Database Administrators
+* 系統管理員
+* 網路管理員
+* 資料庫管理員
 
-And you want to enforce the following access:
+您想要實施以下存取：
 
-* System administrators only have access to virtual machines.
-* Network administrators only have access to private subnets, firewalls, and load balancers.
-* Database administrators only have access to PostgreSQL databases.
+* 系統管理員僅有權存取虛擬機器。
+* 網路管理員僅有權存取私有子網路、防火牆和負載平衡器。
+* 資料庫管理員僅有權存取 PostgreSQL 資料庫。
 
-We need to start by defining subject tags for these three groups.  You can think of subject tags as groups or roles.  On the Access Control page, click the "(Tags)" link next to Subject, to go to the Subject Tags page:
+我們需要首先為這三個群組定義主體標籤。您可以將主體標籤視為群組或角色。在存取控制頁面上，點擊 Subject 旁邊的「(Tags)」連結，以前往主體標籤頁面：
 
 ![Users](/security/subject-tag-1-screenshot.png)
 
-On this page, you can create the subject tags for each group by setting the tag name, and then clicking the Create button. Note that tag names cannot contain spaces, so you are recommended to use dashes instead of spaces:
+在此頁面上，您可以透過設定標籤名稱然後點擊 Create 按鈕來為每個群組建立主體標籤。請注意，標籤名稱不能包含空格，因此建議使用破折號代替空格：
 
 ![Users](/security/subject-tag-2-screenshot.png)
 
-After creating the three subject tags, you can click on the "Manage" button for the subject tag to go to the page to add or remove members of that tag:
+建立三個主體標籤後，您可以點擊主體標籤的「Manage」按鈕，以前往新增或移除該標籤成員的頁面：
 
 ![Users](/security/subject-tag-3-screenshot.png)
 
-Subject tags created by users have no members by default.  After creating the subject tag, you should add the appropriate members to it.  As you can see on the page, in addition to adding accounts to subject tags, you can add other subject tags to a subject tag. For example, if you make the Web-Server-Admins tag a member of the System-Admins tag, then all members of the Web-Server-Admins tag are considered members of the System-Admins tag.  This works recursively, up to a configuable limit (32 levels by default).
+使用者建立的主體標籤預設沒有成員。建立主體標籤後，您應該向其新增適當的成員。如您在頁面上看到的，除了將帳戶新增到主體標籤之外，您還可以將其他主體標籤新增到主體標籤。例如，如果您將 Web-Server-Admins 標籤設為 System-Admins 標籤的成員，那麼 Web-Server-Admins 標籤的所有成員都被視為 System-Admins 標籤的成員。這遞迴運作，最多達到可配置的限制（預設為 32 層）。
 
-In the "Add Members" table, you can check the box for any of the accounts or tags, and then click the "Add Members" button to add members:
+在「Add Members」表格中，您可以勾選任何帳戶或標籤的方塊，然後點擊「Add Members」按鈕新增成員：
 
 ![Users](/security/subject-tag-4-screenshot.png)
 
-That handles the subject tags.  Action tags are handled similarly, but to make things easier to users, Ubicloud includes some default action tags (called global action tags) that are available in every project.  There are global action tags for all actions you can take on a virtual machine (Vm:all), as well as for all actions you can take on a PostgreSQL database (Postgres:all).  There are also global action tags for all actions you can take on private subjects (PrivateSubnet:all), firewalls (Firewall:all), and load balancers (LoadBalancer:all), but the network admins need a single tag that includes those three global tags.
+這處理了主體標籤。操作標籤的處理方式類似，但為了讓使用者更容易，Ubicloud 包含一些預設操作標籤（稱為全域操作標籤），這些標籤在每個專案中都可用。有用於您可以對虛擬機器執行的所有操作的全域操作標籤（Vm:all），以及用於您可以對 PostgreSQL 資料庫執行的所有操作的全域操作標籤（Postgres:all）。還有用於您可以對私有主體執行的所有操作的全域操作標籤（PrivateSubnet:all）、防火牆（Firewall:all）和負載平衡器（LoadBalancer:all），但網路管理員需要一個包含這三個全域標籤的單一標籤。
 
-Back on the Access Control page, lick on the "(Tags)" link next to Action, to go to the Action Tags page.  Then add a Networking action tag:
+回到存取控制頁面，點擊 Action 旁邊的「(Tags)」連結，以前往操作標籤頁面。然後新增一個 Networking 操作標籤：
 
 ![Users](/security/action-tag-1-screenshot.png)
 
-Click on the Manage button.  Then check the boxes for the PrivateSubnet:all, Firewall:all, and LoadBalancer:all global action tags:
+點擊 Manage 按鈕。然後勾選 PrivateSubnet:all、Firewall:all 和 LoadBalancer:all 全域操作標籤的方塊：
 
 ![Users](/security/action-tag-2-screenshot.png)
 
-Then click on the Add Members button on the button to add them to the tag:
+然後點擊按鈕上的 Add Members 按鈕將它們新增到標籤：
 
 ![Users](/security/action-tag-3-screenshot.png)
 
-Now that the subject and action tags have been setup, we can create the necessary access control entries. Back on the Access Control page, you can click the New Access Control Entry button three times to create three new, unsaved entries.  On the access control form, changes are not made until you click the Save All button on the bottom right.
+現在主體和操作標籤已經設定，我們可以建立必要的存取控制條目。回到存取控制頁面，您可以點擊 New Access Control Entry 按鈕三次以建立三個新的未儲存條目。在存取控制表單上，直到您點擊右下角的 Save All 按鈕才會進行更改。
 
 ![Users](/security/access-control-2-screenshot.png)
 
-You can then populate the access control entries:
+然後您可以填充存取控制條目：
 
 * Subject: System-Admins, Action: Vm:all, Object: All Objects
 * Subject: Network-Admins, Action: Networking, Object: All Objects
@@ -98,21 +98,21 @@ You can then populate the access control entries:
 
 ![Users](/security/access-control-3-screenshot.png)
 
-Make sure to click the Save All button after populating the entries, to make sure they are saved.
+填充條目後，請確保點擊 Save All 按鈕，以確保它們已儲存。
 
-### Object Tags
+### 物件標籤
 
-The above example did not discuss the use of object tags, but they work similarly to subject and action tags, and allow you to grant users actions to specific objects (or more likely, groups of objects).  For example, if you have both web servers and media encoding servers, and they are managed by different groups, you can create Web-Servers and Media-Encoding-Servers object tags, and create Web-Server-Admins and Media-Encoding-Server-Admins subject tags, and then create two access control entries:
+上面的範例沒有討論物件標籤的使用，但它們的運作方式類似於主體和操作標籤，並允許您授予使用者對特定物件（或更可能的是物件群組）的操作。例如，如果您同時擁有 Web 伺服器和媒體編碼伺服器，並且它們由不同的群組管理，您可以建立 Web-Servers 和 Media-Encoding-Servers 物件標籤，並建立 Web-Server-Admins 和 Media-Encoding-Server-Admins 主體標籤，然後建立兩個存取控制條目：
 
 * Subject: Web-Server-Admins, Action: All Actions, Object: Web-Servers
 * Subject: Media-Encoding-Server-Admins, Action: All Actions, Object: Media-Encoding-Servers
 
-### Access Control for Your Access Control
+### 存取控制的存取控制
 
-Ubicloud's access control system uses the access control system to ensure that only allowed access control changes are permitted.  Project admins have full control over the access control system, but they can create access control entries granting other users more limited access.  
+Ubicloud 的存取控制系統使用存取控制系統來確保僅允許允許的存取控制更改。專案管理員對存取控制系統擁有完全控制權，但他們可以建立存取控制條目，授予其他使用者更有限的存取權限。
 
-For example, if only members of the Human-Resources subject tag should be adding or removing users from the Member subject tag, you could add an action tag named Tag-Membership, that contains the SubjectTag:add and SubjectTag:remove actions, and an access control entry:
+例如，如果只有 Human-Resources 主體標籤的成員應該從 Member 主體標籤新增或移除使用者，您可以新增一個名為 Tag-Membership 的操作標籤，其中包含 SubjectTag:add 和 SubjectTag:remove 操作，以及一個存取控制條目：
 
 * Subject: Human-Resources, Action: Tag-Membership, Object: Members (Subject Tag)
 
-As you can see, a subject tag can be a member of an object tag, granting access to actions on that subject tag.  An action tag can also be a member of an object tag, granting access to actions on that action tag.  An object tag can be a member of an object tag, but this could potentially be ambiguous.  If an object tag named Servers includes an object tag named Web-Servers, does that mean that members of Web-Servers are members of Servers, or does it means that actions on the Web-Servers tag are granted to members of the Servers tag?  Ubicloud handles this by separating the inclusion, so you can choose when making an object tag a member of another object tag whether you want inclusion or access control (or both, as there are separate checkboxes for the two separate kinds of access).
+如您所見，主體標籤可以是物件標籤的成員，授予對該主體標籤的操作的存取權限。操作標籤也可以是物件標籤的成員，授予對該操作標籤的操作的存取權限。物件標籤可以是物件標籤的成員，但這可能會有歧義。如果名為 Servers 的物件標籤包含名為 Web-Servers 的物件標籤，這是否意味著 Web-Servers 的成員是 Servers 的成員，還是意味著對 Web-Servers 標籤的操作被授予 Servers 標籤的成員？Ubicloud 透過分離包含來處理這一點，因此您可以在將物件標籤設為另一個物件標籤的成員時選擇是要包含還是存取控制（或兩者都要，因為兩種不同的存取有單獨的複選框）。

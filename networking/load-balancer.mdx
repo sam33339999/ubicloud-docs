@@ -1,84 +1,69 @@
 ---
-title: 'Load Balancer'
+title: '負載平衡器'
 ---
 
-The Ubicloud Load Balancer distributes traffic across multiple virtual machines
-(VMs) and ensures high availability for your applications. The load balancer
-operates at Layer 4 of the Open Systems Interconnection (OSI) model. 
+Ubicloud 負載平衡器在多個虛擬機器（VM）之間分配流量，並確保您的應用程式的高可用性。負載平衡器在開放系統互連（OSI）模型的第 4 層運作。
 
-Ubicloud Load Balancers offer a DNS name that's the single point of contact for
-clients. This DNS name maps to the public IPv4 and IPv6 addresses of the VMs
-attached to the load balancer. Incoming traffic is distributed across VMs based on
-load balancing algorithms and health probes.
+Ubicloud 負載平衡器提供一個 DNS 名稱，這是客戶端的單一聯絡點。此 DNS 名稱對應到附加到負載平衡器的 VM 的公共 IPv4 和 IPv6 位址。傳入流量根據負載平衡演算法和健康探測在 VM 之間分配。
 
-When traffic reaches the load balancer's network namespace, it directs traffic
-to the appropriate VM by evaluating the load balancing algorithm, VM health
-status, and connection state. This redirection uses IPSec Tunnels in tunnel mode,
-ensuring that all inter-VM traffic is fully encrypted.
+當流量到達負載平衡器的網路命名空間時，它透過評估負載平衡演算法、VM 健康狀態和連線狀態，將流量導向適當的 VM。此重新導向使用隧道模式的 IPSec 隧道，確保所有 VM 間流量都完全加密。
 
-The following diagram shows the overall structure of the Ubicloud Load
-Balancers;
+以下圖表顯示 Ubicloud 負載平衡器的整體結構：
 
 ![Load Balancer](/networking/load-balancer-1.png)
 
-If a VM becomes unhealthy, Ubicloud Load Balancer stops sending traffic to the
-VM until it becomes healthy again. These health probes and load balancer updates
-are managed by external and fault tolerant processes. This way, clients can
-continue to connect to their VMs even if one or multiple of their VMs are
-unavailable. If you remove a VM from the load balancer, Ubicloud updates the DNS
-entries and keeps the load balancer node in place until the TTL expires. This
-ensures a graceful removal.
+如果 VM 變得不健康，Ubicloud 負載平衡器會停止向該 VM 發送流量，直到它再次變得健康。這些健康探測和負載平衡器更新由外部且容錯的程序管理。這樣，即使一個或多個 VM 不可用，客戶端也可以繼續連線到他們的 VM。如果您從負載平衡器中移除 VM，Ubicloud 會更新 DNS 項目並保留負載平衡器節點，直到 TTL 過期。這確保了平滑的移除。
 
-## Key Features
+## 主要功能
 
-- **DNS Integration:** Provides a stable hostname and seamless connectivity even when underlying IP addresses change.
-- **High Availability:** Increases availability by distributing traffic across Ubicloud VMs.
-- **Health Probes:** Monitors load-balanced VMs and updates the load balancer to route traffic only to healthy instances.
-- **IPv4 / IPv6:** Supports diverse network configurations, including load balancing of IPv6.
-- **Security:** Ubicloud Load Balancers live and operate inside your Ubicloud Private Subnet. Therefore, the traffic that is managed by the load balancer is fully encrypted and secure.
-- **Multiple Algorithms:** Supports round-robin and hash based load balancing.
-- **SSL Certificates:** We provision ZeroSSL certificates for the load balancer hostname that you can directly use for your HTTPS enabled web apps.
+- **DNS 整合：** 提供穩定的主機名稱和無縫連線，即使底層 IP 位址發生變化。
+- **高可用性：** 透過在 Ubicloud VM 之間分配流量來提高可用性。
+- **健康探測：** 監控負載平衡的 VM，並更新負載平衡器以僅將流量路由到健康的實例。
+- **IPv4 / IPv6：** 支援多樣化的網路配置，包括 IPv6 的負載平衡。
+- **安全性：** Ubicloud 負載平衡器在您的 Ubicloud 私有子網路內運作。因此，由負載平衡器管理的流量完全加密且安全。
+- **多種演算法：** 支援輪詢和基於雜湊的負載平衡。
+- **SSL 憑證：** 我們為負載平衡器主機名稱提供 ZeroSSL 憑證，您可以直接用於啟用 HTTPS 的 Web 應用程式。
 
-## Getting Started
+## 入門
 
-### Creating a Load Balancer
+### 建立負載平衡器
 
-**Navigate to Load Balancers:** On the dashboard, select the "Networking" option from the left menu. And then choose the “Load Balancers” from the upper tab
+**導航至負載平衡器：** 在儀表板上，從左側選單中選擇「Networking」選項。然後從上方標籤選擇「Load Balancers」
 
-**Create a New Load Balancer:** Click on the "+ New Load Balancer" button. You will be prompted to enter the following fields. After filling the details, click “Create”.
+**建立新負載平衡器：** 點擊「+ New Load Balancer」按鈕。系統會提示您輸入以下欄位。填寫詳細資訊後，點擊「Create」。
 
 
-- **Name:** The name of the load balancer, which will also be used in the hostname.
-- **Private Subnet:** Select the private subnet that the load balancer will operate in. Note that VMs from different private subnets cannot be mixed within a single load balancer.
-- **Load Balancing Algorithm:** Choose between round_robin and hash_based algorithms. For hash-based load balancing, the following fields are used:
-    - Source IP address
-    - Source Port number
-    - Destination IP address
-    - Destination Port number
-- **Load Balancer Port:** Configure the port (e.g., Port 80) that the load balancer will accept connections from.
-- **Application Port:** The port that the backend VM serves connections from.
-- **Health Check Endpoint:** The HTTP endpoint that is used for health checks, such as /up. Make sure your application sends a response code 200 to this URL.
+- **Name：** 負載平衡器的名稱，也將用於主機名稱。
+- **Private Subnet：** 選擇負載平衡器將在其中運作的私有子網路。請注意，來自不同私有子網路的 VM 不能混合在單個負載平衡器內。
+- **Load Balancing Algorithm：** 在 round_robin 和 hash_based 演算法之間選擇。對於基於雜湊的負載平衡，使用以下欄位：
+    - 來源 IP 位址
+    - 來源連接埠號碼
+    - 目的地 IP 位址
+    - 目的地連接埠號碼
+- **Load Balancer Port：** 配置負載平衡器將接受連線的連接埠（例如，連接埠 80）。
+- **Application Port：** 後端 VM 提供連線的連接埠。
+- **Health Check Endpoint：** 用於健康檢查的 HTTP 端點，例如 /up。確保您的應用程式向此 URL 發送回應代碼 200。
 
-### Attaching a VM to a Load Balancer
+### 將 VM 附加到負載平衡器
 
-**Access Load Balancer Details:** From the dashboard, select "Networking" and choose the “Load Balancers” tab.
+**存取負載平衡器詳細資訊：** 從儀表板中，選擇「Networking」並選擇「Load Balancers」標籤。
 
-The overview page of your Private Subnet provides a comprehensive view of your subnet's configuration and resources. Here, you'll find:
+您的私有子網路的概覽頁面提供子網路配置和資源的全面檢視。在這裡，您會找到：
 
-**Attach a VM to the Load Balancer:** At the bottom of the detailed Load Balancer page, you will see the “Attached VMs” section. You will click to the VM picker and choose the VM and then click the “Attach” button at the right hand side.
+**將 VM 附加到負載平衡器：** 在詳細的負載平衡器頁面底部，您會看到「Attached VMs」部分。您將點擊 VM 選擇器並選擇 VM，然後點擊右側的「Attach」按鈕。
 
-### Detaching a VM from a Load Balancer
+### 從負載平衡器分離 VM
 
-After the VM is attached, you can detach it back from the same page, at the “Attached VMs” section, you will need to click to the “Detach” button on the right hand side of the VM that you want to be detached.
+附加 VM 後，您可以從同一頁面將其分離，在「Attached VMs」部分，您需要點擊您想要分離的 VM 右側的「Detach」按鈕。
 
-### SSL Certificates
+### SSL 憑證
 
-Ubicloud load balancers do not support SSL termination. However, we automatically generate public SSL certificates for the load balancer hostname. Attached VMs can easily download the `cert` and `key` files using the following commands:
+Ubicloud 負載平衡器不支援 SSL 終止。但是，我們會自動為負載平衡器主機名稱生成公共 SSL 憑證。附加的 VM 可以使用以下命令輕鬆下載 `cert` 和 `key` 檔案：
 
 ```
 sudo curl -f -L3 [FD00:0B1C:100D:5afe:CE::]/load-balancer/cert.pem
 sudo curl -f -L3 [FD00:0B1C:100D:5afe:CE::]/load-balancer/key.pem
 ```
-Once you have these files stored in the VM, you can use them to serve your HTTPS enabled web applications.
+一旦您將這些檔案儲存在 VM 中，您就可以使用它們來提供啟用 HTTPS 的 Web 應用程式。
 
-Ubicloud automatically renews certificates every 2 to 3 months and make the new ones available in the same endpoint. Therefore, it is suggested to create a script that downloads the new certificates and stores it in the VM as a systemctl service.
+Ubicloud 每 2 到 3 個月自動更新憑證，並在同一端點提供新憑證。因此，建議建立一個腳本，下載新憑證並將其儲存在 VM 中作為 systemctl 服務。

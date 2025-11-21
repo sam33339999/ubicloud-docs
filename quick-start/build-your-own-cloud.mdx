@@ -1,54 +1,53 @@
 ---
-title: 'Build Your Own Cloud'
+title: '建構您自己的雲端'
 ---
 
-In this guide, you're going to build your own cloud on a bare metal provider. You're going to set up Ubicloud's control plane, lease bare metal instance(s) for the data plane, and cloudify those bare metal instances. Once cloudified, you can use elastic compute, virtual networking, and (local) block storage services.
+在本指南中，您將在裸機提供商上建構自己的雲端。您將設定 Ubicloud 的控制平面，為資料平面租用裸機實例，並將這些裸機實例雲端化。一旦雲端化，您就可以使用彈性運算、虛擬網路和（本地）區塊儲存服務。
 
-## Create your control plane
+## 建立您的控制平面
 
-Ubicloud follows an established architectural pattern in building public cloud services. A control plane manages a data plane, where the data plane leverages open-source software.
+Ubicloud 遵循建構公共雲端服務的既定架構模式。控制平面管理資料平面，其中資料平面利用開源軟體。
 
-First, clone the Ubicloud project and initialize the control plane on your local environment. Then, connect to the cloud console.
+首先，複製 Ubicloud 專案並在您的本地環境中初始化控制平面。然後，連接到雲端控制台。
 
 ```bash
 git clone git@github.com:ubicloud/ubicloud.git
 
-# Generate secrets for demo
+# 為示範生成秘密
 ./demo/generate_env
 
-# Run containers: db-migrator, app (web & respirate), postgresql
+# 執行容器：db-migrator、app（web 和 respirate）、postgresql
 docker-compose -f demo/docker-compose.yml up
 
-# Visit localhost:3000
+# 造訪 localhost:3000
 ```
 
-Once you've initialized the control plane, create a new user and sign into the cloud console.
+初始化控制平面後，建立新使用者並登入雲端控制台。
 
-## Lease bare metal instance(s) for data plane
+## 為資料平面租用裸機實例
 
-You'll now need to lease instance(s) for the data plane. The easiest way to do this is to lease an instance from a bare metal provider. Hetzner has server auctions available, where you pay monthly for bare metal: [https://www.hetzner.com/sb](https://www.hetzner.com/sb)
+您現在需要為資料平面租用實例。最簡單的方法是從裸機提供商租用實例。Hetzner 提供伺服器競標，您按月支付裸機費用：[https://www.hetzner.com/sb](https://www.hetzner.com/sb)
 
-Once you lease instance(s), update the `.env` file with the following environment
-variables:
+租用實例後，使用以下環境變數更新 `.env` 檔案：
 - `HETZNER_USER`
 - `HETZNER_PASSWORD`
 - `HETZNER_SSH_PUBLIC_KEY`
 - `HETZNER_SSH_PRIVATE_KEY`
 
-## Cloudify your instance(s)
+## 雲端化您的實例
 
-Run the following script for each instance you'd like to cloudify. Currently, the script cloudifies bare metal instances leased from Hetzner only. After you cloudify your instance(s), you can provision and manage resources on these machines.
+為您想要雲端化的每個實例執行以下腳本。目前，該腳本僅雲端化從 Hetzner 租用的裸機實例。雲端化實例後，您可以在這些機器上佈建和管理資源。
 
 ```bash
 docker exec -it ubicloud-app ./demo/cloudify_server
 ```
 
-## Create Virtual Machine (VM)
+## 建立虛擬機器（VM）
 
-Now, you can log into the console at localhost:3000 and create VMs. Ubicloud will create each VM in a virtual network and assign it private IPv4/IPv6 addresses. It will also assign a public IPv6 address to the VM.
+現在，您可以登入 localhost:3000 的控制台並建立 VM。Ubicloud 將在虛擬網路中建立每個 VM，並為其分配私有 IPv4/IPv6 位址。它還將為 VM 分配公共 IPv6 位址。
 
-If your ISP doesn't support IPv6, please use a VPN or tunnel broker such Mullvad or Hurricane Electric's [https://tunnelbroker.net](https://tunnelbroker.net). Alternatively, you could lease IPv4 addresses from your provider and add them to your control plane.
+如果您的 ISP 不支援 IPv6，請使用 VPN 或隧道代理，例如 Mullvad 或 Hurricane Electric 的 [https://tunnelbroker.net](https://tunnelbroker.net)。或者，您可以從提供商租用 IPv4 位址並將其新增到控制平面。
 
 <Info>
-    **Summary:** You built your own cloud on a bare metal provider in this quick start guide. You could then use standard cloud services that come with Ubicloud, such as compute, virtual networking, and local block storage.
+    **摘要：** 在本快速入門指南中，您在裸機提供商上建構了自己的雲端。然後，您可以使用 Ubicloud 隨附的標準雲端服務，例如運算、虛擬網路和本地區塊儲存。
 </Info>

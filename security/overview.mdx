@@ -1,44 +1,44 @@
 ---
-title: 'Overview'
-description: 'Ubicloud is committed to keeping customer data safe and secure. This is a hard problem and we take it seriously.'
+title: '概覽'
+description: 'Ubicloud 致力於保護客戶資料的安全。這是一個困難的問題，我們認真對待。'
 ---
 
-## Network / Infrastructure Security
+## 網路 / 基礎設施安全
 
-We use established best practices to provide cloud security. Those practices and their applications are also publicly available in our GitHub repository. In summary, we take the following steps.
+我們使用既定的最佳實踐來提供雲端安全。這些實踐及其應用也在我們的 GitHub 儲存庫中公開提供。總而言之，我們採取以下步驟。
 
-- For our managed service, we review and select hosting providers based on their physical and digital security practices.
-- **Elastic Compute:** We use Linux KVM for full virtualization. We further use the Cloud Hypervisor as our virtual machine monitor (VMM); and contain each VMM within Linux namespaces for isolation and security.
-- **Block Storage:** We use Storage Performance Development Toolkit (SPDK) to provide virtualized block storage to VMs. We encrypt the data encryption key itself, ensuring that a compromised host isn't enough to decrypt customer data. We also regularly rotate encryption keys.
-- **Virtual Networking:** We use IPsec tunneling to establish an encrypted and private network environment; and regularly rotate encryption keys. For security, each customer's VMs operate in their own networking namespace.
-- **Firewalls:** By default, we block incoming traffic to all virtual machines (VMs). The exception to this is our managed PostgreSQL database, which allows incoming traffic to the PostgreSQL port (5432). We allow connections initiated by the VM and any return traffic.
+- 對於我們的託管服務，我們根據託管提供商的實體和數位安全實踐來審查和選擇他們。
+- **彈性運算：** 我們使用 Linux KVM 進行完整虛擬化。我們進一步使用 Cloud Hypervisor 作為我們的虛擬機器監視器（VMM）；並將每個 VMM 包含在 Linux 命名空間中以進行隔離和安全。
+- **區塊儲存：** 我們使用儲存效能開發工具包（SPDK）為 VM 提供虛擬化區塊儲存。我們加密資料加密金鑰本身，確保受損的主機不足以解密客戶資料。我們還定期輪換加密金鑰。
+- **虛擬網路：** 我們使用 IPsec 隧道建立加密和私有的網路環境；並定期輪換加密金鑰。為了安全起見，每個客戶的 VM 都在自己的網路命名空間中運作。
+- **防火牆：** 預設情況下，我們封鎖所有虛擬機器（VM）的傳入流量。例外情況是我們的託管 PostgreSQL 資料庫，它允許傳入流量到 PostgreSQL 連接埠（5432）。我們允許 VM 啟動的連線和任何返回流量。
 
-## Software Security
+## 軟體安全
 
-Ubicloud cloud services are available under the AGPL v3 License. We follow an open development model and our source code is available for review in GitHub: [https://github.com/ubicloud/ubicloud](https://github.com/ubicloud/ubicloud)
+Ubicloud 雲端服務根據 AGPL v3 授權提供。我們遵循開放開發模式，我們的原始碼可在 GitHub 上供審查：[https://github.com/ubicloud/ubicloud](https://github.com/ubicloud/ubicloud)
 
-Additionally, we follow standard security best prices to receive vulnerability alerts. These include:
-- Code scanning alters through industry-leading semantic code analysis engine CodeQL
-- Security issue alerts through language specific static code analysis engine Ruby Brakeman
-- Secret scanning alerts
-- Dependabot alerts to receive notifications when one of our dependencies has a vulnerability
+此外，我們遵循標準安全最佳實踐來接收漏洞警報。這些包括：
+- 透過業界領先的語意程式碼分析引擎 CodeQL 進行程式碼掃描警報
+- 透過語言特定的靜態程式碼分析引擎 Ruby Brakeman 進行安全問題警報
+- 秘密掃描警報
+- Dependabot 警報，以在我們的某個相依性有漏洞時接收通知
 
-## Security Issues
+## 安全問題
 
-### Reporting A Security Vulnerability
+### 報告安全漏洞
 
-If you have a security concern or believe you have found a vulnerability in our infrastructure, please send your report to [security@ubicloud.com](mailto:security@ubicloud.com). This will give us a structured way to track and respond to your concerns.
+如果您有安全問題或認為您在我們的基礎設施中發現了漏洞，請將您的報告發送至 [security@ubicloud.com](mailto:security@ubicloud.com)。這將為我們提供一種結構化的方式來追蹤和回應您的問題。
 
-When we receive your report, we will reply within 24 hours and issue you a ticket ID for future tracking.
+當我們收到您的報告時，我們將在 24 小時內回覆並向您發送一個工單 ID 以供將來追蹤。
 
-### Vulnerability Remediation
+### 漏洞修復
 
-We will investigate each reported vulnerability according to its severity. We will then patch or remediate each issue within a timeframe that's appropriate to the vulnerability's severity, given that a patch or remediation steps are available.
+我們將根據每個報告的漏洞的嚴重性進行調查。然後，我們將在適合漏洞嚴重性的時間範圍內修補或修復每個問題，前提是有可用的修補程式或修復步驟。
 
-**Severity: Timeframe**
-- Critical: 24 hours
-- High: 1 week
-- Medium: 1 month
-- Others: As necessary
+**嚴重性：時間範圍**
+- 嚴重：24 小時
+- 高：1 週
+- 中：1 個月
+- 其他：視需要而定
 
-If your vulnerability report includes a severity rating, we'll use that as our starting point. Based on our investigation, we may upgrade or downgrade the severity rating.
+如果您的漏洞報告包含嚴重性評級，我們將使用它作為我們的起點。根據我們的調查，我們可能會升級或降級嚴重性評級。

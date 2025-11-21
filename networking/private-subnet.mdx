@@ -1,134 +1,84 @@
 ---
-title: 'Private Subnet'
+title: '私有子網路'
 ---
 
-This guide is designed to assist you in creating and managing your private
-subnets within Ubicloud. Private subnets offer a secure environment for your
-virtual machines (VMs), ensuring private and secure internal communication
-without the need for public IP addresses.
+本指南旨在協助您在 Ubicloud 中建立和管理私有子網路。私有子網路為您的虛擬機器（VM）提供安全的環境，確保私密且安全的內部通訊，無需公共 IP 位址。
 
-Ubicloud imagines private subnets as security perimeters, where every resource
-within the subnet can communicate with each other using their private IPv4 or
-IPv6 addresses. Firewalls are attached to the whole private subnet and they are
-applied to the private networking as well to further enhance security.
-## Key Features
+Ubicloud 將私有子網路視為安全邊界，其中子網路內的每個資源都可以使用其私有 IPv4 或 IPv6 位址相互通訊。防火牆附加到整個私有子網路，並且它們也應用於私有網路，以進一步增強安全性。
 
-- **Fully Encrypted Communication:** Every resource within a subnet is connected
-  through IPSec tunnels, ensuring secure communication.
-- **Supports both IPv4 and IPv6:** IPv4 and IPv6 support ensures scalable
-  security solutions for Ubicloud's private subnets. We use /26 subnet size for
-  IPv4 and /80 for IPv6, allowing up to 63 resources in a single subnet.
-- **Automatic Key Rotation:** IPSec tunnels are automatically rekeyed every 24
-  hours, ensuring continuous secure communication without traffic disruption.
-- **Firewall Integration:** Attach and detach multiple firewalls to control
-  access to resources within your private subnet.
+## 主要功能
 
-## Getting Started
+- **完全加密通訊：** 子網路內的每個資源都透過 IPSec 隧道連接，確保安全通訊。
+- **同時支援 IPv4 和 IPv6：** IPv4 和 IPv6 支援確保 Ubicloud 私有子網路的可擴展安全解決方案。我們對 IPv4 使用 /26 子網路大小，對 IPv6 使用 /80，允許單個子網路中最多 63 個資源。
+- **自動金鑰輪換：** IPSec 隧道每 24 小時自動重新設定金鑰，確保持續安全通訊而不中斷流量。
+- **防火牆整合：** 附加和分離多個防火牆以控制對私有子網路內資源的存取。
 
-### Creating a Private Subnet
+## 入門
+
+### 建立私有子網路
 
 <Steps>
-  <Step title="Navigate to Private Subnet">
-    On the dashboard, select the "Networking" option from the left menu and then
-    choose the "Private Subnet" tab.
+  <Step title="導航至私有子網路">
+    在儀表板上，從左側選單中選擇「Networking」選項，然後選擇「Private Subnet」標籤。
   </Step>
-  <Step title="‍Create a Private Subnet">
-    Click on the "+ New Private Subnet" button. You will be directed to a new
-    page, where you can specify the subnet's name and its cloud region.
+  <Step title="建立私有子網路">
+    點擊「+ New Private Subnet」按鈕。您將被導向到一個新頁面，您可以在其中指定子網路的名稱及其雲端區域。
   </Step>
 </Steps>
 
-### Creating a New VM in a Private Subnet
+### 在私有子網路中建立新 VM
 
 <Steps>
-  <Step title="Provisioning">
-    When creating a new VM, choose an existing private subnet to provision the
-    resource in.
+  <Step title="佈建">
+    建立新 VM 時，選擇現有的私有子網路以在其中佈建資源。
   </Step>
-  <Step title="Connectivity">
-    Start connecting to other VMs within the same private subnet using their
-    private IPv4 or IPv6 addresses, visible on the Overview page.
+  <Step title="連線">
+    使用其私有 IPv4 或 IPv6 位址開始連線到同一私有子網路內的其他 VM，這些位址在概覽頁面上可見。
   </Step>
-  <Step title="IPSec Tunnels">
-    Upon successful VM creation, Ubicloud automatically establishes IPSec
-    tunnels to and from every other resource in the subnet.
+  <Step title="IPSec 隧道">
+    成功建立 VM 後，Ubicloud 會自動建立往返子網路中每個其他資源的 IPSec 隧道。
   </Step>
 </Steps>
 
-## Private Subnet Details
+## 私有子網路詳細資訊
 
-### Viewing Resources in a Private Subnet
+### 檢視私有子網路中的資源
 
 <Steps>
-  <Step title="Access the Private Subnet">
-    From the dashboard's left menu, select the "Networking" option and then
-    choose the "Private Subnet" tab.
+  <Step title="存取私有子網路">
+    從儀表板的左側選單中，選擇「Networking」選項，然後選擇「Private Subnet」標籤。
   </Step>
-  <Step title="‍Show Private Subnet Details">
-    Click to the name of the desired private subnet to view its details,
-    including name, region, private IP blocks, and attached VMs and firewalls.
+  <Step title="顯示私有子網路詳細資訊">
+    點擊所需私有子網路的名稱以檢視其詳細資訊，包括名稱、區域、私有 IP 區塊以及附加的 VM 和防火牆。
   </Step>
 </Steps>
 
-### Overview Page
+### 概覽頁面
 
-The overview page of your Private Subnet provides a comprehensive view of your
-subnet's configuration and resources. Here, you'll find:
+您的私有子網路的概覽頁面提供子網路配置和資源的全面檢視。在這裡，您會找到：
 
-- **Subnet Name and Region:** Easily identify your subnet and its Ubicloud
-  region.
-- **IP Blocks:** View the assigned private IPv4 and IPv6 blocks for your subnet.
-- **Attached Resources:** See a list of all VMs and firewalls currently attached
-  to the subnet.
+- **子網路名稱和區域：** 輕鬆識別您的子網路及其 Ubicloud 區域。
+- **IP 區塊：** 檢視為您的子網路分配的私有 IPv4 和 IPv6 區塊。
+- **附加資源：** 查看目前附加到子網路的所有 VM 和防火牆列表。
 
-## How Does Ubicloud Implement Private Networking?
+## Ubicloud 如何實作私有網路？
 
-Ubicloud leverages IPSec tunnels to ensure secure and private communication
-between virtual machines (VMs) within its private subnets. This section provides
-a detailed overview of how Ubicloud uses IPSec tunnels, focusing on their
-creation, management, and encryption processes.
+Ubicloud 利用 IPSec 隧道確保其私有子網路內虛擬機器（VM）之間的安全和私密通訊。本節提供 Ubicloud 如何使用 IPSec 隧道的詳細概述，重點介紹它們的建立、管理和加密程序。
 
-### Overview of IPSec Tunnels in Ubicloud
+### Ubicloud 中 IPSec 隧道的概述
 
-IPSec (Internet Protocol Security) is a suite of protocols designed to secure
-Internet Protocol (IP) communications by authenticating and encrypting each IP
-packet of a session. Ubicloud employs IPSec tunnels in tunnel mode, which
-encapsulates the entire IP packet within an Encapsulation Security Payload (ESP)
-packet. This encapsulation is crucial for maintaining the confidentiality and
-integrity of data as it moves between VMs within a private subnet. Essentially,
-all traffic is public traffic, if you are not operating in the same LAN. Any
-cloud VM lives in a public data center. Therefore, we need to find a way to
-address these VMs in a secure, encrypted way to call it private. Ubicloud has to
-do that because we do not have our own data centers, we do not have absolute
-control over the network.
+IPSec（Internet Protocol Security）是一組旨在透過認證和加密會話的每個 IP 封包來保護 Internet Protocol（IP）通訊的協定。Ubicloud 採用隧道模式的 IPSec 隧道，它將整個 IP 封包封裝在封裝安全有效負載（ESP）封包內。此封裝對於在資料在私有子網路內的 VM 之間移動時保持資料的機密性和完整性至關重要。基本上，如果您不在同一個 LAN 中運作，所有流量都是公共流量。任何雲端 VM 都存在於公共資料中心。因此，我們需要找到一種方法以安全、加密的方式定址這些 VM，以將其稱為私有。Ubicloud 必須這樣做，因為我們沒有自己的資料中心，我們對網路沒有絕對控制權。
 
-### Key Components of Ubicloud's IPSec Implementation
+### Ubicloud IPSec 實作的關鍵組件
 
-#### ESP Packet Creation and Encryption
+#### ESP 封包建立和加密
 
-In Ubicloud's environment, ESP packets are generated using the ip xfrm command,
-which establishes specific rules and policies for packet handling. These ESP
-packets encapsulate the original IP packet in its entirety. The encapsulation
-process involves encrypting the data, thereby ensuring that the packet's
-contents are secure from unauthorized access or eavesdropping. The whole
-encapsulation happens in the dedicated network namespace of the VM and it gets
-decrypted only when it arrives at the destination network namespace. So, the
-whole traffic is private, end to end.
+在 Ubicloud 的環境中，ESP 封包使用 ip xfrm 命令生成，該命令為封包處理建立特定規則和策略。這些 ESP 封包完整地封裝原始 IP 封包。封裝程序涉及加密資料，從而確保封包的內容免受未經授權的存取或竊聽。整個封裝發生在 VM 的專用網路命名空間中，並且僅在到達目的地網路命名空間時才會解密。因此，整個流量是私有的，端到端。
 
-#### Automatic Key Management
+#### 自動金鑰管理
 
-Security keys for the IPSec tunnels are automatically generated and refreshed
-daily. This practice of frequent key rotation significantly enhances the
-security posture by minimizing the risk of key compromise. We only generate the
-keys and we keep them in Ubicloud Control Plane until the rekeying process is
-completed. We clean up the old tunnels and any key material that is no longer
-in use.
+IPSec 隧道的安全金鑰會自動生成並每天刷新。這種頻繁的金鑰輪換做法透過最大限度地降低金鑰洩露的風險來顯著增強安全態勢。我們只生成金鑰，並將它們保存在 Ubicloud 控制平面中，直到重新設定金鑰程序完成。我們清理舊隧道和不再使用的任何金鑰材料。
 
-#### Use of Public IPv6 Addresses
+#### 使用公共 IPv6 位址
 
-Ubicloud uniquely uses internally allocated public IPv6 addresses to manage and
-route IPSec tunnels. This approach not only leverages the extensive address
-space provided by IPv6 but also enhances the security and efficiency of data
-transmission within the private subnet. Our VMs get a public IPv6 prefix, and
-we allocate the same size sister subnet for our own internal use. This way, we
-can address our VMs using the public IPv6 addresses.
+Ubicloud 獨特地使用內部分配的公共 IPv6 位址來管理和路由 IPSec 隧道。這種方法不僅利用 IPv6 提供的廣泛位址空間，還增強了私有子網路內資料傳輸的安全性和效率。我們的 VM 獲得公共 IPv6 前綴，我們為自己的內部使用分配相同大小的姊妹子網路。這樣，我們可以使用公共 IPv6 位址定址我們的 VM。

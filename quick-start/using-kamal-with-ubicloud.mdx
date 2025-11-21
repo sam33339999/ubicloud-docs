@@ -1,23 +1,23 @@
 ---
-title: 'Using Kamal with Ubicloud'
-description: 'Kamal is an open source tool to deploy web apps anywhere. It simplifies the process of deploying and managing your web app in production with Docker.'
+title: '在 Ubicloud 上使用 Kamal'
+description: 'Kamal 是一個開源工具，可在任何地方部署 Web 應用程式。它使用 Docker 簡化了在生產環境中部署和管理 Web 應用程式的過程。'
 ---
 
-Even with Kamal, you still need certain infrastructure primitives, including virtual machines and managed databases. Ubicloud offers these primitives on the cloud. We believe the combination of Kamal and Ubicloud provide a compelling open source web app deployment platform.
+即使使用 Kamal，您仍然需要某些基礎設施原件，包括虛擬機器和託管資料庫。Ubicloud 在雲端上提供這些原件。我們相信 Kamal 和 Ubicloud 的結合提供了一個令人信服的開源 Web 應用程式部署平台。
 
-In this guide, we'll show steps for configuring an example Rails 8 application in a way that allows you to use Kamal 2 to deploy it to Ubicloud.
+在本指南中，我們將展示配置範例 Rails 8 應用程式的步驟，以便您可以使用 Kamal 2 將其部署到 Ubicloud。
 
-### Step 1: Install Kamal
+### 步驟 1：安裝 Kamal
 
-First, we need to install Rails and Kamal. Assuming you have Ruby installation in your local machine, run:
+首先，我們需要安裝 Rails 和 Kamal。假設您的本地機器上已安裝 Ruby，執行：
 
 ```bash
 gem install -N rails kamal
 ```
 
-### Step 2: Create a Simple Rails App
+### 步驟 2：建立簡單的 Rails 應用程式
 
-Next, create a basic Rails app using PostgreSQL as the database and Tailwind CSS for the frontend, and generate a scaffold:
+接下來，使用 PostgreSQL 作為資料庫和 Tailwind CSS 作為前端建立一個基本的 Rails 應用程式，並生成一個腳手架：
 
 ```bash
 rails new blog -d postgresql -c tailwind
@@ -25,37 +25,37 @@ cd blog
 rails generate scaffold post title:string content:text
 ```
 
-Commit the generated application, so you can easily tell the changes you will be making from the defaults:
+提交生成的應用程式，以便您可以輕鬆地從預設值中分辨出您將進行的更改：
 
 ```bash
 git add .
 git commit -m "Initial commit: rails new and rails generate scaffold post"
 ```
 
-### Step 3: Configure Routes
+### 步驟 3：配置路由
 
-Set the root route to serve the `/posts` endpoint by updating `config/routes.rb`:
+透過更新 `config/routes.rb` 將根路由設定為提供 `/posts` 端點：
 
 ```ruby
 root "posts#index"
 ```
 
-### Step 4: Set Up Docker Registry
+### 步驟 4：設定 Docker Registry
 
-Now, we need to set up a dockerhub repository to store and fetch our images. For that, you need to create an account at [https://hub.docker.com](https://hub.docker.com).
-Once you have the account, please create a new repository named “blog” in the docker hub page and generate a new key at [https://app.docker.com/settings/personal-access-tokens](https://app.docker.com/settings/personal-access-tokens) and paste it to the .env file as shown below.
+現在，我們需要設定一個 dockerhub 儲存庫來儲存和獲取我們的映像。為此，您需要在 [https://hub.docker.com](https://hub.docker.com) 建立一個帳戶。
+擁有帳戶後，請在 docker hub 頁面中建立一個名為「blog」的新儲存庫，並在 [https://app.docker.com/settings/personal-access-tokens](https://app.docker.com/settings/personal-access-tokens) 生成一個新金鑰，並將其貼到 .env 檔案中，如下所示。
 
 ```bash
 KAMAL_REGISTRY_PASSWORD=DOCKER_REGISTRY_KEY
 ```
 
-Update `.kamal/secrets` to copy the key from the environment:
+更新 `.kamal/secrets` 以從環境複製金鑰：
 
 ```bash
 DATABASE_URL=$DATABASE_URL
 ```
 
-Configure the `config/deploy.yml` file to make it load from `.env`, and include your docker registry and the service names in place:
+配置 `config/deploy.yml` 檔案使其從 `.env` 載入，並包含您的 docker registry 和服務名稱：
 
 ```yaml
 <% require "dotenv"; Dotenv.load(".env") %>
@@ -68,40 +68,40 @@ registry:
   username: YOUR_DOCKER_REGISTRY_NAME
 ```
 
-### Step 5: Set Up Ubicloud Resources
+### 步驟 5：設定 Ubicloud 資源
 
-Create the following resources:
+建立以下資源：
 
-- **Virtual Machines (VMs):** Create a VM from console.ubicloud.com. When creating the VM, you need to pay attention to three things:
-    - For the location, pick Germany. Later, we're going to provision a managed Postgres in the same region.
-    - Make sure to include an IPv4 address, as Kamal 2 will have deployment issues in IPv6 only environments.
-    - Change the user from `ubi` to `root`. We use `root` because Kamal installs Docker and connects to it on the VMs. Using `root` avoids the need to manage users and groups.
+- **虛擬機器（VM）：** 從 console.ubicloud.com 建立一個 VM。建立 VM 時，您需要注意三件事：
+    - 對於位置，選擇德國。稍後，我們將在同一區域佈建託管 Postgres。
+    - 確保包含 IPv4 位址，因為 Kamal 2 在僅 IPv6 環境中會遇到部署問題。
+    - 將使用者從 `ubi` 更改為 `root`。我們使用 `root`，因為 Kamal 在 VM 上安裝 Docker 並連接到它。使用 `root` 避免了管理使用者和群組的需要。
 
-- **Managed PostgreSQL Database:** Set up a managed PostgreSQL database.
+- **託管 PostgreSQL 資料庫：** 設定託管 PostgreSQL 資料庫。
 ![Create postgreSQL database](/quick-start/using-kamal-with-ubicloud-3-screenshot.png)
 
-### Step 6: Gather Resource Information
+### 步驟 6：收集資源資訊
 
-After setting up the resources, collect the following information from the Ubicloud Console:
+設定資源後，從 Ubicloud 控制台收集以下資訊：
 
-- **PostgreSQL Connection String:** Shown by clicking on the database name on the PostgreSQL page
-- **Public IP of the VM:** Shown in the IP Address column on the Compute page
+- **PostgreSQL 連接字串：** 透過點擊 PostgreSQL 頁面上的資料庫名稱顯示
+- **VM 的公共 IP：** 顯示在 Compute 頁面的 IP Address 欄中
 
-### Step 7: Configure Kamal and Environment Variables
+### 步驟 7：配置 Kamal 和環境變數
 
-Next, copy the master key from `config/master.key` and paste it into the `.env` file:
+接下來，從 `config/master.key` 複製主金鑰並將其貼到 `.env` 檔案中：
 
 ```bash
 RAILS_MASTER_KEY=YOUR_MASTER_KEY
 ```
 
-Add the PostgreSQL connection string to the `.env` file:
+將 PostgreSQL 連接字串新增到 `.env` 檔案：
 
 ```bash
 DATABASE_URL="postgres://postgres:password@hostname/?channel_binding=require"
 ```
 
-Configure server IP address to deploy to in `config/deploy.yml`:
+在 `config/deploy.yml` 中配置要部署到的伺服器 IP 位址：
 
 ```yaml
 servers:
@@ -110,7 +110,7 @@ servers:
      - IP
 ```
 
-Rails 8's Kamal 2 configuration defaults to an HTTPS-only application, using certificates from Let's Encrypt, so you need to edit the `config/deploy.yml` file to set the hostname for the application:
+Rails 8 的 Kamal 2 配置預設為僅 HTTPS 應用程式，使用 Let's Encrypt 的憑證，因此您需要編輯 `config/deploy.yml` 檔案以設定應用程式的主機名稱：
 
 ```yaml
 proxy:
@@ -118,18 +118,18 @@ proxy:
   host: your-host.your-domain.com
 ```
 
-You will need to create or update your DNS records so that the hostname you are using resolves to the IP address of the VM you created.  How you do this depends on your DNS provider.
+您需要建立或更新 DNS 記錄，以便您使用的主機名稱解析為您建立的 VM 的 IP 位址。如何執行此操作取決於您的 DNS 提供商。
 
-Update `config/deploy.yml` to pass the environment variables:
+更新 `config/deploy.yml` 以傳遞環境變數：
 
 ```yaml
-env:  
+env:
  secret:
    - RAILS_MASTER_KEY
    - DATABASE_URL
 ```
 
-Modify `config/database.yml` to use the `DATABASE_URL` environment variable, which will already contain the user, password and the database name:
+修改 `config/database.yml` 以使用 `DATABASE_URL` 環境變數，該變數已包含使用者、密碼和資料庫名稱：
 
 ```yaml
 production:
@@ -137,30 +137,30 @@ production:
  url: <%= ENV["DATABASE_URL"] %>
 ```
 
-### Step 8: Deploy the Application
+### 步驟 8：部署應用程式
 
-Commit your changes:
+提交您的更改：
 
 ```bash
 git add .
 git commit -m "Changes to allow deploying to Ubicloud using Kamal"
 ```
 
-Run Kamal setup, which will setup Docker on the VM you created, and then deploy your application to it:
+執行 Kamal 設定，這將在您建立的 VM 上設定 Docker，然後將您的應用程式部署到它：
 
 ```bash
 kamal setup
 ```
 
-### Step 9: Enjoy Your HTTPS-Enabled Rails App
+### 步驟 9：享受您啟用 HTTPS 的 Rails 應用程式
 
-Visit the DNS name you configured and enjoy your newly deployed, secure Rails app!
+造訪您配置的 DNS 名稱並享受您新部署的安全 Rails 應用程式！
 
-By following these steps, you can seamlessly integrate Kamal with Ubicloud services to deploy your web applications efficiently and securely. If you have any questions or need further assistance, feel free to reach out to our support team.
+透過遵循這些步驟，您可以無縫地將 Kamal 與 Ubicloud 服務整合，以高效且安全地部署您的 Web 應用程式。如果您有任何問題或需要進一步協助，請隨時聯繫我們的支援團隊。
 
-### Step 10: Deploying Changes After Initial Setup
+### 步驟 10：初始設定後部署更改
 
-After making and committing changes in your application, you can deploy them using:
+在應用程式中進行並提交更改後，您可以使用以下命令部署它們：
 
 ```bash
 kamal deploy

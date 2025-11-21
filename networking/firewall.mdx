@@ -1,89 +1,58 @@
 ---
-title: 'Firewall'
+title: '防火牆'
 ---
 
-This guide provides detailed instructions on configuring and managing firewalls
-for your private subnets within Ubicloud. Ubicloud firewalls are designed to
-enhance the security of your virtual machines (VMs) by controlling inbound
-traffic based on predefined rules. These firewalls are stateful and apply
-exclusively to the entire private subnet, ensuring a robust security perimeter
-for your whole private subnet.
+本指南提供在 Ubicloud 中為您的私有子網路配置和管理防火牆的詳細說明。Ubicloud 防火牆旨在透過基於預定義規則控制入站流量來增強虛擬機器（VM）的安全性。這些防火牆是有狀態的，並且專門應用於整個私有子網路，為您的整個私有子網路確保強大的安全邊界。
 
-## Key Features
+## 主要功能
 
-- **Stateful Inspection:** Ubicloud firewalls remember the state of network
-  connections (TCP/UDP) and can make decisions based on the connection state,
-  which adds an extra layer of security. That said, if you add a rule that
-  blocks a certain IP address, the existing connections would continue to stay
-  alive until shutdown deliberately.
-- **Ingress Filtering:** Firewalls in Ubicloud only allow inbound traffic based
-  on explicitly defined rules. If no rules are specified, all inbound traffic is
-  blocked except for communication within the private subnet. We currently do
-  not support outbound rules.
-- **Simplified Management:** Attach or detach one or more firewalls to your
-  private subnet with ease, directly from the Ubicloud console.
+- **狀態檢查：** Ubicloud 防火牆會記住網路連線（TCP/UDP）的狀態，並可根據連線狀態做出決策，這增加了額外的安全層。也就是說，如果您新增一條封鎖特定 IP 位址的規則，現有的連線將繼續保持活動狀態，直到刻意關閉為止。
+- **入口過濾：** Ubicloud 中的防火牆僅允許基於明確定義的規則的入站流量。如果未指定規則，則除了私有子網路內的通訊外，所有入站流量都將被封鎖。我們目前不支援出站規則。
+- **簡化管理：** 直接從 Ubicloud 控制台輕鬆地將一個或多個防火牆附加或分離到您的私有子網路。
 
-## Getting Started with Firewalls
+## 防火牆入門
 
-### Creating a Firewall
+### 建立防火牆
 
 <Steps>
-  <Step title="Navigate to Firewalls">
-    On the dashboard, select the "Networking" option from the left menu. Then,
-    select the "Firewalls" tab.
+  <Step title="導航至防火牆">
+    在儀表板上，從左側選單中選擇「Networking」選項。然後選擇「Firewalls」標籤。
   </Step>
-  <Step title="Create a New Firewall">
-    Click on the "+ New Firewall" button. You will be prompted to enter details
-    such as the firewall's name, description and the subnet you wish to attach.
-    After filling the details, click “Create”.
+  <Step title="建立新防火牆">
+    點擊「+ New Firewall」按鈕。系統會提示您輸入詳細資訊，例如防火牆的名稱、描述和您希望附加的子網路。填寫詳細資訊後，點擊「Create」。
   </Step>
 </Steps>
 
-### Configuring Firewall Rules
+### 配置防火牆規則
 
-**Specify Ingress Rules:** Define which incoming traffic is allowed into your
-private subnet. You can specify rules based on IP addresses and port numbers.
-You can input a CIDR range and define the continuous port range to be allowed.
-After specifying CIDR and Port ranges, you simply hit “Create”. Some example CIDR
-and Port range usage can be like the following;
+**指定入口規則：** 定義允許哪些傳入流量進入您的私有子網路。您可以根據 IP 位址和連接埠號碼指定規則。您可以輸入 CIDR 範圍並定義要允許的連續連接埠範圍。指定 CIDR 和連接埠範圍後，只需點擊「Create」。一些範例 CIDR 和連接埠範圍使用方式如下：
 
-|                       Case                      |       CIDR      | Port Range |
+|                       情況                      |       CIDR      | 連接埠範圍 |
 |:-----------------------------------------------:|:---------------:|:----------:|
-| Allow all IP and port ranges                    | 0.0.0.0/0       |            |
-| Allow all IP and port ranges                    | 0.0.0.0/0       | 0..65536   |
-| Allow a specific IP and ports between 80 and 90 | 123.123.123.123 | 80..90     |
-| Allow a subnet for a specific port              | 1.1.1.0/24      | 22         |
+| 允許所有 IP 和連接埠範圍                         | 0.0.0.0/0       |            |
+| 允許所有 IP 和連接埠範圍                         | 0.0.0.0/0       | 0..65536   |
+| 允許特定 IP 和連接埠 80 至 90 之間              | 123.123.123.123 | 80..90     |
+| 允許子網路的特定連接埠                           | 1.1.1.0/24      | 22         |
 
-**Default Deny Rule:** Remember, if no rules are set, the firewall will deny all
-incoming traffic, including traffic within the private subnet.
+**預設拒絕規則：** 請記住，如果未設定規則，防火牆將拒絕所有傳入流量，包括私有子網路內的流量。
 
-### Attaching a Firewall to a Private Subnet
+### 將防火牆附加到私有子網路
 
 <Steps>
-  <Step title="Access Firewall Details">
-    From the dashboard, select "Networking", choose the "Firewall" tab. Select the
-    firewall you want to attach.
+  <Step title="存取防火牆詳細資訊">
+    從儀表板中，選擇「Networking」，選擇「Firewall」標籤。選擇您要附加的防火牆。
   </Step>
-  <Step title="Attach to Subnet">
-    Click on the "Select a Subnet" option, choose the private subnet and click
-    “Attach”. This action applies the firewall rules to all incoming traffic in
-    the subnet.
+  <Step title="附加到子網路">
+    點擊「Select a Subnet」選項，選擇私有子網路並點擊「Attach」。此操作將防火牆規則應用於子網路中的所有傳入流量。
   </Step>
 </Steps>
 
-### Best Practices
+### 最佳實踐
 
-**Regularly Update Firewall Rules:** As your network requirements change,
-regularly review and update your firewall rules to ensure they accurately
-reflect the desired traffic flow and security posture.
+**定期更新防火牆規則：** 隨著您的網路需求變化，定期檢查和更新您的防火牆規則，以確保它們準確反映所需的流量流和安全態勢。
 
-**‍Restrictive Rule Configuration:** Start with a restrictive approach by denying
-all traffic and then selectively allow specific traffic as needed. This
-minimizes potential exposure to unanticipated threats. By default, Ubicloud adds
-allow all traffic rule to minimize the initial configuration efforts.
+**限制性規則配置：** 從限制性方法開始，拒絕所有流量，然後根據需要選擇性地允許特定流量。這可以最大限度地減少潛在的意外威脅暴露。預設情況下，Ubicloud 會新增允許所有流量規則，以最大限度地減少初始配置工作。
 
-## How Does Ubicloud implement Firewalls?
+## Ubicloud 如何實作防火牆？
 
-Ubicloud firewalls are implemented using linux nftables. Please refer to our
-blog post [here](https://www.ubicloud.com/blog/ubicloud-firewalls-how-linux-nftables-enables-flexible-rules)
-for more details. 
+Ubicloud 防火牆使用 Linux nftables 實作。請參閱我們的部落格文章[這裡](https://www.ubicloud.com/blog/ubicloud-firewalls-how-linux-nftables-enables-flexible-rules)以獲取更多詳細資訊。

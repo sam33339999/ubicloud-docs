@@ -1,47 +1,47 @@
 ---
-title: "Command Line Interface"
+title: "命令列介面"
 sidebarTitle: "CLI"
-description: 'Ubicloud provides a command line interface named `ubi`, which allows you to interact with Ubicloud directly from the command line.'
+description: 'Ubicloud 提供一個名為 `ubi` 的命令列介面，允許您直接從命令列與 Ubicloud 互動。'
 ---
 
-This guide shows you how to download, setup, and use the `ubi` command line program.
+本指南向您展示如何下載、設定和使用 `ubi` 命令列程式。
 
-### Download
+### 下載
 
-You can download the latest release of `ubi` from [the ubicloud/cli releases page on GitHub](https://github.com/ubicloud/cli/releases). We offer downloads of `ubi` for the following operating systems and platforms:
+您可以從 [GitHub 上的 ubicloud/cli 發布頁面](https://github.com/ubicloud/cli/releases)下載最新版本的 `ubi`。我們為以下作業系統和平台提供 `ubi` 的下載：
 
-* Linux: amd64/x86_64/x64, 386/x86, arm64/aarch64
-* macOS/Darwin: arm64(Apple silicon), amd64(Intel)
-* Windows: amd64/x86_64/x64, arm64
+* Linux：amd64/x86_64/x64、386/x86、arm64/aarch64
+* macOS/Darwin：arm64（Apple silicon）、amd64（Intel）
+* Windows：amd64/x86_64/x64、arm64
 
-The Linux/macOS/Windows downloads are tar.gz or zip files, each containing a single-file executable named `ubi`, which can be run directly without installation.
+Linux/macOS/Windows 下載為 tar.gz 或 zip 檔案，每個檔案都包含一個名為 `ubi` 的單一檔案可執行檔，可以直接執行而無需安裝。
 
-If you are a MacOS user, you can also install with homebrew by running:
+如果您是 MacOS 使用者，也可以透過執行以下命令使用 homebrew 安裝：
 ```
 brew install ubicloud/cli/ubi
 ```
 
-As `ubi` is part of Ubicloud, it is open source, and [available for review](https://github.com/ubicloud/ubicloud/blob/main/cli/ubi.go).  It is a small program is written in [Go](https://go.dev), and if we do not already provide builds for your platform, you can build `ubi` yourself using the Source Code download on the GitHub release page.  You can also contact us at [support@ubicloud.com](mailto:support@ubicloud.com) and ask us to provide builds for your operating system and platform.
+由於 `ubi` 是 Ubicloud 的一部分，它是開源的，並且[可供審查](https://github.com/ubicloud/ubicloud/blob/main/cli/ubi.go)。它是一個用 [Go](https://go.dev) 編寫的小程式，如果我們尚未為您的平台提供構建，您可以使用 GitHub 發布頁面上的原始碼下載自行構建 `ubi`。您也可以透過 [support@ubicloud.com](mailto:support@ubicloud.com) 聯繫我們，要求我們為您的作業系統和平台提供構建。
 
-`ubi` does not automatically update itself.  It is a simple program that transmits your command to Ubicloud.  As Ubicloud adds support for additional command line capabilities, `ubi` can automatically take advantage of them.  However, there may potentially be cases where you need a newer version of `ubi` to take advantage of the additional command line capabilities.  In that case, please download the newest version of `ubi` using the link above.
+`ubi` 不會自動更新自己。它是一個簡單的程式，將您的命令傳輸到 Ubicloud。隨著 Ubicloud 新增對其他命令列功能的支援，`ubi` 可以自動利用它們。但是，在某些情況下，您可能需要更新版本的 `ubi` 才能利用其他命令列功能。在這種情況下，請使用上面的連結下載最新版本的 `ubi`。
 
-### Setup Personal Access Token
+### 設定個人存取權杖
 
-In order to work, `ubi` requires a personal access token be provided via the `UBI_TOKEN` environment variable.  If you have not already created a personal access token for your project, you can create one by going to the `Tokens` page for your project, and clicking the `Create Token` button:
+為了運作，`ubi` 需要透過 `UBI_TOKEN` 環境變數提供個人存取權杖。如果您尚未為專案建立個人存取權杖，可以前往專案的 `Tokens` 頁面，然後點擊 `Create Token` 按鈕來建立：
 
 ![Create token screenshot](/quick-start/cli-1-screenshot.png)
 
-That will create a personal access token.  Click on the clipboard icon under the token heading to copy the token to your clipboard:
+這將建立一個個人存取權杖。點擊權杖標題下的剪貼簿圖示，將權杖複製到剪貼簿：
 
 ![View token screenshot](/quick-start/cli-2-screenshot.png)
 
-You can choose how you want to store this access token.  As mentioned above, `ubi` requires it be provided via the `UBI_TOKEN` environment variable.  If you have a password manager or other secure secret storage vault, you can store the token in there.  If security is not your primary concern, you could store the access token in your shell startup files, so it is available for all programs.
+您可以選擇如何儲存此存取權杖。如上所述，`ubi` 要求透過 `UBI_TOKEN` 環境變數提供它。如果您有密碼管理器或其他安全的秘密儲存庫，可以將權杖儲存在那裡。如果安全性不是您的主要關注點，您可以將存取權杖儲存在 shell 啟動檔案中，以便所有程式都可以使用它。
 
-As there a myriad number of ways that users may want to store the token, `ubi` does not provide integrations for specific token storage.  You can use any storage method you want as long as the `UBI_TOKEN` environment variable is present when you execute the `ubi` program.
+由於使用者可能希望以無數種方式儲存權杖，`ubi` 不提供特定權杖儲存的整合。您可以使用任何您想要的儲存方法，只要在執行 `ubi` 程式時存在 `UBI_TOKEN` 環境變數即可。
 
-### Using `ubi`
+### 使用 `ubi`
 
-If you execute `ubi` with no arguments, it displays an error, followed by the program usage
+如果您在不帶任何參數的情況下執行 `ubi`，它會顯示錯誤，然後顯示程式用法
 
 ```
 $ ubi
@@ -68,9 +68,9 @@ Commands:
     vm         Manage virtual machines
 ```
 
-`ubi` will prefix errors with `! ` and print errors to stderr instead of stdout.  In this case, you get an error because you did not provide a subcommand when calling the program.  `ubi` helpfully shows you the available subcommands in this case.
+`ubi` 會在錯誤前加上 `! ` 並將錯誤列印到 stderr 而不是 stdout。在這種情況下，您會收到錯誤，因為您在呼叫程式時沒有提供子命令。在這種情況下，`ubi` 會貼心地向您顯示可用的子命令。
 
-One of the subcommands is `help`.  You can use `ubi help` to get usage information for various commands.  For example, to see what is supported by the `ps` subcommand, you can run `ubi help ps`:
+其中一個子命令是 `help`。您可以使用 `ubi help` 來取得各種命令的用法資訊。例如，要查看 `ps` 子命令支援什麼，您可以執行 `ubi help ps`：
 
 ```
 $ ubi help ps
@@ -91,7 +91,7 @@ Post Commands:
     show          Show details for a private subnet
 ```
 
-This shows you there are two ways of using the `ps` subcommand.  One way has subcommands that directly follow `ps`.  The only supported subcommand in this case is `ps list`.  So let's use `ubi help ps list`
+這向您顯示使用 `ps` 子命令有兩種方式。一種方式有直接跟隨 `ps` 的子命令。在這種情況下，唯一支援的子命令是 `ps list`。那麼讓我們使用 `ubi help ps list`
 
 ```
 $ ubi help ps list
@@ -109,15 +109,15 @@ Allowed Option Values:
     Fields: location name id net4 net6
 ```
 
-This shows you the usage and options for the `ps list` command.  You can then try running the `ubi ps list` command:
+這向您顯示 `ps list` 命令的用法和選項。然後，您可以嘗試執行 `ubi ps list` 命令：
 
 ```
 $ ubi ps list
-location       name                   id                          net4             net6                   
+location       name                   id                          net4             net6
 eu-central-h1  default-eu-central-h1  psaw09mq9ea21pc5d30b5x1t16  172.31.34.64/26  fd9e:2db6:b05:bf0c::/64
 ```
 
-You can get help for the `help` subcommand by asking for it:
+您可以透過詢問來取得 `help` 子命令的說明：
 
 ```
 $ ubi help help
@@ -131,124 +131,124 @@ Options:
     -u, --usage                      only show usage
 ```
 
-This describes the `-r`/`--recursive` and `-u`/`--usage` options.  It's useful to combine those together to get a recursive display of usage for subcommands:
+這描述了 `-r`/`--recursive` 和 `-u`/`--usage` 選項。將它們結合使用以遞迴顯示子命令的用法非常有用：
 
 ```
 $ ubi help -ru
-ubi command [command-options] ...
-ubi ai [command] ...
-ubi ai api-key [command] ...
-ubi ai api-key api-key-id [post-command] ...
-ubi ai api-key create
-ubi ai api-key list [options]
-ubi ai api-key api-key-id destroy [options]
-ubi ai api-key api-key-id show
-ubi fw command [...]
-ubi fw (location/fw-name | fw-id) post-command [...]
-ubi fw list [options]
-ubi fw (location/fw-name | fw-id) add-rule [options] cidr
-ubi fw (location/fw-name | fw-id) attach-subnet ps-id
-ubi fw location/fw-name create [options]
-ubi fw (location/fw-name | fw-id) delete-rule rule-id
-ubi fw (location/fw-name | fw-id) destroy [options]
-ubi fw (location/fw-name | fw-id) detach-subnet ps-id
-ubi fw (location/fw-name | fw-id) show [options]
-ubi help [options] [command [subcommand]]
-ubi kc command [...]
-ubi kc (location/kc-name | kc-id) post-command [...]
-ubi kc list [options]
-ubi kc location/kc-name create [options]
-ubi kc (location/kc-name | kc-id) destroy [options]
-ubi kc (location/kc-name | kc-id) kubeconfig
-ubi kc (location/kc-name | kc-id) show [options]
-ubi lb command [...]
-ubi lb (location/lb-name | lb-id) post-command [...]
-ubi lb list [options]
-ubi lb (location/lb-name | lb-id) attach-vm vm-id
-ubi lb location/lb-name create [options] ps-id src-port dst-port
-ubi lb (location/lb-name | lb-id) destroy [options]
-ubi lb (location/lb-name | lb-id) detach-vm vm-id
-ubi lb (location/lb-name | lb-id) show [options]
-ubi lb (location/lb-name | lb-id) update algorithm src-port dst-port health-check-endpoint [vm-id [...]]
-ubi pg command [...]
-ubi pg (location/pg-name | pg-id) [post-options] post-command [...]
-ubi pg list [options]
-ubi pg (location/pg-name | pg-id) add-firewall-rule cidr
-ubi pg (location/pg-name | pg-id) add-metric-destination username password url
-ubi pg location/pg-name create [options]
-ubi pg (location/pg-name | pg-id) delete-firewall-rule rule-id
-ubi pg (location/pg-name | pg-id) delete-metric-destination md-id
-ubi pg (location/pg-name | pg-id) destroy [options]
-ubi pg (location/pg-name | pg-id) [options] pg_dump [pg_dump-options]
-ubi pg (location/pg-name | pg-id) [options] pg_dumpall [pg_dumpall-options]
-ubi pg (location/pg-name | pg-id) [options] psql [psql-options]
-ubi pg (location/pg-name | pg-id) reset-superuser-password new-password
-ubi pg (location/pg-name | pg-id) restart
-ubi pg (location/pg-name | pg-id) restore new-db-name restore-time
-ubi pg (location/pg-name | pg-id) show [options]
-ubi ps command [...]
-ubi ps (location/ps-name | ps-id) post-command [...]
-ubi ps list [options]
-ubi ps (location/ps-name | ps-id) connect ps-id
-ubi ps location/ps-name create [options]
-ubi ps (location/ps-name | ps-id) destroy [options]
-ubi ps (location/ps-name | ps-id) disconnect ps-id
-ubi ps (location/ps-name | ps-id) show [options]
-ubi version
-ubi vm command [...]
-ubi vm (location/vm-name | vm-id) [post-options] post-command [...]
-ubi vm list [options]
-ubi vm location/vm-name create [options] public_key
-ubi vm (location/vm-name | vm-id) destroy [options]
-ubi vm (location/vm-name | vm-id) restart
-ubi vm (location/vm-name | vm-id) [options] scp [scp-options] (local-path :remote-path | :remote-path local-path)
-ubi vm (location/vm-name | vm-id) [options] sftp [sftp-options]
-ubi vm (location/vm-name | vm-id) show [options]
-ubi vm (location/vm-name | vm-id) [options] ssh [ssh-options --] [remote-cmd [remote-cmd-arg ...]]
+ ubi command [command-options] ...
+ ubi ai [command] ...
+ ubi ai api-key [command] ...
+ ubi ai api-key api-key-id [post-command] ...
+ ubi ai api-key create
+ ubi ai api-key list [options]
+ ubi ai api-key api-key-id destroy [options]
+ ubi ai api-key api-key-id show
+ ubi fw command [...]
+ ubi fw (location/fw-name | fw-id) post-command [...]
+ ubi fw list [options]
+ ubi fw (location/fw-name | fw-id) add-rule [options] cidr
+ ubi fw (location/fw-name | fw-id) attach-subnet ps-id
+ ubi fw location/fw-name create [options]
+ ubi fw (location/fw-name | fw-id) delete-rule rule-id
+ ubi fw (location/fw-name | fw-id) destroy [options]
+ ubi fw (location/fw-name | fw-id) detach-subnet ps-id
+ ubi fw (location/fw-name | fw-id) show [options]
+ ubi help [options] [command [subcommand]]
+ ubi kc command [...]
+ ubi kc (location/kc-name | kc-id) post-command [...]
+ ubi kc list [options]
+ ubi kc location/kc-name create [options]
+ ubi kc (location/kc-name | kc-id) destroy [options]
+ ubi kc (location/kc-name | kc-id) kubeconfig
+ ubi kc (location/kc-name | kc-id) show [options]
+ ubi lb command [...]
+ ubi lb (location/lb-name | lb-id) post-command [...]
+ ubi lb list [options]
+ ubi lb (location/lb-name | lb-id) attach-vm vm-id
+ ubi lb location/lb-name create [options] ps-id src-port dst-port
+ ubi lb (location/lb-name | lb-id) destroy [options]
+ ubi lb (location/lb-name | lb-id) detach-vm vm-id
+ ubi lb (location/lb-name | lb-id) show [options]
+ ubi lb (location/lb-name | lb-id) update algorithm src-port dst-port health-check-endpoint [vm-id [...]]
+ ubi pg command [...]
+ ubi pg (location/pg-name | pg-id) [post-options] post-command [...]
+ ubi pg list [options]
+ ubi pg (location/pg-name | pg-id) add-firewall-rule cidr
+ ubi pg (location/pg-name | pg-id) add-metric-destination username password url
+ ubi pg location/pg-name create [options]
+ ubi pg (location/pg-name | pg-id) delete-firewall-rule rule-id
+ ubi pg (location/pg-name | pg-id) delete-metric-destination md-id
+ ubi pg (location/pg-name | pg-id) destroy [options]
+ ubi pg (location/pg-name | pg-id) [options] pg_dump [pg_dump-options]
+ ubi pg (location/pg-name | pg-id) [options] pg_dumpall [pg_dumpall-options]
+ ubi pg (location/pg-name | pg-id) [options] psql [psql-options]
+ ubi pg (location/pg-name | pg-id) reset-superuser-password new-password
+ ubi pg (location/pg-name | pg-id) restart
+ ubi pg (location/pg-name | pg-id) restore new-db-name restore-time
+ ubi pg (location/pg-name | pg-id) show [options]
+ ubi ps command [...]
+ ubi ps (location/ps-name | ps-id) post-command [...]
+ ubi ps list [options]
+ ubi ps (location/ps-name | ps-id) connect ps-id
+ ubi ps location/ps-name create [options]
+ ubi ps (location/ps-name | ps-id) destroy [options]
+ ubi ps (location/ps-name | ps-id) disconnect ps-id
+ ubi ps (location/ps-name | ps-id) show [options]
+ ubi version
+ ubi vm command [...]
+ ubi vm (location/vm-name | vm-id) [post-options] post-command [...]
+ ubi vm list [options]
+ ubi vm location/vm-name create [options] public_key
+ ubi vm (location/vm-name | vm-id) destroy [options]
+ ubi vm (location/vm-name | vm-id) restart
+ ubi vm (location/vm-name | vm-id) [options] scp [scp-options] (local-path :remote-path | :remote-path local-path)
+ ubi vm (location/vm-name | vm-id) [options] sftp [sftp-options]
+ ubi vm (location/vm-name | vm-id) show [options]
+ ubi vm (location/vm-name | vm-id) [options] ssh [ssh-options --] [remote-cmd [remote-cmd-arg ...]]
 ```
 
-Some command types are present for all objects:
+某些命令類型適用於所有物件：
 
-* `list`: display a subset of information for multiple objects of the same type
-* `show`: display detailed information about a specific object
-* `create`: create an object
-* `destroy`: destroy an object (asks for confirmation by default before destruction)
+* `list`：顯示相同類型的多個物件的資訊子集
+* `show`：顯示有關特定物件的詳細資訊
+* `create`：建立物件
+* `destroy`：銷毀物件（預設情況下在銷毀前要求確認）
 
-Other commands are object-specific.
+其他命令是物件特定的。
 
-### Running Programs
+### 執行程式
 
-There are currently 6 commands that execute programs:
+目前有 6 個執行程式的命令：
 
-* `vm ssh`: connects to a virtual machine via `ssh`
-* `vm sftp`: connects to a virtual machine via `sftp`
-* `vm scp`: copy file/directory from the local computer to a virtual machine or from a virtual machine to the local computer via `scp`
-* `pg psql`: connect to a PostgreSQL database via `psql`
-* `pg pg_dump`: dump a single PostgreSQL database using `pg_dump`
-* `pg pg_dumpall`: dump an entire PostgreSQL database cluster using `pg_dumpall`
+* `vm ssh`：透過 `ssh` 連接到虛擬機器
+* `vm sftp`：透過 `sftp` 連接到虛擬機器
+* `vm scp`：透過 `scp` 將檔案/目錄從本地電腦複製到虛擬機器或從虛擬機器複製到本地電腦
+* `pg psql`：透過 `psql` 連接到 PostgreSQL 資料庫
+* `pg pg_dump`：使用 `pg_dump` 傾印單一 PostgreSQL 資料庫
+* `pg pg_dumpall`：使用 `pg_dumpall` 傾印整個 PostgreSQL 資料庫叢集
 
-If you want to configure which program is executed, set the appropriate environment variable (e.g. `UBI_SSH` for `ssh`, `UBI_SFTP` for `sftp`).
+如果您想配置執行哪個程式，請設定適當的環境變數（例如，`ssh` 使用 `UBI_SSH`，`sftp` 使用 `UBI_SFTP`）。
 
-### Command Line Interface Architecture
+### 命令列介面架構
 
-The above instructions should be all you need in order to use `ubi`.  However, if you are interested in how `ubi` works and why it works the way it does, you can read this section.
+上述說明應該是您使用 `ubi` 所需的全部內容。但是，如果您對 `ubi` 的運作方式以及為什麼以這種方式運作感興趣，可以閱讀本節。
 
-`ubi` is different than many other similar command line programs in that it does no parsing of arguments (`argv`) it is called with.  It just takes the arguments and sends them to Ubicloud.  Ubicloud parses the arguments, and determines what action to take, and returns the output to `ubi`, which displays the output for the user (or in some cases, runs a supported program or asks for comfirmation).  At Ubicloud, we call this a Thin CLIent approach to command line interface design.
+`ubi` 與許多其他類似的命令列程式不同，因為它不解析它被呼叫的參數（`argv`）。它只是取得參數並將它們發送到 Ubicloud。Ubicloud 解析參數，確定要採取的操作，並將輸出返回給 `ubi`，後者為使用者顯示輸出（或在某些情況下，執行支援的程式或要求確認）。在 Ubicloud，我們將此稱為命令列介面設計的精簡客戶端方法。
 
-The advantage of implementing `ubi` this way is that Ubicloud can improve the command line interface at any time to add new features, and have users of `ubi` automatically benefit from those features without having to update their program.  With traditional command line programs, that do their own argument parsing, adding new features requires that each machine running the program be updated to use those features.  By having `ubi` pass the arguments to Ubicloud without parsing them, Ubicloud brings the advantages of web distribution to the command line, so that all users can immediately benefit from new features.
+以這種方式實作 `ubi` 的優點是，Ubicloud 可以隨時改進命令列介面以新增新功能，並讓 `ubi` 的使用者自動從這些功能中受益，而無需更新他們的程式。對於傳統的命令列程式，它們自己解析參數，新增新功能需要更新執行程式的每台機器才能使用這些功能。透過讓 `ubi` 將參數傳遞給 Ubicloud 而不解析它們，Ubicloud 將 Web 分發的優勢帶到命令列，以便所有使用者都可以立即從新功能中受益。
 
-There are a couple disadvantages of implementing `ubi` this way:
+以這種方式實作 `ubi` 有幾個缺點：
 
-* All commands require contacting the server, so even getting `help` output takes some time.
-* It requires extra care in regards to security when executing programs, so that a rogue server cannot result in a remote code execution vulnerability on machines running `ubi`.
+* 所有命令都需要聯繫伺服器，因此即使取得 `help` 輸出也需要一些時間。
+* 在執行程式時需要格外注意安全性，以便惡意伺服器不會導致執行 `ubi` 的機器上的遠端程式碼執行漏洞。
 
-To mitigate potential security issues with the Thin CLIent approach, `ubi` does the following checks:
+為了減輕精簡客戶端方法的潛在安全問題，`ubi` 進行以下檢查：
 
-* Only the 6 commands explicitly whitelisted can be executed.
-* A command cannot be executed unless it appears in the `argv` passed to `ubi`.
-* The arguments for the command to execute:
-  * Must include `--` to separate arguments from options (except for `pg_dumpall`, which does not support this).
-  * Must only include one new argument not in the `argv` passed to `ubi`.
-    * The new argument must come after `--` (for non-`pg_dumpall`) or must start with `-d` (for `pg_dumpall`)
+* 只能執行明確列入白名單的 6 個命令。
+* 除非命令出現在傳遞給 `ubi` 的 `argv` 中，否則無法執行命令。
+* 要執行的命令的參數：
+  * 必須包含 `--` 以將參數與選項分開（除了 `pg_dumpall`，它不支援此功能）。
+  * 只能包含一個不在傳遞給 `ubi` 的 `argv` 中的新參數。
+    * 新參數必須在 `--` 之後（對於非 `pg_dumpall`）或必須以 `-d` 開頭（對於 `pg_dumpall`）
 
-In other words, Ubicloud's command line processing can rearrange arguments, and add one new argument, but that argument should be an argument and not an option for the executed program.
+換句話說，Ubicloud 的命令列處理可以重新排列參數，並新增一個新參數，但該參數應該是執行程式的參數而不是選項。
