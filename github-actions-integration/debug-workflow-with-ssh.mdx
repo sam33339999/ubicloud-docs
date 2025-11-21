@@ -1,26 +1,26 @@
 ---
-title: 'Debug Workflow with SSH'
+title: '透過 SSH 除錯工作流程'
 ---
 
-Debugging GitHub Actions workflows can be a frustrating experience. We've all been there - you push a change to fix your workflow, wait for minutes, only to see it fail again, with limited logs that don't fully explain the issue. This trial-and-error approach is not only time consuming but also inefficient. But what if there was a better way to debug your workflows in real-time?
+除錯 GitHub Actions 工作流程可能是一個令人沮喪的經歷。我們都經歷過 - 您推送變更以修正工作流程，等待數分鐘，結果卻看到它再次失敗，並且日誌有限，無法完全解釋問題。這種試錯方法不僅耗時，而且效率低下。但是，如果有更好的方法可以即時除錯工作流程呢？
 
-Ubicloud introduces a game-changing solution: the ability to SSH into managed ephemeral Ubicloud runners during workflow execution. With the [ubicloud/ssh-runner](https://github.com/ubicloud/ssh-runner) action, you can set up SSH access and connect to the runner while your workflow is executing. No more guesswork or endless commit cycles. Simply attach, debug issues in real-time, and move on—all within the same workflow run.
+Ubicloud 推出了一個改變遊戲規則的解決方案：在工作流程執行期間可以透過 SSH 連線到託管的臨時 Ubicloud runners。使用 [ubicloud/ssh-runner](https://github.com/ubicloud/ssh-runner) action，您可以設定 SSH 存取並在工作流程執行時連線到 runner。不再需要猜測或無盡的提交週期。只需連線、即時除錯問題並繼續前進 - 全部在同一個工作流程執行中完成。
 
-## Usage
+## 使用方法
 
-To use this feature, add the following step to your workflow as the first step:
+要使用此功能，請將以下步驟作為第一步新增到您的工作流程中：
 
 ```yaml
 - name: Setup SSH access
   uses: ubicloud/ssh-runner@v1
   with:
     public-ssh-key: ${{ secrets.SSH_PUBLIC_KEY }}
-    wait-minutes: 30  # Optional, default is 10 minutes
+    wait-minutes: 30  # 可選，預設為 10 分鐘
 ```
 
-That's it! This action will enable SSH access using the provided public key.
+就是這樣！此 action 將使用提供的公鑰啟用 SSH 存取。
 
-When you run this workflow, you'll see the following output in the logs:
+當您執行此工作流程時，您將在日誌中看到以下輸出：
 
 ```
 Waiting for 30 minutes to allow SSH access...
@@ -32,15 +32,15 @@ Command:
 ssh runner@188.40.199.63
 ```
 
-Simply copy the SSH command from the logs, open your favorite terminal, and connect. You’ll be in the same environment as your CI job, letting you inspect files, run commands, and debug issues in real time.
+只需從日誌中複製 SSH 命令，打開您喜歡的終端機並連線。您將進入與 CI 作業相同的環境，讓您可以檢查檔案、執行命令並即時除錯問題。
 
-Remember that each Ubicloud runner is ephemeral. Once the `wait-minutes` duration is reached after the job is completed, the VM is destroyed, along with its disk data.
+請記住，每個 Ubicloud runner 都是臨時的。一旦作業完成後達到 `wait-minutes` 持續時間，VM 將被銷毀，連同其磁碟資料。
 
 <Note>
-  The [ubicloud/ssh-runner](https://github.com/ubicloud/ssh-runner) action is open source. Feel free to review, contribute, or open issues if you run into any snags.
+  [ubicloud/ssh-runner](https://github.com/ubicloud/ssh-runner) action 是開源的。如果您遇到任何問題，歡迎查看、貢獻或開啟議題。
 </Note>
 
-You can also set up SSH access only for failed jobs:
+您也可以僅為失敗的作業設定 SSH 存取：
 
 ```yaml
 - name: Setup SSH access
@@ -52,11 +52,12 @@ You can also set up SSH access only for failed jobs:
 ```
 
 <Warning>
-  Store your private SSH key securely. A short debugging session can save massive time, but best practices and security guidelines always apply.
+  請安全地儲存您的私有 SSH 金鑰。短暫的除錯會話可以節省大量時間，但最佳實踐和安全準則始終適用。
 </Warning>
 
-## Conclusion
+## 結論
 
-By allowing SSH access to your Ubicloud runners, you can debug your GitHub Actions workflows in real-time. This not only saves time but also provides a more comprehensive understanding of the issues at hand. Say goodbye to the days of blind debugging and repeated pushes. Embrace the future of efficient workflow debugging with Ubicloud.
+透過允許 SSH 存取您的 Ubicloud runners，您可以即時除錯 GitHub Actions 工作流程。這不僅節省時間，還能更全面地了解手邊的問題。告別盲目除錯和重複推送的日子。使用 Ubicloud 擁抱高效工作流程除錯的未來。
 
-For more information, visit the [ubicloud/ssh-runner](https://github.com/ubicloud/ssh-runner) repository.
+如需更多資訊，請造訪 [ubicloud/ssh-runner](https://github.com/ubicloud/ssh-runner) 儲存庫。
+

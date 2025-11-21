@@ -2,30 +2,30 @@
 title: 'Ubicloud Cache'
 ---
 
-This guide describes how to integrate your GitHub Action workflows with Ubicloud Cache.
+本指南描述如何將您的 GitHub Action 工作流程與 Ubicloud Cache 整合。
 
-Ubicloud starts a clean and ephemeral VM for each new workflow job for security purposes. Fresh VMs need to download job dependencies, leading to increased network usage, longer runtimes, and higher costs. GitHub Actions cache allows to share dependencies and other commonly reused files between workflow jobs.
+Ubicloud 為每個新工作流程作業啟動一個乾淨且臨時的 VM，以確保安全性。新的 VM 需要下載作業依賴項，導致網路使用量增加、執行時間更長和成本更高。GitHub Actions cache 允許在工作流程作業之間共享依賴項和其他常用檔案。
 
-Ubicloud Cache improves on the GitHub Actions cache by storing cached files closer to Ubicloud runners, making cache downloading/uploading more reliable and up to 4x faster. Ubicloud Cache offers 30 GB of free storage per repository per week, at 3x of GitHub’s default cache size. If you exceed this limit, the oldest caches are automatically deleted to make space for new ones. Additionally, caches that haven't been accessed in the past seven days are automatically removed.
+Ubicloud Cache 透過將快取檔案儲存在更靠近 Ubicloud runners 的位置來改進 GitHub Actions cache，使快取下載/上傳更可靠且快達 4 倍。Ubicloud Cache 為每個儲存庫每週提供 30 GB 的免費儲存空間，是 GitHub 預設快取大小的 3 倍。如果您超過此限制，最舊的快取將自動刪除以騰出空間給新快取。此外，過去七天內未存取的快取也會自動刪除。
 
-There are two ways to use Ubicloud Cache:
+有兩種方式可以使用 Ubicloud Cache：
 
-1. [Ubicloud Transparent Cache](#ubicloud-transparent-cache) (Recommended)
+1. [Ubicloud Transparent Cache](#ubicloud-transparent-cache)（推薦）
 2. [Ubicloud Cache Actions](#ubicloud-cache-actions)
 
 ## Ubicloud Transparent Cache
 
-It is the recommended way to use Ubicloud's cache infrastructure. Transparent cache gives you immense flexibility when using Ubicloud’s runners, allowing you to switch between Ubicloud’s runners and GitHub’s default runners without modifying your workflow files.
+這是使用 Ubicloud 快取基礎設施的推薦方式。Transparent cache 在使用 Ubicloud 的 runners 時為您提供極大的靈活性，允許您在 Ubicloud 的 runners 和 GitHub 的預設 runners 之間切換，而無需修改工作流程檔案。
 
-<Note>Transparent cache is enabled by default. If you need to disable it, you can do so in the Ubicloud console.</Note>
+<Note>Transparent cache 預設啟用。如果您需要停用它，可以在 Ubicloud 控制台中執行此操作。</Note>
 
-Transparent cache supports all actions caching files, including:
+Transparent cache 支援所有快取檔案的 actions，包括：
 
-- **File/Folder Caching** with `actions/cache`: Cache specific files or directories like dependencies or build outputs to speed up workflows.
+- **檔案/資料夾快取**與 `actions/cache`：快取特定檔案或目錄，如依賴項或建置輸出，以加速工作流程。
 
-- **Package Manager Caching** with `actions/setup-*`: Automatically caches dependencies for languages such as Python (`actions/setup-python`), Node.js (`actions/setup-node`), and Go (`actions/setup-go`). 3rd party actions are also supported for some languages like Rust (`Swatinem/rust-cache`).
+- **套件管理器快取**與 `actions/setup-*`：自動快取語言的依賴項，例如 Python（`actions/setup-python`）、Node.js（`actions/setup-node`）和 Go（`actions/setup-go`）。某些語言（如 Rust（`Swatinem/rust-cache`））也支援第三方 actions。
 
-- **Docker Layer Caching** with `docker/build-push-action`: Speeds up container builds by caching unchanged layers using `type=gha`:
+- **Docker Layer 快取**與 `docker/build-push-action`：透過使用 `type=gha` 快取未變更的層來加速容器建置：
 
 ```yaml
 - name: Build and push Docker images
@@ -35,19 +35,19 @@ Transparent cache supports all actions caching files, including:
     cache-to: type=gha
 ```
 
-Transparent cache improves download performance by 4x and upload performance by 3x on Ubicloud runners, with ongoing efforts to enhance upload speeds even further. 
+Transparent cache 在 Ubicloud runners 上將下載效能提升 4 倍，上傳效能提升 3 倍，並持續努力進一步增強上傳速度。
 
-For a deep dive into its implementation and detailed performance metrics, check out the [GitHub Actions Transparent Cache Blog Post](https://www.ubicloud.com/blog/github-actions-transparent-cache).
+如需深入了解其實作和詳細的效能指標，請查看 [GitHub Actions Transparent Cache 部落格文章](https://www.ubicloud.com/blog/github-actions-transparent-cache)。
 
 ## Ubicloud Cache Actions
 
-Ubicloud Cache Actions are drop-in replacements for `actions/cache` as `ubicloud/cache` and `actions/setup-*` as `ubicloud/setup-*`. 
+Ubicloud Cache Actions 是 `actions/cache` 作為 `ubicloud/cache` 和 `actions/setup-*` 作為 `ubicloud/setup-*` 的直接替代品。
 
-It requires you to change the action names in your workflow files. It also doesn't support docker layer caching. Only advantage of using Ubicloud Cache Actions over Transparent Cache is that it has 65% better save performance as it is optimized to increase concurrency during file uploads. We are working on improving Transparent Cache's upload performance to match it.
+它需要您變更工作流程檔案中的 action 名稱。它也不支援 docker layer 快取。使用 Ubicloud Cache Actions 相對於 Transparent Cache 的唯一優勢是它具有 65% 更好的儲存效能，因為它經過最佳化以增加檔案上傳期間的併發性。我們正在努力改進 Transparent Cache 的上傳效能以匹配它。
 
-### Migrating to `ubicloud/cache`
+### 遷移到 `ubicloud/cache`
 
-Replace `actions/cache` with `ubicloud/cache` in your workflows. Ubicloud Cache fully supports GitHub Actions Cache functionality.
+在工作流程中將 `actions/cache` 替換為 `ubicloud/cache`。Ubicloud Cache 完全支援 GitHub Actions Cache 功能。
 
 
 ```yaml
@@ -60,9 +60,9 @@ with:
      ${{ runner.os }}-pip-
 ```
 
-### Migrating to Ubicloud's Language-Specific Cache Actions
+### 遷移到 Ubicloud 的特定語言快取 Actions
 
-Ubicloud offers optimized replacements for `actions/setup-*`. To migrate, replace `actions/setup-*` with `ubicloud/setup-*` in your workflows.
+Ubicloud 為 `actions/setup-*` 提供了最佳化的替代品。要遷移，請在工作流程中將 `actions/setup-*` 替換為 `ubicloud/setup-*`。
 
 ### Java
 
@@ -99,7 +99,7 @@ Ubicloud offers optimized replacements for `actions/setup-*`. To migrate, replac
 + uses: ubicloud/setup-node@v4
 ```
 
-Some other popular languages have their own setup-* actions, not maintained by GitHub. Ubicloud offers replacements for some of the most popular ones.
+其他一些流行的語言有自己的 setup-* actions，不由 GitHub 維護。Ubicloud 為其中一些最流行的提供了替代品。
 
 ### Ruby
 

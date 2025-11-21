@@ -1,25 +1,25 @@
 ---
-title: 'Control and Data Plane'
+title: '控制平面與資料平面'
 ---
 
-Ubicloud follows an established pattern in building public cloud services. A control plane manages a data plane, where the data plane usually leverages open source software.The following architecture diagram shows the control and data plane components for our compute service. This service allows you to provision and use virtual machines (VMs); and also forms the basis of some of our other services.
+Ubicloud 遵循建構公有雲服務的既定模式。控制平面管理資料平面，而資料平面通常利用開源軟體。以下架構圖顯示了我們運算服務的控制平面和資料平面元件。此服務允許您佈建和使用虛擬機器（VM），並且也構成我們其他一些服務的基礎。
 
 ![Control and Data Plane](/architecture/control-and-data-plane-1.jpg)
 
 
-## Control plane
+## 控制平面
 
-Control plane manages users, data plane services, and resources. This is a Ruby program that stores its data in Postgres. We use the [Roda](https://roda.jeremyevans.net/) framework to serve HTTP requests and [Sequel](http://sequel.jeremyevans.net/) to access the database. We manage web authentication with [Rodauth](http://rodauth.jeremyevans.net/). The control plane communicates with data plane servers using SSH, via the library [net-ssh](https://github.com/net-ssh/net-ssh).
+控制平面管理使用者、資料平面服務和資源。這是一個 Ruby 程式，將資料儲存在 Postgres 中。我們使用 [Roda](https://roda.jeremyevans.net/) 框架來處理 HTTP 請求，並使用 [Sequel](http://sequel.jeremyevans.net/) 來存取資料庫。我們使用 [Rodauth](http://rodauth.jeremyevans.net/) 管理網頁驗證。控制平面透過 SSH 與資料平面伺服器通訊，使用 [net-ssh](https://github.com/net-ssh/net-ssh) 程式庫。
 
-Users communicate with the control plane through the cloud console or Ubicloud APIs. The console is a web app served by the Roda framework. For the visual design, we use [Tailwind CSS](https://tailwindcss.com/) with components from [Tailwind UI](https://tailwindui.com/). We also use jQuery for interactivity.
+使用者透過雲端控制台或 Ubicloud API 與控制平面通訊。控制台是由 Roda 框架提供的網頁應用程式。在視覺設計方面，我們使用 [Tailwind CSS](https://tailwindcss.com/) 搭配 [Tailwind UI](https://tailwindui.com/) 的元件。我們也使用 jQuery 來實現互動功能。
 
-Once you've initialized the control plane, create a new user and sign into the cloud console.
+初始化控制平面後，建立一個新使用者並登入雲端控制台。
 
-## Data plane
+## 資料平面
 
-The control plane communicates with Linux bare metal servers using SSH. Ubicloud expects Linux with KVM running on these servers. Our managed service uses Ubuntu 22.04 as the underlying Linux distribution.
+控制平面使用 SSH 與 Linux 裸機伺服器通訊。Ubicloud 期望這些伺服器上執行 Linux 和 KVM。我們的託管服務使用 Ubuntu 22.04 作為底層的 Linux 發行版。
 
-For our compute service, Ubicloud makes several additions on top of Linux KVM. We use [cloud-init](https://github.com/canonical/cloud-init) to bootstrap SSH access to the server. We use [Cloud Hypervisor](https://github.com/cloud-hypervisor/cloud-hypervisor) as our virtual machine monitor (VMM); and each instance of the VMM is contained within Linux namespaces for further isolation and security.
+對於我們的運算服務，Ubicloud 在 Linux KVM 之上進行了幾項新增。我們使用 [cloud-init](https://github.com/canonical/cloud-init) 來引導對伺服器的 SSH 存取。我們使用 [Cloud Hypervisor](https://github.com/cloud-hypervisor/cloud-hypervisor) 作為我們的虛擬機器監視器（VMM）；每個 VMM 實例都包含在 Linux 命名空間中，以提供進一步的隔離和安全性。
 
-This section also has design documents that explain how some Ubicloud services work. You can read them here or request new documents by getting in touch with us.
+本節還包含設計文件，說明某些 Ubicloud 服務的運作方式。您可以在此閱讀或透過與我們聯繫來請求新文件。
 

@@ -1,21 +1,21 @@
-# Ubicloud Documentation
+# Ubicloud 文件
 
-The documentation for Ubicloud (https://www.ubicloud.com/docs) is based on mdx and hosted by Mintlify.
+Ubicloud 的文件（https://www.ubicloud.com/docs）是基於 mdx 格式，並由 Mintlify 託管。
 
-### Preview
+### 預覽
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the documentation changes locally. To install, use the following command
+安裝 [Mintlify CLI](https://www.npmjs.com/package/mintlify) 以在本地預覽文件變更。使用以下命令進行安裝：
 
 ```
 npm i -g mintlify
 ```
 
-Run the following command at the root of your documentation (where mint.json is)
+在您的文件根目錄（mint.json 所在位置）執行以下命令：
 
 ```
 mintlify dev
 ```
 
-### Publishing Changes
+### 發布變更
 
-The changes to the main branch will be reflected to Ubicloud documentation page automatically.
+對主分支的變更將自動反映到 Ubicloud 文件頁面。

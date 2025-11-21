@@ -1,42 +1,42 @@
 ---
-title: 'Use Premium Runners'
+title: '使用 Premium Runners'
 ---
 
-Ubicloud Premium Runners are powered by AMD Ryzen 9 7950X3D CPUs, high-performance gaming processors optimized for single-thread speed and fast CI execution, priced at just 1/5th the cost of GitHub-hosted runners.
+Ubicloud Premium Runners 由 AMD Ryzen 9 7950X3D CPU 驅動，這是針對單執行緒速度和快速 CI 執行進行最佳化的高效能遊戲處理器，價格僅為 GitHub 託管 runners 的 1/5。
 
-They're ideal for large monorepos, test-heavy workflows, or any job that benefits from high CPU clock speeds.
+它們非常適合大型 monorepos、測試密集型工作流程，或任何受益於高 CPU 時脈速度的作業。
 
 ![Ubicloud Premium Runners](/github-actions-integration/use-premium-runners-2.jpg)
 
-## How to enable Premium Runners
+## 如何啟用 Premium Runners
 
-Premium Runners are enabled at the account level. Once enabled, we'll start routing your jobs to our premium fleet automatically. No changes needed in your workflow files.
+Premium Runners 在帳戶層級啟用。一旦啟用，我們將自動開始將您的作業路由到我們的 premium 機群。工作流程檔案不需要任何變更。
 
-1. Go to the [Ubicloud Console](https://console.ubicloud.com/)
-2. Navigate to **GitHub Runners** → **Settings**
-3. Toggle on **Enable Premium Runners**
+1. 前往 [Ubicloud Console](https://console.ubicloud.com/)
+2. 導航到 **GitHub Runners** → **Settings**
+3. 開啟 **Enable Premium Runners**
 
-That's it. Your jobs will now run on high-performance CPUs.
+就是這樣。您的作業現在將在高效能 CPU 上執行。
 
 ![Use Premium Runners](/github-actions-integration/use-premium-runners-1-screenshot.png)
 
-## Why Faster Builds Matter
+## 為什麼更快的建置很重要
 
-Build and test jobs don't just consume compute, they block developer time.
+建置和測試作業不僅消耗運算資源，還會佔用開發人員的時間。
 
-When a developer pushes code and waits 15–20 minutes for CI to complete, that's time spent:
+當開發人員推送程式碼並等待 15-20 分鐘讓 CI 完成時，這段時間花費在：
 
-- Waiting to merge a pull request  
-- Context-switching to other work  
-- Losing momentum on the task at hand  
+- 等待合併 pull request
+- 切換到其他工作
+- 失去當前任務的動力
 
-Now multiply that across an engineering team. Even **saving 3–5 minutes per job** adds up to:
+現在將其乘以整個工程團隊。即使**每個作業節省 3-5 分鐘**也會累積成：
 
-- Dozens of hours per week in recovered dev time  
-- Fewer PRs left idle due to slow feedback  
-- Faster iteration on features and bug fixes  
-- Higher team velocity, fewer productivity stalls
+- 每週回收數十小時的開發時間
+- 由於反饋緩慢而閒置的 PR 更少
+- 更快地迭代功能和錯誤修正
+- 更高的團隊速度，更少的生產力停滯
 
-> **Example**: If your team runs 1,000 jobs/week and Premium Runners cut job time by 4 minutes on average, that's over **66 hours of developer time saved every month**.
+> **範例**：如果您的團隊每週執行 1,000 個作業，而 Premium Runners 平均縮短作業時間 4 分鐘，那就是每月節省超過 **66 小時的開發人員時間**。
 
-Ubicloud Premium Runners aren't just about faster CI, they're about giving your engineers back their time so they can build, ship, and move faster.
+Ubicloud Premium Runners 不僅僅是為了更快的 CI，它們是為了讓您的工程師把時間拿回來，這樣他們就可以更快地建置、發布和前進。

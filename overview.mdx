@@ -1,44 +1,44 @@
 ---
-title: Overview
+title: 概覽
 ---
 
 import { Callout } from '/snippets/callout.mdx';
 
-<Callout text="Reduce costs. Avoid lock-in. Win back your infrastructure." />
+<Callout text="降低成本。避免鎖定。重新掌控您的基礎設施。" />
 
-## What is Ubicloud?
+## 什麼是 Ubicloud？
 
-Ubicloud is an open, free, and portable cloud. Think of it as an alternative to public cloud providers, like what Linux is to proprietary operating systems.
+Ubicloud 是一個開放、免費且可移植的雲端平台。可以將它視為公共雲端服務商的替代方案，就像 Linux 之於專有作業系統一樣。
 
-Ubicloud offers infrastructure-as-a-service (IaaS) features on providers that lease bare metal instances, such as Hetzner, Leaseweb, and Latitude.sh. It’s also available as a managed service.
+Ubicloud 在提供裸機執行個體租賃的服務商（例如 Hetzner、Leaseweb 和 Latitude.sh）上提供基礎設施即服務（IaaS）功能。它也提供託管服務。
 
-The low cost of the bare metal instances we use in our managed service allows us to pass those low prices to you, reducing cloud costs by 3x - 10x.
+我們在託管服務中使用的裸機執行個體成本較低，使我們能夠將這些低價轉移給您，將雲端成本降低 3 到 10 倍。
 
-## Why Ubicloud?
+## 為什麼選擇 Ubicloud？
 
-Cloud services like AWS, Azure, and Google Cloud made life easier for start-ups and enterprises. But they are closed source, have you rent computers at a huge premium, and lock you in. Ubicloud offers an open alternative, reduces your costs, and returns control of your infrastructure back to you. All without sacrificing the cloud's convenience.
+AWS、Azure 和 Google Cloud 等雲端服務讓新創公司和企業的生活變得更輕鬆。但它們是閉源的，讓您以高價租用電腦，並將您鎖定。Ubicloud 提供開放的替代方案，降低您的成本，並將基礎設施的控制權還給您。所有這些都不會犧牲雲端的便利性。
 
-Today, AWS offers about two hundred cloud services. Ultimately, we will implement 10% of the cloud services that make up 80% of total consumption.
+目前，AWS 提供約兩百種雲端服務。最終，我們將實現 10% 的雲端服務，這些服務佔總消費量的 80%。
 
-Example workloads/reasons to use Ubicloud today include:
-- You're using GitHub Actions. Ubicloud supports managed x64 and arm64 runners; and reduces your bill by 10x. To get started, you just need to change 1 line in your workflow file.
-- You need managed PostgreSQL. Ubicloud is open source and portable. This way, you can see how we operate and avoid cloud vendor lock-in. Our managed Postgres is also fast thanks to its use of local NVMe and costs 3x less than comparable solutions.
-- You have batch processing workloads that are compute/memory intensive. For example, you're doing scientific computing or video processing. You need secure virtual machines (VMs), encryption in-transit and at-rest; and you'd like to pay 3x less.
+今天使用 Ubicloud 的範例工作負載/原因包括：
+- 您正在使用 GitHub Actions。Ubicloud 支援託管 x64 和 arm64 執行器；並將您的帳單降低 10 倍。要開始使用，您只需要在工作流程檔案中變更 1 行。
+- 您需要託管 PostgreSQL。Ubicloud 是開源且可移植的。這樣，您可以了解我們的運作方式並避免雲端供應商鎖定。我們的託管 Postgres 也因使用本地 NVMe 而速度快，成本比同類解決方案低 3 倍。
+- 您有運算/記憶體密集的批次處理工作負載。例如，您正在進行科學運算或影片處理。您需要安全的虛擬機（VM）、傳輸中和靜態加密；並且您希望支付少 3 倍的費用。
 
-## Licenses
+## 授權
 
-Our GitHub repo is here: [https://github.com/ubicloud/ubicloud](https://github.com/ubicloud/ubicloud) available to use for free under the GNU Affero General Public License version 3 (AGPL v3).
+我們的 GitHub 儲存庫位於：[https://github.com/ubicloud/ubicloud](https://github.com/ubicloud/ubicloud)，可在 GNU Affero General Public License 版本 3（AGPL v3）下免費使用。
 
-## Product
+## 產品
 
-Existing cloud services and additional components include the following:
-  - Elastic Compute - Provision, use, and delete isolated VMs on bare metal
-  - Block Storage (non-replicated) - Block devices with encryption at rest
-  - Virtual Networking - Public and private networking. IPv4 and IPv6. Encryption in transit
-  - Load Balancer - Distributes traffic across VMs, built-in health checks
-  - Managed PostgreSQL - Postgres with backup/restore, high availability, and extensions
-  - Authorization - Define roles for different sets of users, and grant those roles support for specific actions on specific objects
-  - Control plane - Communicates with the data plane using SSH and manages resources
-  - Cloud console - A dashboard for users to use cloud services
+現有的雲端服務和其他元件包括以下內容：
+  - 彈性運算 - 在裸機上配置、使用和刪除隔離的虛擬機
+  - 區塊儲存（非複製）- 具有靜態加密的區塊裝置
+  - 虛擬網路 - 公共和私有網路。IPv4 和 IPv6。傳輸中加密
+  - 負載平衡器 - 在虛擬機之間分配流量，內建健康檢查
+  - 託管 PostgreSQL - 具有備份/還原、高可用性和擴充功能的 Postgres
+  - 授權 - 為不同的使用者群組定義角色，並授予這些角色對特定物件執行特定操作的權限
+  - 控制平面 - 使用 SSH 與資料平面通訊並管理資源
+  - 雲端主控台 - 供使用者使用雲端服務的儀表板
 
-You can provide us with feedback, get help, or ask us to support your bare metal provider by sending us an email at [support@ubicloud.com](mailto:support@ubicloud.com)
+您可以透過發送電子郵件至 [support@ubicloud.com](mailto:support@ubicloud.com) 向我們提供回饋、尋求協助或要求我們支援您的裸機服務商。

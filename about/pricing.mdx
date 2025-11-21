@@ -1,141 +1,141 @@
 ---
-title: 'Pricing'
+title: '定價'
 ---
 
-Ubicloud provides IaaS cloud features on bare metal providers, such as Hetzner, Leaseweb, or AWS Bare Metal. You can set it up yourself on these providers or use our managed service.
+Ubicloud 在裸機服務商（例如 Hetzner、Leaseweb 或 AWS Bare Metal）上提供 IaaS 雲端功能。您可以自行在這些服務商上建置，或使用我們的託管服務。
 
-The pricing information below is for our managed service. Billing is based on the resources provisioned, pro-rated for the time they are provisioned. We calculate resource consumption at per minute granularity and bill monthly.
+以下定價資訊適用於我們的託管服務。計費基於已配置的資源，並按配置時間按比例計算。我們以每分鐘為單位計算資源使用量，並按月計費。
 
-At a high level, our prices are 3-10x lower than comparable offerings. For example, 2 vCPU instance prices for different services are:
+整體而言，我們的價格比同類服務低 3-10 倍。例如，不同服務的 2 vCPU 執行個體價格為：
 
-- [GitHub Actions](#github-actions): \$0.0008/min on Ubicloud vs. \$0.008/min on GitHub
-- [Compute (VMs)](#compute): \$26/month on Ubicloud vs. \$90/month on AWS Germany
-- [Managed PostgreSQL](#managed-postgresql): \$65/month on Ubicloud vs. \$200/month on AWS Germany
-- [Burstable VMs](#burstable-vms) start at \$6.65/month and [Burstable Managed PostgreSQL](#burstable-postgresql) starts at \$12.40/month
+- [GitHub Actions](#github-actions)：Ubicloud 每分鐘 \$0.0008 對比 GitHub 每分鐘 \$0.008
+- [運算（虛擬機）](#compute)：Ubicloud 每月 \$26 對比 AWS 德國每月 \$90
+- [託管 PostgreSQL](#managed-postgresql)：Ubicloud 每月 \$65 對比 AWS 德國每月 \$200
+- [突發型虛擬機](#burstable-vms) 起價每月 \$6.65，[突發型託管 PostgreSQL](#burstable-postgresql) 起價每月 \$12.40
 
 
 ## GitHub Actions
 
-Ubicloud runners come with dedicated CPU, memory, local block storage, and a public IPv4 address. Our GitHub Managed Runner Application allocates virtual machines (VMs) across data centers in Germany to provide high availability. Every account gets a \$1/month credit that's equivalent to 1,250 minutes of Ubicloud runner time.
+Ubicloud 執行器配備專用 CPU、記憶體、本地區塊儲存和公共 IPv4 位址。我們的 GitHub 託管執行器應用程式在德國的數據中心配置虛擬機（VM），以提供高可用性。每個帳戶每月可獲得 \$1 的額度，相當於 1,250 分鐘的 Ubicloud 執行器時間。
 
-The tag `ubicloud-standard-2` defaults to Linux x64 2 vCPUs. Given Ubicloud's price advantage, we recommend trying 4 vCPUs or more if your pipeline benefits from parallelism.
+標籤 `ubicloud-standard-2` 預設為 Linux x64 2 vCPU。考慮到 Ubicloud 的價格優勢，如果您的管道可從平行處理中受益，我們建議嘗試 4 個或更多 vCPU。
 
-When you enable premium runners, we automatically route your jobs to premium machines. If capacity's full, you seamlessly fall back to standard runners with no extra wait time. You are billed by the minute based on the type of runner you're using. 
+當您啟用進階執行器時，我們會自動將您的任務路由到進階機器。如果容量已滿，您會無縫回退到標準執行器，無需額外等待時間。您將根據所使用的執行器類型按分鐘計費。
 
-### Linux x64 Runners
+### Linux x64 執行器
 
-| vCPU | Memory | Standard Runners |  Premium Runners |
+| vCPU | 記憶體 | 標準執行器 |  進階執行器 |
 |------|--------|------------------|------------------|
-| 2    | 8GB    | \$0.0008/min     | \$0.0016/min     |
-| 4    | 16GB   | \$0.0016/min     | \$0.0032/min     |
-| 8    | 32GB   | \$0.0032/min     | \$0.0064/min     |
-| 16   | 64GB   | \$0.0064/min     | \$0.0128/min     |
-| 30   | 120GB  | \$0.0120/min     | \$0.0240/min     |
+| 2    | 8GB    | \$0.0008/分鐘     | \$0.0016/分鐘     |
+| 4    | 16GB   | \$0.0016/分鐘     | \$0.0032/分鐘     |
+| 8    | 32GB   | \$0.0032/分鐘     | \$0.0064/分鐘     |
+| 16   | 64GB   | \$0.0064/分鐘     | \$0.0128/分鐘     |
+| 30   | 120GB  | \$0.0120/分鐘     | \$0.0240/分鐘     |
 
-### Linux arm64 Runners
+### Linux arm64 執行器
 
-| vCPU | Memory | Price        |
+| vCPU | 記憶體 | 價格        |
 |------|--------|--------------|
-| 2    | 6GB    | \$0.0008/min |
-| 4    | 12GB   | \$0.0016/min |
-| 8    | 24GB   | \$0.0032/min |
-| 16   | 48GB   | \$0.0064/min |
-| 30   | 90GB   | \$0.0120/min |
+| 2    | 6GB    | \$0.0008/分鐘 |
+| 4    | 12GB   | \$0.0016/分鐘 |
+| 8    | 24GB   | \$0.0032/分鐘 |
+| 16   | 48GB   | \$0.0064/分鐘 |
+| 30   | 90GB   | \$0.0120/分鐘 |
 
-## Compute
+## 運算
 
-Ubicloud virtual machines (VMs) come in standard and burstable flavors. The following tables display our VM pricing in Hetzner's Germany region.
-- You can choose extra storage in the portal at additional cost.
-- Ubicloud prices in our LeaseWeb US region is 25% higher than in Germany.
+Ubicloud 虛擬機（VM）提供標準和突發型兩種類型。以下表格顯示我們在 Hetzner 德國地區的虛擬機定價。
+- 您可以在入口網站中選擇額外儲存空間，需支付額外費用。
+- Ubicloud 在美國 LeaseWeb 地區的價格比德國高 25%。
 
-### Standard VMs
+### 標準虛擬機
 
-Standard VMs come with dedicated CPU, memory, and local block storage. You can think of the standard family as our general purpose instances.
+標準虛擬機配備專用 CPU、記憶體和本地區塊儲存。您可以將標準系列視為我們的通用執行個體。
 
-| Virtual Machine | vCPU | Memory | Storage |               Pricing             |
+| 虛擬機 | vCPU | 記憶體 | 儲存空間 |               定價             |
 |:---------------:|:----:|:------:|:-------:|:---------------------------------:|
-|    standard-2   |   2  |   8GB  |   40GB  | \$0.00067/min <br/> (\$26.60/mo)  |
-|    standard-4   |   4  |  16GB  |   80GB  | \$0.00133/min <br/> (\$53.20/mo)  |
-|    standard-8   |   8  |  32GB  |  160GB  | \$0.00266/min <br/> (\$106.40/mo) |
-|   standard-16   |  16  |  64GB  |  320GB  | \$0.00533/min <br/> (\$212.80/mo) |
-|   standard-30   |  30  |  120GB |  600GB  | \$0.01000/min <br/> (\$399.00/mo) |
-|   standard-60   |  60  |  240GB |  1200GB | \$0.02000/min <br/> (\$798.00/mo) |
+|    standard-2   |   2  |   8GB  |   40GB  | \$0.00067/分鐘 <br/> (\$26.60/月)  |
+|    standard-4   |   4  |  16GB  |   80GB  | \$0.00133/分鐘 <br/> (\$53.20/月)  |
+|    standard-8   |   8  |  32GB  |  160GB  | \$0.00266/分鐘 <br/> (\$106.40/月) |
+|   standard-16   |  16  |  64GB  |  320GB  | \$0.00533/分鐘 <br/> (\$212.80/月) |
+|   standard-30   |  30  |  120GB |  600GB  | \$0.01000/分鐘 <br/> (\$399.00/月) |
+|   standard-60   |  60  |  240GB |  1200GB | \$0.02000/分鐘 <br/> (\$798.00/月) |
 
-### Burstable VMs
+### 突發型虛擬機
 
-Burstable VMs come with shared CPUs.  Each VM can utilize host cpu capacity up to 50% of the allocated vCPU and additionally burst up to 100% of the allocated vCPU at micro-intervals. Memory and block storage is currently dedicated to each VM. Burstable VMs are best suited for low-traffic websites, development and testing workloads, and AI agents.
+突發型虛擬機配備共用 CPU。每個虛擬機可使用最多 50% 的已配置 vCPU 主機容量，並可在微秒級間隔內額外突發至已配置 vCPU 的 100%。記憶體和區塊儲存目前為每個虛擬機專用。突發型虛擬機最適合低流量網站、開發和測試工作負載，以及 AI 代理。
 
-| Virtual Machine | vCPU | Memory | Storage |               Pricing             |
+| 虛擬機 | vCPU | 記憶體 | 儲存空間 |               定價             |
 |:---------------:|:----:|:------:|:-------:|:---------------------------------:|
-|   burstable-1   |   1  |   2GB  |   10GB  | \$0.00017/min <br/> (\$6.65/mo)   |
-|   burstable-2   |   2  |   4GB  |   20GB  | \$0.00033/min <br/> (\$13.40/mo)  |
+|   burstable-1   |   1  |   2GB  |   10GB  | \$0.00017/分鐘 <br/> (\$6.65/月)   |
+|   burstable-2   |   2  |   4GB  |   20GB  | \$0.00033/分鐘 <br/> (\$13.40/月)  |
 
-### Networking
+### 網路
 
-Ubicloud creates each VM in a private subnet. For free, each VM gets a private IPv4 and IPv6 address. The VM also gets a public IPv6 address for free. For a public IPv4 address, we charge \$3.00/month pro-rated per minute. You can opt out of getting a public IPv4 when creating the VM.
+Ubicloud 在私有子網路中建立每個虛擬機。每個虛擬機免費獲得私有 IPv4 和 IPv6 位址。虛擬機還免費獲得公共 IPv6 位址。對於公共 IPv4 位址，我們按分鐘按比例收取每月 \$3.00 的費用。您可以在建立虛擬機時選擇不使用公共 IPv4。
 
-Each VM has a monthly egress quota of 0.625TB per 2 vCPUs. If you exceed this limit, we will charge you \$3 per TB of egress traffic. We don't charge for ingress traffic or traffic between your resources within the same cloud region.
+每個虛擬機每 2 個 vCPU 有 0.625TB 的月度出口流量配額。如果超過此限制，我們將對每 TB 出口流量收取 \$3 的費用。我們不對入口流量或同一雲端地區內資源之間的流量收費。
 
 
-## Managed PostgreSQL
+## 託管 PostgreSQL
 
-Ubicloud Managed PostgreSQL comes in standard and burstable flavors. The following tables display our pricing in Germany.
-- We calculate usage at per minute granularity and bill you at the end of the month for usage.
-- We retain backups for 7 days for disaster recovery purposes. You can restore from backups at per-minute granularity.
-- You can choose extra storage in the portal at additional cost.
-- Ubicloud prices in our US region are 20% higher than in Germany.
+Ubicloud 託管 PostgreSQL 提供標準和突發型兩種類型。以下表格顯示我們在德國的定價。
+- 我們以每分鐘為單位計算使用量，並在月底向您收取使用費用。
+- 我們為災難復原目的保留 7 天的備份。您可以按分鐘精度從備份還原。
+- 您可以在入口網站中選擇額外儲存空間，需支付額外費用。
+- Ubicloud 在美國地區的價格比德國高 20%。
 
-### Standard PostgreSQL
+### 標準 PostgreSQL
 
-Standard Managed PostgreSQL comes with dedicated CPU, memory, and local block storage.
+標準託管 PostgreSQL 配備專用 CPU、記憶體和本地區塊儲存。
 
-|  PostgreSQL | vCPU | Memory | Storage | Monthly Price |
+|  PostgreSQL | vCPU | 記憶體 | 儲存空間 | 月費 |
 |:-----------:|:----:|:------:|:-------:|:-------------:|
 |  standard-2 |   2  |   8GB  |   64GB  |      $49      |
 |  standard-4 |   4  |  16GB  |  128GB  |      $99      |
 |  standard-8 |   8  |  32GB  |  256GB  |      $198     |
 | standard-16 |  16  |  64GB  |  512GB  |      $396     |
 | standard-30 |  30  |  120GB | 1,024GB |      $749     |
-| standard-60 |  60  |  240GB | 2,048GB |     $1498     | 
+| standard-60 |  60  |  240GB | 2,048GB |     $1498     |
 
-### Burstable PostgreSQL
+### 突發型 PostgreSQL
 
-Burstable Managed PostgreSQL comes with shared CPUs. Each VM can utilize host cpu capacity up to 50% of the allocated vCPU and additionally burst up to 100% of the allocated vCPU at micro-intervals. Memory and local block storage are currently dedicated to the database.
+突發型託管 PostgreSQL 配備共用 CPU。每個虛擬機可使用最多 50% 的已配置 vCPU 主機容量，並可在微秒級間隔內額外突發至已配置 vCPU 的 100%。記憶體和本地區塊儲存目前為資料庫專用。
 
-|  PostgreSQL  | vCPU | Memory | Storage | Monthly Price |
+|  PostgreSQL  | vCPU | 記憶體 | 儲存空間 | 月費 |
 |:------------:|:----:|:------:|:-------:|:-------------:|
 |  burstable-1 |   1  |   2GB  |   16GB  |      $12.41   |
 |  burstable-2 |   2  |   4GB  |   32GB  |      $24.81   |
 
 
-### Managed ParadeDB
- 
-ParadeDB is an Elasticsearch alternative built on Postgres. ParadeDB instances managed by Ubicloud team and ParadeDB team jointly.
+### 託管 ParadeDB
 
-|   ParadeDB  | vCPU | Memory | Storage | Monthly Price |
+ParadeDB 是基於 Postgres 建構的 Elasticsearch 替代方案。ParadeDB 執行個體由 Ubicloud 團隊和 ParadeDB 團隊共同管理。
+
+|   ParadeDB  | vCPU | 記憶體 | 儲存空間 | 月費 |
 |:-----------:|:----:|:------:|:-------:|:-------------:|
 |  standard-2 |   2  |   8GB  |   64GB  |      $99      |
 |  standard-4 |   4  |  16GB  |  128GB  |      $198     |
 |  standard-8 |   8  |  32GB  |  256GB  |      $396     |
 | standard-16 |  16  |  64GB  |  512GB  |      $749     |
 | standard-30 |  30  |  120GB | 1,024GB |     $1498     |
-| standard-60 |  60  |  240GB | 2,048GB |     $2997     | 
+| standard-60 |  60  |  240GB | 2,048GB |     $2997     |
 
 
-## Managed Kubernetes
+## 託管 Kubernetes
 
-Managed Kubernetes comes with dedicated CPU, memory, local block storage, and public IP address for each node. With Ubicloud Kubernetes, you only pay for the nodes you use and there are no hidden costs for networking, load balancers or egress fees. The following table display our pricing in Germany:
+託管 Kubernetes 為每個節點配備專用 CPU、記憶體、本地區塊儲存和公共 IP 位址。使用 Ubicloud Kubernetes，您只需為使用的節點付費，網路、負載平衡器或出口流量費用不會有隱藏成本。以下表格顯示我們在德國的定價：
 
 
-| Control Plane               | Worker Nodes | Node Specs                                 | Monthly Price |
+| 控制平面               | 工作節點 | 節點規格                                 | 月費 |
 |:---------------------------:|:------------:|:------------------------------------------:|:-------------:|
-|  Single node <br/> (non-HA) |           1  | 2 vCores, 8 GB memory, 40GB local storage  |        $45.60 |
-|  Single node <br/> (non-HA) |           3  | 2 vCores, 8 GB memory, 40GB local storage  |       $104.80 |
-|  Single node <br/> (non-HA) |          10  | 2 vCores, 8 GB memory, 40GB local storage  |       $312.00 |
-|                3 nodes (HA) |           3  | 2 vCores, 8 GB memory, 40GB local storage  |       $136.80 |
-|                3 nodes (HA) |           5  | 2 vCores, 8 GB memory, 40GB local storage  |       $196.00 |
-|                3 nodes (HA) |          10  | 2 vCores, 8 GB memory, 40GB local storage  |       $344.00 |
+|  單一節點 <br/> (非高可用性) |           1  | 2 虛擬核心、8 GB 記憶體、40GB 本地儲存  |        $45.60 |
+|  單一節點 <br/> (非高可用性) |           3  | 2 虛擬核心、8 GB 記憶體、40GB 本地儲存  |       $104.80 |
+|  單一節點 <br/> (非高可用性) |          10  | 2 虛擬核心、8 GB 記憶體、40GB 本地儲存  |       $312.00 |
+|                3 節點 (高可用性) |           3  | 2 虛擬核心、8 GB 記憶體、40GB 本地儲存  |       $136.80 |
+|                3 節點 (高可用性) |           5  | 2 虛擬核心、8 GB 記憶體、40GB 本地儲存  |       $196.00 |
+|                3 節點 (高可用性) |          10  | 2 虛擬核心、8 GB 記憶體、40GB 本地儲存  |       $344.00 |
 
-We calculate usage at per-minute granularity and bill you at the end of the month for usage.
+我們以每分鐘為單位計算使用量，並在月底向您收取使用費用。
 
-Ubicloud prices for worker nodes in our US region are 20% higher than in Germany. Control plane pricing is the same in US and Germany.
+Ubicloud 在美國地區的工作節點價格比德國高 20%。美國和德國的控制平面定價相同。

@@ -1,96 +1,96 @@
 ---
-title: 'Overview'
-description: 'Ubicloud APIs (Beta) allow users to programmatically manage their resources.'
+title: '概覽'
+description: 'Ubicloud API（測試版）允許使用者以程式化方式管理其資源。'
 ---
 
-The API is designed with predictable endpoints and an intuitive design, making it easy to understand and use. It adheres to REST principles, allowing users to send requests using any client that supports HTTPS requests to Ubicloud API endpoints. All request and response bodies are in JSON format.
+該 API 採用可預測的端點和直觀的設計，使其易於理解和使用。它遵循 REST 原則，允許使用者使用任何支援 HTTPS 請求的客戶端向 Ubicloud API 端點發送請求。所有請求和回應主體均為 JSON 格式。
 
-## Authentication
+## 驗證
 
-The Ubicloud API uses personal access tokens for authentication.  If you have not already created a personal access token for your project, you can create one by going to the `Tokens` page for your project, and clicking the `Create Token` button:
+Ubicloud API 使用個人存取權杖進行驗證。如果您尚未為您的專案建立個人存取權杖，您可以前往專案的「權杖」頁面，然後點擊「建立權杖」按鈕來建立一個：
 
-![Create token screenshot](/quick-start/cli-1-screenshot.png)
+![建立權杖截圖](/quick-start/cli-1-screenshot.png)
 
-That will create a personal access token.  Click on the clipboard icon under the token heading to copy the token to your clipboard:
+這將建立一個個人存取權杖。點擊權杖標題下的剪貼簿圖示將權杖複製到剪貼簿：
 
-![View token screenshot](/quick-start/cli-2-screenshot.png)
+![檢視權杖截圖](/quick-start/cli-2-screenshot.png)
 
-You must pass the personal access token in the authorization header for all subsequent requests. Examples are provided in the API reference.
+您必須在所有後續請求的授權標頭中傳遞個人存取權杖。API 參考中提供了範例。
 
-## Requests
+## 請求
 
-API communicates with clients via HTTPS requests. All data sent in request bodies must be in JSON format. The API supports the following HTTP methods:
+API 透過 HTTPS 請求與客戶端通訊。所有在請求主體中傳送的資料都必須是 JSON 格式。API 支援以下 HTTP 方法：
 
-| Method | Usage                                                                                                                                         |
+| 方法 | 用途                                                                                                                                         |
 |--------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| GET    | Retrieves either a single resource or a list of resources. Supports pagination for lists.                                                     |
-| POST   | Creates a resource. All required attributes must be included in the JSON body of the request. Also allows for executing actions on resources. |
-| DELETE | Deletes a resource. If the given resource URI is valid, it returns a 204 status code irrespective of the resource exists or not.              |
-| PATCH  | Updates a resource. All required attributes must be included in the JSON body of the request. |
+| GET    | 擷取單一資源或資源列表。支援列表分頁。                                                     |
+| POST   | 建立資源。所有必需的屬性都必須包含在請求的 JSON 主體中。也允許對資源執行操作。 |
+| DELETE | 刪除資源。如果給定的資源 URI 有效，則無論資源是否存在，都會傳回 204 狀態碼。              |
+| PATCH  | 更新資源。所有必需的屬性都必須包含在請求的 JSON 主體中。 |
 
-## Responses
+## 回應
 
-Following HTTP response status codes can be returned from the API.
+API 可以傳回以下 HTTP 回應狀態碼。
 
-| Status | Description                                        |
+| 狀態 | 描述                                        |
 |--------|----------------------------------------------------|
-| 200    | Request was successful                             |
-| 204    | Request was successful and no content returns back |
-| 400    | Invalid request                                    |
-| 401    | Not authenticated to the API                       |
-| 403    | Unauthorized user access                           |
-| 404    | Resource not found                                 |
-| 409    | Resource state is not valid to handle request      |
-| 419    | Invalid Token                                      |
-| 500    | Unexpected internal error                          |
+| 200    | 請求成功                             |
+| 204    | 請求成功且沒有內容傳回 |
+| 400    | 無效請求                                    |
+| 401    | 未對 API 進行驗證                       |
+| 403    | 未經授權的使用者存取                           |
+| 404    | 找不到資源                                 |
+| 409    | 資源狀態無效，無法處理請求      |
+| 419    | 無效的權杖                                      |
+| 500    | 意外的內部錯誤                          |
 
-All the responses except the ones with the HTTP code 204 returns the content in the JSON format.
+除了 HTTP 代碼 204 的回應外，所有回應都以 JSON 格式傳回內容。
 
-## API Design
+## API 設計
 
-This section explains core concepts of the Ubicloud API.
+本節說明 Ubicloud API 的核心概念。
 
-### Global and Location Based Resources
+### 全域和基於位置的資源
 
-Ubicloud API users can manage two types of resources: global and location-based.
+Ubicloud API 使用者可以管理兩種類型的資源：全域和基於位置的。
 
-Global resources on Ubicloud are created independently of any specific location. Global resources can be managed with the API currently are projects, firewalls and firewall rules. Global resources do not have a globally unique name but do have a globally unique ID. Therefore, users can create multiple global resource of the same type with the same name, and each will be assigned a unique ID.
+Ubicloud 上的全域資源是獨立於任何特定位置建立的。目前可以使用 API 管理的全域資源包括專案、防火牆和防火牆規則。全域資源沒有全域唯一名稱，但具有全域唯一 ID。因此，使用者可以建立多個同名同類型的全域資源，每個都會被分配一個唯一的 ID。
 
-Resources created under a specific project and location are termed location-based resources. Users can create resources in various locations for a given project. Location-based resources have unique IDs and also names unique at the project and location level. The uniqueness of names allows API to make requests idempotent by using the name as an idempotency token.
+在特定專案和位置下建立的資源稱為基於位置的資源。使用者可以在給定專案的各個位置建立資源。基於位置的資源具有唯一的 ID，以及在專案和位置層級唯一的名稱。名稱的唯一性允許 API 使用名稱作為冪等性權杖來使請求冪等。
 
-#### Accessing Resources
+#### 存取資源
 
-As mentioned above, all resources have unique IDs, and location-based resources also have unique names. Resources can be accessed either by their ID or by their name (if available). We refer to the former as static access and the latter as dynamic access, because static access allows users to access the same resource even if its name changes (note that renaming resources is not supported yet).
+如上所述，所有資源都有唯一的 ID，基於位置的資源也有唯一的名稱。資源可以透過其 ID 或名稱（如果可用）存取。我們將前者稱為靜態存取，後者稱為動態存取，因為靜態存取允許使用者即使在名稱更改的情況下也能存取相同的資源（請注意，目前尚不支援重新命名資源）。
 
-For global resources, which have only a unique ID, users can access a specific resource by its ID. For example, to retrieve a project with ID `pj1234ab9eyt7jd4zmwby6ymd3`, user would send a GET request to `api.ubicloud.com/project/pj1234ab9eyt7jd4zmwby6ymd3`.
+對於只有唯一 ID 的全域資源，使用者可以透過其 ID 存取特定資源。例如，要擷取 ID 為 `pj1234ab9eyt7jd4zmwby6ymd3` 的專案，使用者會向 `api.ubicloud.com/project/pj1234ab9eyt7jd4zmwby6ymd3` 發送 GET 請求。
 
-For location-based resources, which have both unique IDs and names, users can access them either way. For example, a VM named `my-ubicloud-vm` with ID `vm123451fzj3k70d3p8f1709s` in the `pj1234ab9eyt7jd4zmwby6ymd3` project located in `eu-north-h1` can be accessed either via `api.ubicloud.com/project/pj1234ab9eyt7jd4zmwby6ymd3/location/eu-north-h1/vm/my-ubicloud-vm` or `api.ubicloud.com/project/pj1234ab9eyt7jd4zmwby6ymd3/location/eu-north-h1/vm/id/vm123451fzj3k70d3p8f1709s`. This enables both dynamic and static access as described.
+對於同時具有唯一 ID 和名稱的基於位置的資源，使用者可以使用任一方式存取。例如，位於 `eu-north-h1` 的 `pj1234ab9eyt7jd4zmwby6ymd3` 專案中名為 `my-ubicloud-vm`、ID 為 `vm123451fzj3k70d3p8f1709s` 的虛擬機可以透過 `api.ubicloud.com/project/pj1234ab9eyt7jd4zmwby6ymd3/location/eu-north-h1/vm/my-ubicloud-vm` 或 `api.ubicloud.com/project/pj1234ab9eyt7jd4zmwby6ymd3/location/eu-north-h1/vm/id/vm123451fzj3k70d3p8f1709s` 存取。這使得動態和靜態存取如所述成為可能。
 
-#### Creating Resources
+#### 建立資源
 
-To create a global resource all attributes must be sent in the body. For example to create a project, send a POST request to `api.ubicloud.com/project` with the required parameters in the body of the request. To create a firewall in the project `pj1234ab9eyt7jd4zmwby6ymd3` user can send a POST request to `api.ubicloud.com/project/pj1234ab9eyt7jd4zmwby6ymd3/firewall` with all the required parameters in the body.
+要建立全域資源，必須在主體中傳送所有屬性。例如，要建立專案，向 `api.ubicloud.com/project` 發送 POST 請求，並在請求主體中包含所需參數。要在專案 `pj1234ab9eyt7jd4zmwby6ymd3` 中建立防火牆，使用者可以向 `api.ubicloud.com/project/pj1234ab9eyt7jd4zmwby6ymd3/firewall` 發送 POST 請求，並在主體中包含所有必需參數。
 
-For creating location-based resources, Ubicloud supports a more condensed and straightforward method. Instead of sending a POST request to the parent URI of the resource, user can send a POST request directly to the resource's URI using its unique name, making the requests idempotent. For example, to create the previously mentioned VM, user would send a POST request to `api.ubicloud.com/project/pj1234ab9eyt7jd4zmwby6ymd3/location/eu-north-h1/vm/my-ubicloud-vm` with other required parameters in the request body. Essentially, URIs including the name of location-based resources can be used like variables in programming, simplifying creation, access, and deletion. No need to have a special case forPOST requests.
+對於建立基於位置的資源，Ubicloud 支援更精簡和直接的方法。使用者可以直接使用資源的唯一名稱向資源的 URI 發送 POST 請求，而不是向資源的父 URI 發送 POST 請求，從而使請求冪等。例如，要建立前面提到的虛擬機，使用者會向 `api.ubicloud.com/project/pj1234ab9eyt7jd4zmwby6ymd3/location/eu-north-h1/vm/my-ubicloud-vm` 發送 POST 請求，並在請求主體中包含其他必需參數。本質上，包含基於位置的資源名稱的 URI 可以像程式設計中的變數一樣使用，簡化了建立、存取和刪除。無需為 POST 請求設定特殊情況。
 
-### Deleting Resources
+### 刪除資源
 
-To delete a resource, user would send a DELETE request using the ID for global resources and either the ID or name for location-based resources. The DELETE endpoints return a 204 status code, whether the resource was deleted or did not exist to simplify client implementation. Note that, DELETE requests can still return 404 if the given resource URI is not a valid one. Please check the API reference for sample usage.
+要刪除資源，使用者會對全域資源使用 ID、對基於位置的資源使用 ID 或名稱發送 DELETE 請求。DELETE 端點傳回 204 狀態碼，無論資源是否被刪除或不存在，以簡化客戶端實作。請注意，如果給定的資源 URI 無效，DELETE 請求仍可能傳回 404。請查看 API 參考以了解範例用法。
 
-### Listing Resources with Pagination Support
+### 使用分頁支援列出資源
 
-Users would send a GET request to the resource's parent URI to retrieve a list of resources. For instance, a request to `api.ubicloud.com/project` will return all the projects user has created. All listing endpoints on Ubicloud support pagination, using cursor-based pagination as it scales better and handles parallel operations more effectively than offset-based pagination. Users can pass three different query parameters to list endpoints:
+使用者會向資源的父 URI 發送 GET 請求以擷取資源列表。例如，向 `api.ubicloud.com/project` 發送請求將傳回使用者建立的所有專案。Ubicloud 上的所有列表端點都支援分頁，使用基於游標的分頁，因為它比基於偏移的分頁更好地擴展並更有效地處理並行操作。使用者可以向列表端點傳遞三個不同的查詢參數：
 
-**‍order_column:** Specifies the attribute by which pages will be ordered. Each list endpoint supports ordering by id, and those with unique names also support ordering by name.
+**‍order_column：** 指定頁面排序所依據的屬性。每個列表端點都支援按 id 排序，具有唯一名稱的端點也支援按名稱排序。
 ‍
 
-‍**start_after:** A polymorphic value after which the page will include resources. Its' type depends on the value of order_column. If order_column is id, the value of start_after must be a valid ID. If it is name, the value of start_after can be any text. For example, to get a paginated list of VMs named alphabetically after "my-ubi", set the order_column to "name" and start_after to "my_ubi".
+‍**start_after：** 頁面將包含其後資源的多態值。其類型取決於 order_column 的值。如果 order_column 是 id，則 start_after 的值必須是有效的 ID。如果是名稱，則 start_after 的值可以是任何文字。例如，要獲取按字母順序排列在 "my-ubi" 之後的虛擬機分頁列表，將 order_column 設定為 "name"，將 start_after 設定為 "my_ubi"。
 
-‍**page_size:** Indicates how many items will be returned in a page. The default value is 1000, and it must be between 1 and 1000.
+‍**page_size：** 指示一頁中將傳回多少項目。預設值為 1000，必須介於 1 和 1000 之間。
 
-This polymorphic **start_after** value helps us continue returning pages even if the record with the given **start_after** value is deleted in parallel. We do not try to retrieve a resource with the **start_after** value but compare existing items' related column with the passed value directly, overcoming a main limitation of cursor-based pagination.
+這個多態的 **start_after** 值幫助我們即使在並行刪除具有給定 **start_after** 值的記錄時也能繼續傳回頁面。我們不會嘗試擷取具有 **start_after** 值的資源，而是直接將現有項目的相關欄位與傳遞的值進行比較，從而克服了基於游標分頁的主要限制。
 
-List endpoints return the response JSON with two keys: **items**, which holds the list of resources, and **count**, which keeps track of how many resources exist in total.
+列表端點傳回具有兩個鍵的回應 JSON：**items**，保存資源列表，以及 **count**，追蹤總共存在多少資源。
 
 ### UBID
 
-You might be curious why unique IDs for projects start with "pj" and those for virtual machines start with "vm". This is intentional to make life easier for both Ubicloud developers and users. As soon as you see a resource's ID, you can immediately understand its type, as different types of resources have different two-letter prefixes. We call these ubids, and you can see how they are both user-friendly and globally unique from the [implementation](https://github.com/ubicloud/ubicloud/blob/main/ubid.rb).
+您可能好奇為什麼專案的唯一 ID 以 "pj" 開頭，虛擬機的唯一 ID 以 "vm" 開頭。這是有意為之，旨在讓 Ubicloud 開發人員和使用者的生活更輕鬆。一旦您看到資源的 ID，您就可以立即了解其類型，因為不同類型的資源具有不同的兩個字母前綴。我們稱這些為 ubid，您可以從[實作](https://github.com/ubicloud/ubicloud/blob/main/ubid.rb)中看到它們既使用者友好又全域唯一。

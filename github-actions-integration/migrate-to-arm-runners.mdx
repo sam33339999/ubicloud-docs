@@ -1,17 +1,17 @@
 ---
-title: 'Migrate to Arm runners'
+title: '遷移到 Arm runners'
 ---
 
-GitHub Actions runs on x64 architectures. If you're building or testing for arm64 architectures and using QEMU emulation to do so, you can change your workflow file to natively use arm64.
+GitHub Actions 在 x64 架構上執行。如果您正在為 arm64 架構建置或測試，並使用 QEMU 模擬來執行此操作，您可以變更您的工作流程檔案以原生使用 arm64。
 
-For this, you simply need to change your platform and remove the QEMU step.
+為此，您只需變更您的平台並移除 QEMU 步驟。
 
 ![Migrate to Arm runners](/github-actions-integration/migrate-to-arm-runners-1.png)
 
-## Arm image
+## Arm 映像
 
-GitHub Actions doesn't currently have an official Arm image available. As a result, Ubicloud builds its own Ubuntu image; and our Arm runners don't have all pre-installed packages that are available on x64.
+GitHub Actions 目前沒有官方的 Arm 映像可用。因此，Ubicloud 建立了自己的 Ubuntu 映像；而我們的 Arm runners 沒有 x64 上可用的所有預安裝套件。
 
-If your workflow has a package dependency that doesn't exist on Ubicloud's arm image, we recommend installing the dependency manually for the time being.
+如果您的工作流程有 Ubicloud 的 arm 映像上不存在的套件依賴項，我們建議暫時手動安裝該依賴項。
 
-If you're a large customer and need commonly used packages on arm64, you contact us [support@ubicloud.com](mailto:support@ubicloud.com).
+如果您是大型客戶並需要 arm64 上的常用套件，可以聯繫我們 [support@ubicloud.com](mailto:support@ubicloud.com)。

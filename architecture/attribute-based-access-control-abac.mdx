@@ -1,81 +1,81 @@
 ---
-title: 'Attribute-Based Access Control (ABAC) Design'
-sidebarTitle: 'ABAC Design'
+title: '屬性型存取控制（ABAC）設計'
+sidebarTitle: 'ABAC 設計'
 ---
 
-## Motivation
+## 動機
 
-Authentication confirms that users are who they say they are. Authorization gives those users permissions to access a resource.
+身份驗證確認使用者的身份。授權則賦予這些使用者存取資源的權限。
 
-Ubicloud uses [Rodauth](https://github.com/jeremyevans/rodauth) for authentication. For authorization, we need to implement a system that gives users the flexibility they need to access various resources across different cloud services on the cloud.
+Ubicloud 使用 [Rodauth](https://github.com/jeremyevans/rodauth) 進行身份驗證。對於授權，我們需要實作一個系統，讓使用者能夠靈活地存取雲端上不同雲端服務的各種資源。
 
-Today, there's a big bifurcation of how authorization is implemented in the cloud. Hyperscalers such as AWS, Azure, and GCP, have powerful authorization models. Other cloud and hosting providers only have authorization at the most basic level (a user has access to a project or not).
+目前，雲端授權的實作方式有很大的分歧。AWS、Azure 和 GCP 等超大型雲端供應商擁有強大的授權模型。其他雲端和託管服務提供商只有最基本的授權層級（使用者擁有或沒有專案存取權）。
 
-Ubicloud's authorization intends to deliver something as powerful as the Identity Access Management (IAM) seen on the hyperscalers. It's in active development, so expect to see major adjustments.
+Ubicloud 的授權旨在提供與超大型雲端供應商的身份存取管理（IAM）同樣強大的功能。它正在積極開發中，因此預計會有重大調整。
 
-## Background
+## 背景
 
-There are two common security models on the cloud today: role-based access control (RBAC) and attribute-based access control (ABAC). In RBAC, an administrator puts users into roles. Then permissions to resources are defined over these roles.
+現今雲端上有兩種常見的安全模型：角色型存取控制（RBAC）和屬性型存取控制（ABAC）。在 RBAC 中，管理員將使用者分配到角色中。然後在這些角色上定義對資源的權限。
 
-For example, an administrator puts the user “Enes Cakir” into “engineering” and “devops” roles. The “devops” role can then access production resources and make deployments.
+例如，管理員將使用者「Enes Cakir」分配到「engineering」和「devops」角色。然後「devops」角色就可以存取生產資源並進行部署。
 
-ABAC takes this one step further, where permissions to resources are defined over attributes. In addition to roles, attributes can also include things like a user's location, client device type, or authentication method. For example, the user “Enes Cakir” can access production resources when he's in Europe, but not when he's in the US. This ensures that organizations can define flexible policies to meet their business needs.
+ABAC 更進一步，其中對資源的權限是根據屬性定義的。除了角色之外，屬性還可以包括使用者的位置、客戶端裝置類型或驗證方法等內容。例如，使用者「Enes Cakir」在歐洲時可以存取生產資源，但在美國時則不能。這確保組織可以定義靈活的政策以滿足其業務需求。
 
-[Tailscale has a great blog post](https://tailscale.com/blog/rbac-like-it-was-meant-to-be/) that describes security policies, RBAC, and ABAC in more detail.
+[Tailscale 有一篇很好的部落格文章](https://tailscale.com/blog/rbac-like-it-was-meant-to-be/)，更詳細地描述了安全政策、RBAC 和 ABAC。
 
-All three hyperscalers seem to be moving towards the ABAC model. You can read more about [AWS](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html), [Azure](https://learn.microsoft.com/en-us/azure/role-based-access-control/conditions-overview), and [GCP](https://cloud.google.com/iam/docs/conditions-overview)'s ABAC designs on their websites. These designs rely on conditional expressions and are more complex than a clean-sheet ABAC design. This is probably because all hyperscalers need to be backwards compatible with their RBAC designs. We'd like to provide something much simpler, both in design and implementation.
+所有三大超大型雲端供應商似乎都在向 ABAC 模型邁進。您可以在他們的網站上閱讀更多關於 [AWS](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html)、[Azure](https://learn.microsoft.com/en-us/azure/role-based-access-control/conditions-overview) 和 [GCP](https://cloud.google.com/iam/docs/conditions-overview) 的 ABAC 設計。這些設計依賴於條件表達式，比全新的 ABAC 設計更複雜。這可能是因為所有超大型雲端供應商都需要與其 RBAC 設計保持向後相容。我們希望在設計和實作上都提供更簡單的方案。
 
-## An ABAC example
-In the following, we start with an ABAC example and build on top of it. The following diagram describes a simple scenario, where the users on the left have associated “tags” (classic roles) and the resources on the right also have “tags”.
+## ABAC 範例
+在下文中，我們從一個 ABAC 範例開始並在此基礎上進行構建。下圖描述了一個簡單的場景，左側的使用者具有相關的「標籤」（經典角色），右側的資源也具有「標籤」。
 
 ![ABAC 1](/architecture/attribute-based-access-control-abac-1.png)
 
-Simple ABAC example, where users and resources have associated "tags"
-In ABAC terminology, the subject is the user requesting access to a resource to perform an action. The resource is the object (such as VM, simple storage bucket, or source file) that the subject wants to access. The action is what the user is trying to do with the resource. Example actions include VM view, VM create, VM delete, etc.
+簡單的 ABAC 範例，其中使用者和資源具有相關的「標籤」
+在 ABAC 術語中，主體是請求存取資源以執行操作的使用者。資源是主體想要存取的物件（例如 VM、簡單儲存桶或原始檔案）。操作是使用者嘗試對資源執行的動作。範例操作包括 VM 檢視、VM 建立、VM 刪除等。
 
-In addition to the triplet `<subject, action, object>`, we introduce the notion of tags. We can associate each subject or object with one or more tags. These four concepts give us an enormous amount of flexibility with our authorization model. In the example above, a user or organization can create fine-grained access policies simply by assigning the right tags to users and resources.
+除了三元組 `<主體, 操作, 物件>` 之外，我們引入了標籤的概念。我們可以將每個主體或物件與一個或多個標籤關聯。這四個概念為我們的授權模型提供了極大的靈活性。在上面的範例中，使用者或組織只需將正確的標籤分配給使用者和資源，即可建立細粒度的存取政策。
 
-Today, Ubicloud's tags are user assigned. We don't have any computed tags over dynamic attributes, such as geolocation. We did this to start simple and grow our authorization model with actual customer needs.
+目前，Ubicloud 的標籤是由使用者分配的。我們沒有任何基於動態屬性（例如地理位置）的計算標籤。我們這樣做是為了從簡單開始，並根據實際客戶需求來發展我們的授權模型。
 
-## Making users not worry about ABAC
+## 讓使用者無需擔心 ABAC
 
-Of course, most users who are new to Ubicloud shouldn't need to learn about ABAC. Intuitively, after they sign up, they should be able to create, view, and destroy resources on Ubicloud. They should also be able to invite and collaborate with other users on the platform.
+當然，大多數 Ubicloud 的新使用者不需要了解 ABAC。直覺上，在他們註冊後，他們應該能夠在 Ubicloud 上建立、檢視和銷毀資源。他們也應該能夠邀請其他使用者並在平台上與之協作。
 
-To enable this, we introduce the notion of “hyper tags.” Each user and resource in the below diagram has a hidden tag, whereby the hidden tag has the same name as its associated user or resource. This way, after a user comes in, they can create new resources and act on the resources they have created without knowing about ABAC.
+為了實現這一點，我們引入了「超級標籤」的概念。下圖中的每個使用者和資源都有一個隱藏標籤，其中隱藏標籤與其相關的使用者或資源具有相同的名稱。這樣，使用者進入後，他們可以建立新資源並對他們建立的資源進行操作，而無需了解 ABAC。
 
 ![ABAC 2](/architecture/attribute-based-access-control-abac-2.png)
 
-Hyper tags provide hidden names for attributes
-The notion of “hyper tags” has the side benefit of enabling more granular access policies. For example, if user “Enes Cakir” has 10 virtual machines and he'd like to grant permissions for just one of those VMs to “Daniel Farina”, he can do so. Of course, Enes could have done this by creating tags for himself, Daniel, and the VM. Hyper tags make this common use case just more convenient.
+超級標籤為屬性提供隱藏名稱
+「超級標籤」的概念還有一個附帶好處，就是能夠實現更細粒度的存取政策。例如，如果使用者「Enes Cakir」有 10 台虛擬機器，他想只授予「Daniel Farina」其中一台 VM 的權限，他可以這樣做。當然，Enes 可以透過為自己、Daniel 和 VM 建立標籤來做到這一點。超級標籤只是讓這個常見用例更加方便。
 
-# Avoiding naming collisions in ABAC
+# 避免 ABAC 中的命名衝突
 
-One remaining problem with our ABAC example is naming collisions. It's likely for different organizations and users to create tags with the same name. For example, “prod”, “engineering”, “devops”, “database”, etc. are all common tag names.
+我們的 ABAC 範例的一個剩餘問題是命名衝突。不同的組織和使用者很可能建立相同名稱的標籤。例如，「prod」、「engineering」、「devops」、「database」等都是常見的標籤名稱。
 
-To avoid naming collisions, we qualify every tag's name with a namespace. We then use these fully qualified names for authorization. For example, in the example below, Daniel is tagged as belonging to the engineering and devops organizations. So, he can access and deploy code both to dev and prod environments. On the other hand, Enes is only tagged with belonging to the engineering team and can therefore only deploy to the dev environment.
+為了避免命名衝突，我們使用命名空間限定每個標籤的名稱。然後我們使用這些完全限定的名稱進行授權。例如，在下面的範例中，Daniel 被標記為屬於 engineering 和 devops 組織。因此，他可以存取並將程式碼部署到開發和生產環境。另一方面，Enes 只被標記為屬於 engineering 團隊，因此只能部署到開發環境。
 
 ![ABAC 3](/architecture/attribute-based-access-control-abac-3.png)
 
-Namespaces qualify tag names and avoid naming collisions
-Of course, we don't want to bother a new Ubicloud user with the concept of a namespace. So, when a new user signs up, we create a default namespace for them and create their resources in that namespace. They can then update their “projects” by inviting other users and giving access to their namespace or resources.
+命名空間限定標籤名稱並避免命名衝突
+當然，我們不想用命名空間的概念困擾新的 Ubicloud 使用者。因此，當新使用者註冊時，我們為他們建立一個預設命名空間，並在該命名空間中建立他們的資源。然後他們可以透過邀請其他使用者並授予對其命名空間或資源的存取權限來更新他們的「專案」。
 
-# ABAC design
+# ABAC 設計
 
-Our ABAC design follows this simple yet powerful example. All we need to do is map the concepts we've introduced above into a data model. In our case, it turns out we need five PostgreSQL tables to implement an ABAC authorization model for the cloud.
+我們的 ABAC 設計遵循這個簡單而強大的範例。我們所需要做的就是將上面介紹的概念對應到資料模型中。在我們的情況下，我們需要五個 PostgreSQL 表來實作雲端的 ABAC 授權模型。
 
 ![ABAC 4](/architecture/attribute-based-access-control-abac-4.png)
 
-ABAC design's data model, where the model has five PostgreSQL tables
-These five Postgres tables are:
-1. An access policy table that represents the relationship between `<subject, action, object>`. Remember the subject here is the user and the object is the resource
-2. A namespace table to avoid naming collisions
-3. An access tags table to represent tags (we thought the name tags was just too generic, so picked something more descriptive)
-4. An items table to represent subjects and objects
-5. An applied tags table - this is an intermediary/pivot table that we use to establish a many to many relationship between items and tags
+ABAC 設計的資料模型，該模型有五個 PostgreSQL 表
+這五個 Postgres 表是：
+1. 一個存取政策表，表示 `<主體, 操作, 物件>` 之間的關係。請記住，這裡的主體是使用者，物件是資源
+2. 一個命名空間表，用於避免命名衝突
+3. 一個存取標籤表，用於表示標籤（我們認為標籤這個名稱太通用，所以選擇了更具描述性的名稱）
+4. 一個項目表，用於表示主體和物件
+5. 一個應用標籤表 - 這是一個中間/樞紐表，我們用它來建立項目和標籤之間的多對多關係
 
-## ABAC implementation in 130 lines of code
+## 130 行程式碼中的 ABAC 實作
 
-With our ABAC concepts mapped onto five PostgreSQL tables, all we need for authorization is to check if a path exists from a subject (a user identified with one or more tags) to the object (a resource identified with one or more tags). We can do this through the following SQL query.
+將我們的 ABAC 概念對應到五個 PostgreSQL 表後，我們進行授權所需要的就是檢查從主體（由一個或多個標籤識別的使用者）到物件（由一個或多個標籤識別的資源）是否存在路徑。我們可以透過以下 SQL 查詢來執行此操作。
 
 ```sql
 SELECT object_applied_tags.tagged_id, object_applied_tags.tagged_table, subjects, actions, objects
@@ -91,17 +91,17 @@ WHERE subject.id = :subject_id
    AND subjects ? subject_access_tags."name"
 ```
 
-The nice thing about this query is the following:
+這個查詢的好處在於：
 
-- It's powerful. We can express all attribute-based access control policies with this one query, for user-defined tags.
-- It has an existence proof. When you run the query, if it returns a tuple, the subject can access the object. If it doesn't, the subject isn't authorized. Further, you can see all access paths from the subject to the object by looking at the tuples this query returns.
-- It's simple. We get an ABAC implementation in 10 lines of SQL. In fact, [the entire file](https://github.com/ubicloud/ubicloud/blob/main/lib/authorization.rb) that implements our authorization policy is 130 lines of code.
+- 它很強大。我們可以用這個查詢表達所有基於屬性的存取控制政策，用於使用者定義的標籤。
+- 它有存在性證明。當您執行查詢時，如果它返回一個元組，主體就可以存取物件。如果沒有，主體就沒有授權。此外，您可以透過查看此查詢返回的元組來查看從主體到物件的所有存取路徑。
+- 它很簡單。我們用 10 行 SQL 就獲得了 ABAC 實作。事實上，[實作我們授權政策的整個檔案](https://github.com/ubicloud/ubicloud/blob/main/lib/authorization.rb)只有 130 行程式碼。
 
-Of course, you could argue that running a SQL query for each authorization action won't scale. When we reach that scale, we'd gladly optimize our implementation or rehaul it if need be. At that point, we would have also built a much deeper understanding of customer access patterns. Until then, we'll have a simple ABAC model that matches the expressiveness of AWS, Azure, and GCP, in an open source implementation.
+當然，您可能會認為為每個授權操作執行 SQL 查詢不具擴展性。當我們達到這個規模時，我們會很樂意最佳化我們的實作，或者在需要時進行全面改造。到那時，我們也將對客戶存取模式有更深入的了解。在此之前，我們將擁有一個簡單的 ABAC 模型，其表達能力與 AWS、Azure 和 GCP 相匹配，採用開源實作。
 
-## Conclusion
+## 結論
 
-ABAC enables a flexible way to authorize users. With it, organizations and users can express complex access relationships between users and resources. As importantly, ABAC is simpler than RBAC, simple enough to grasp without much effort. Ubicloud also has the benefit of not having to provide backwards compatibility to RBAC, like AWS or Azure. These properties enable us to express ABAC's data model in a few database tables and have the core implementation in one SQL query.
+ABAC 提供了一種靈活的方式來授權使用者。有了它，組織和使用者可以表達使用者和資源之間的複雜存取關係。同樣重要的是，ABAC 比 RBAC 更簡單，簡單到無需太多努力即可掌握。Ubicloud 還具有不必像 AWS 或 Azure 那樣提供對 RBAC 的向後相容性的優勢。這些特性使我們能夠在幾個資料庫表中表達 ABAC 的資料模型，並在一個 SQL 查詢中實現核心實作。
 
-We also expect our ABAC design to evolve over time. If you have any questions or feedback about this design document, we'd love to hear from you. Please start a conversation on GitHub discussions or reach out to us at [info@ubicloud.com](mailto:info@ubicloud.com).
+我們也預期我們的 ABAC 設計會隨著時間而演進。如果您對此設計文件有任何問題或回饋，我們很樂意聽取您的意見。請在 GitHub 討論區開始對話，或透過 [info@ubicloud.com](mailto:info@ubicloud.com) 與我們聯繫。
 

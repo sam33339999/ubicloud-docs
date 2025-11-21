@@ -1,45 +1,45 @@
 ---
-title: 'Quickstart'
+title: '快速入門'
 ---
 
-This guide describes how to integrate your GitHub Action workflows with Ubicloud runners. For this, you're going to sign up to Ubicloud, use our GitHub App to connect to your GitHub repo, and change one line in your GitHub workflow file. This will provide the following benefits:
+本指南說明如何將您的 GitHub Action 工作流程與 Ubicloud 執行器整合。為此，您需要註冊 Ubicloud，使用我們的 GitHub App 連接到您的 GitHub 儲存庫，並在 GitHub 工作流程檔案中變更一行。這將提供以下好處：
 
-- Reduce your GitHub Actions bill by 10x
-- Native x64 and arm64 Linux runners
-- Full compatibility with GitHub Actions
-- Open source, if you choose to manage Ubicloud VMs yourself
+- 將您的 GitHub Actions 帳單降低 10 倍
+- 原生 x64 和 arm64 Linux 執行器
+- 與 GitHub Actions 完全相容
+- 如果您選擇自行管理 Ubicloud 虛擬機，採用開源方案
 
 <Steps stepSize="h1">
-  <Step title="Sign up and sign in">
-    The first time you use Ubicloud, you'll need to [create a new account](https://console.ubicloud.com/create-account). Once you do that and sign in, you'll be directed to Ubicloud's home page.
+  <Step title="註冊並登入">
+    第一次使用 Ubicloud 時，您需要[建立新帳戶](https://console.ubicloud.com/create-account)。完成後登入，您將被導向到 Ubicloud 的首頁。
   </Step>
-  <Step title="Enter billing details">
-    Ubicloud requires an active, valid credit card on file before you can create resources. This is primarily a means to prevent abuse and to ensure that we can collect payment at the end of the month.
+  <Step title="輸入帳單詳情">
+    在建立資源之前，Ubicloud 需要在檔案中記錄有效的信用卡。這主要是為了防止濫用，並確保我們可以在月底收取付款。
 
-    Ubicloud also provides a billing credit of $1/month for an account. This means you'll get 1,250 free minutes of GitHub runner credits each month.
+    Ubicloud 還為帳戶提供每月 $1 的帳單額度。這意味著您每月可獲得 1,250 分鐘的 GitHub 執行器免費額度。
 
-    From the navigation menu on the left, choose Billing. Then, enter your credit card information.
+    從左側的導覽選單中，選擇「帳單」。然後，輸入您的信用卡資訊。
     ![Quickstart 1](/github-actions-integration/quickstart-1-screenshot.png)
   </Step>
-  <Step title="Integrate with GitHub">
-    On the navigation menu, choose GitHub Runners. Then, click on Connect New Account on the right. This will take you to GitHub.
+  <Step title="與 GitHub 整合">
+    在導覽選單上，選擇「GitHub 執行器」。然後，點擊右側的「連接新帳戶」。這將帶您前往 GitHub。
     ![Quickstart 2](/github-actions-integration/quickstart-2-screenshot.png)
 
-    GitHub will ask you to install and authorize the Ubicloud Managed Runners app. Once you do this, you will be redirected to the Ubicloud cloud dashboard. Here, you should now see your GitHub repositories.
+    GitHub 會要求您安裝並授權 Ubicloud 託管執行器應用程式。完成後，您將被重新導向到 Ubicloud 雲端儀表板。在這裡，您現在應該會看到您的 GitHub 儲存庫。
     ![Quickstart 3](/github-actions-integration/quickstart-3.png)
   </Step>
-  <Step title="Change your `workflow.yml` file">
-    To use Ubicloud for GitHub Actions, you need to edit your `.github/workflows` file. In particular, you need to change the `ubuntu-latest` runner label to `ubicloud-standard-2`.
+  <Step title="變更您的 `workflow.yml` 檔案">
+    要使用 Ubicloud 進行 GitHub Actions，您需要編輯 `.github/workflows` 檔案。特別是，您需要將 `ubuntu-latest` 執行器標籤變更為 `ubicloud-standard-2`。
     ![Quickstart 4](/github-actions-integration/quickstart-4.png)
 
-    When you merge this change, GitHub Actions will start using Ubicloud runners. If your workflow file has builds configured on merging a change, you see your build start in your project's Actions tab. If not, you can manually start a build to see the change take effect.
+    合併此變更後，GitHub Actions 將開始使用 Ubicloud 執行器。如果您的工作流程檔案在合併變更時配置了建置，您會在專案的 Actions 標籤中看到建置開始。如果沒有，您可以手動啟動建置以查看變更生效。
 
-    By default, `ubicloud-standard-2` starts a VM with the same vCPU and memory configuration as paid GitHub runners. Given Ubicloud's 10x price advantage, you might want to pick a more powerful VM such as `ubicloud-standard-8` and see if your pipelines move faster. You can find the full list of runners and their prices in the [Pricing documents](/about/pricing#github-actions).
+    預設情況下，`ubicloud-standard-2` 啟動一個與付費 GitHub 執行器相同 vCPU 和記憶體配置的虛擬機。考慮到 Ubicloud 的 10 倍價格優勢，您可能想選擇更強大的虛擬機，例如 `ubicloud-standard-8`，看看您的管道是否執行得更快。您可以在[定價文件](/about/pricing#github-actions)中找到執行器的完整列表及其價格。
   </Step>
 </Steps>
 
 <Info>
-    **Summary:** In this guide, you created a Ubicloud account and integrated that account with your GitHub Account. You then changed a single line in your workflow file to use Ubicloud runners.
+    **摘要：** 在本指南中，您建立了一個 Ubicloud 帳戶並將該帳戶與您的 GitHub 帳戶整合。然後，您在工作流程檔案中變更了一行以使用 Ubicloud 執行器。
 
-    This resulted in 10x lower prices and faster CI/CD, with Ubicloud's source code openly available under the AGPL license.
+    這導致價格降低 10 倍，CI/CD 速度更快，而 Ubicloud 的原始碼在 AGPL 授權下公開提供。
 </Info>

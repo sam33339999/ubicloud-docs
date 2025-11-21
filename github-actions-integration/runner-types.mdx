@@ -1,18 +1,18 @@
 ---
-title: 'Runner Types'
+title: '執行器類型'
 ---
 
-Ubicloud offers a wide variety of runner types and sizes, allowing you to choose based on your specific needs.
+Ubicloud 提供多種執行器類型和大小，讓您可以根據特定需求進行選擇。
 
-By default, using `runs-on: ubicloud` provisions a 2 vCPU x64 Ubuntu 22.04 runner. You can specify the runner size, for example, `runs-on: ubicloud-standard-8` provisions an 8 vCPU runner. You can even specify the operating system, such as `runs-on: ubicloud-standard-4-ubuntu-2404`, which provisions a 4 vCPU runner with Ubuntu 24.04.
+預設情況下，使用 `runs-on: ubicloud` 會配置 2 vCPU x64 Ubuntu 22.04 執行器。您可以指定執行器大小，例如 `runs-on: ubicloud-standard-8` 會配置 8 vCPU 執行器。您甚至可以指定作業系統，例如 `runs-on: ubicloud-standard-4-ubuntu-2404`，會配置 4 vCPU、Ubuntu 24.04 的執行器。
 
-## Ubuntu 24.04 Migration
-Operating system used by all default Ubicloud runner types will be updated from Ubuntu 22.04 to Ubuntu 24.04 on November 23. All jobs using the label `ubicloud`, `ubicloud-standard-2`, `ubicloud-standard-4`, `ubicloud-standard-8`, `ubicloud-standard-16`, `ubicloud-standard-30`, `ubicloud-standard-60`, `ubicloud-arm`, `ubicloud-standard-2-arm`, `ubicloud-standard-4-arm`, `ubicloud-standard-8-arm`, `ubicloud-standard-16-arm`, `ubicloud-standard-30-arm` or `ubicloud-standard-60-arm` will start using Ubuntu 24.04. You can use Ubuntu 22.04 by explicitly specifying the operating system version in the runner label, for instance using `ubicloud-standard-2-ubuntu-2204` instead of `ubicloud-standard-2`.
+## Ubuntu 24.04 遷移
+所有預設 Ubicloud 執行器類型使用的作業系統將在 11 月 23 日從 Ubuntu 22.04 更新至 Ubuntu 24.04。所有使用標籤 `ubicloud`、`ubicloud-standard-2`、`ubicloud-standard-4`、`ubicloud-standard-8`、`ubicloud-standard-16`、`ubicloud-standard-30`、`ubicloud-standard-60`、`ubicloud-arm`、`ubicloud-standard-2-arm`、`ubicloud-standard-4-arm`、`ubicloud-standard-8-arm`、`ubicloud-standard-16-arm`、`ubicloud-standard-30-arm` 或 `ubicloud-standard-60-arm` 的作業將開始使用 Ubuntu 24.04。您可以透過在執行器標籤中明確指定作業系統版本來使用 Ubuntu 22.04，例如使用 `ubicloud-standard-2-ubuntu-2204` 而不是 `ubicloud-standard-2`。
 
 
-## Available Labels
+## 可用標籤
 
-| Workflow label             | OS           | vCPU | Memory | Disk  |
+| 工作流程標籤             | 作業系統           | vCPU | 記憶體 | 磁碟  |
 |----------------------------|--------------|------|--------|-------|
 | `ubicloud-standard-2`      | Ubuntu 22.04 | 2    | 8GB    | 86GB  |
 | `ubicloud-standard-4`      | Ubuntu 22.04 | 4    | 16GB   | 150GB |
@@ -25,63 +25,63 @@ Operating system used by all default Ubicloud runner types will be updated from 
 | `ubicloud-standard-16-arm` | Ubuntu 22.04 | 16   | 48GB   | 300GB |
 | `ubicloud-standard-30-arm` | Ubuntu 22.04 | 30   | 90GB   | 400GB |
 
-You can append `-ubuntu-2204` or `-ubuntu-2404` to explicitly set the operating system.
+您可以附加 `-ubuntu-2204` 或 `-ubuntu-2404` 來明確設定作業系統。
 
-Ubicloud runners support the following label patterns:
+Ubicloud 執行器支援以下標籤模式：
 
 ```yaml
-# x64 runners
+# x64 執行器
 runs-on: ubicloud-standard-{vcpu}-{os}
-# ubicloud                        -> 2 vCPU x64 Ubuntu 22.04 runner
-# ubicloud-standard-8             -> 8 vCPU x64 Ubuntu 22.04 runner
-# ubicloud-standard-4-ubuntu-2404 -> 4 vCPU x64 Ubuntu 24.04 runner
+# ubicloud                        -> 2 vCPU x64 Ubuntu 22.04 執行器
+# ubicloud-standard-8             -> 8 vCPU x64 Ubuntu 22.04 執行器
+# ubicloud-standard-4-ubuntu-2404 -> 4 vCPU x64 Ubuntu 24.04 執行器
 
-# arm64 runners
+# arm64 執行器
 runs-on: ubicloud-standard-{vcpu}-arm-{os}
-# ubicloud-arm                        -> 2 vCPU arm64 Ubuntu 22.04 runner
-# ubicloud-standard-8-arm             -> 8 vCPU arm64 Ubuntu 22.04 runner
-# ubicloud-standard-4-arm-ubuntu-2404 -> 4 vCPU arm64 Ubuntu 24.04 runner
+# ubicloud-arm                        -> 2 vCPU arm64 Ubuntu 22.04 執行器
+# ubicloud-standard-8-arm             -> 8 vCPU arm64 Ubuntu 22.04 執行器
+# ubicloud-standard-4-arm-ubuntu-2404 -> 4 vCPU arm64 Ubuntu 24.04 執行器
 ```
 
 <CardGroup cols={2}>
   <Card title="{vcpu}" icon="microchip">
-    The supported number of vCPUs are 2 (default), 4, 8, 16, and 30.
+    支援的 vCPU 數量為 2（預設）、4、8、16 和 30。
   </Card>
   <Card title="{os}" icon="ubuntu">
-    The operation system can be `ubuntu-2404`, `ubuntu-2204` (default).
+    作業系統可以是 `ubuntu-2404`、`ubuntu-2204`（預設）。
   </Card>
 </CardGroup>
 
-You can find all the available labels [here](https://github.com/ubicloud/ubicloud/blob/main/config/github_runner_labels.yml).
+您可以在[這裡](https://github.com/ubicloud/ubicloud/blob/main/config/github_runner_labels.yml)找到所有可用的標籤。
 
 <Warning>
-  **Deprecation of GPU runners**: We will be deprecating our GPU runners, effective December 31, 2025. After this date, GPU runners will no longer be available, and any jobs on these runners will need to be migrated to other runner types
+  **棄用 GPU 執行器**：我們將在 2025 年 12 月 31 日棄用我們的 GPU 執行器。在此日期之後，GPU 執行器將不再可用，這些執行器上的任何作業都需要遷移到其他執行器類型
 </Warning>
 
-## x64 Runners
+## x64 執行器
 
-Ubicloud x64 **standard runners** are powered by AMD EPYC 9454P processors, with every two x64 vCPUs corresponding to one physical core. All Ubicloud runners are equipped with modern hardware, including new generation processors, NVMe SSDs, and high-speed networking. This enables us to deliver better price-performance across our services.
+Ubicloud x64 **標準執行器**由 AMD EPYC 9454P 處理器驅動，每兩個 x64 vCPU 對應一個實體核心。所有 Ubicloud 執行器都配備現代硬體，包括新一代處理器、NVMe SSD 和高速網路。這使我們能夠在我們的服務中提供更好的價格效能。
 
-For our customers who seek even higher performance, we offer **premium runners** powered by AMD Ryzen 9 7950X3D CPUs. These processors are optimized for single-thread speed and fast CI execution, making them ideal for large monorepos, test-heavy workflows, or any job that benefits from high CPU clock speeds. Learn how to enable premium runners [here](/github-actions-integration/use-premium-runners).
+對於尋求更高效能的客戶，我們提供由 AMD Ryzen 9 7950X3D CPU 驅動的 **進階執行器**。這些處理器針對單執行緒速度和快速 CI 執行進行最佳化，非常適合大型 monorepos、測試密集型工作流程，或任何受益於高 CPU 時脈速度的作業。了解如何啟用進階執行器請參閱[這裡](/github-actions-integration/use-premium-runners)。
 
-Our x64 runner images are fully compatible with default runners. We generate them using the official HashiCorp packer templates published by GitHub in the [actions/runner-images](https://github.com/actions/runner-images) repository.
+我們的 x64 執行器映像與預設執行器完全相容。我們使用 GitHub 在 [actions/runner-images](https://github.com/actions/runner-images) 儲存庫中發布的官方 HashiCorp packer 範本生成它們。
 
-We update the images monthly after GitHub releases a new version. We don't deploy new images on the same day as GitHub to avoid potential issues. In the past, GitHub has encountered problems with new images and had to quickly rollback.
+我們在 GitHub 發布新版本後每月更新映像。我們不會在與 GitHub 同一天部署新映像，以避免潛在的問題。過去，GitHub 在新映像上遇到過問題，不得不快速回退。
 
-To prevent any disruption to our customers, we typically deploy new images a few days after GitHub's deployment is complete.
+為了防止對我們的客戶造成任何中斷，我們通常在 GitHub 部署完成後幾天部署新映像。
 
-If you notice any mismatches between Ubicloud x64 runners and the official GitHub runners, please reach out to us at support@ubicloud.com.
+如果您注意到 Ubicloud x64 執行器與官方 GitHub 執行器之間有任何不匹配，請透過 support@ubicloud.com 與我們聯繫。
 
-If your workflow has a package dependency that doesn’t exist on Ubicloud’s image, we recommend installing the dependency manually for the time being or creating an issue at [actions/runner-images](https://github.com/actions/runner-images) repository.
+如果您的工作流程有 Ubicloud 映像上不存在的套件依賴項，我們建議暫時手動安裝依賴項，或在 [actions/runner-images](https://github.com/actions/runner-images) 儲存庫中建立議題。
 
-## arm64 Runners
+## arm64 執行器
 
-Ubicloud arm64 runners are powered by Ampere Altra Q80-30 processors, with each arm64 vCPU backed by a dedicated physical core. This ensures consistent, high-performance computing for your workloads.
+Ubicloud arm64 執行器由 Ampere Altra Q80-30 處理器驅動，每個 arm64 vCPU 都有專用的實體核心支援。這確保了您工作負載的一致、高效能運算。
 
-GitHub launched official arm64 runners at the beginning of 2025. However, GitHub doesn't create arm64 images; their partner does. Unfortunately, they don't publish a packer template like the one for x64 images. As a result, Ubicloud builds its own Ubuntu arm64 image, and our arm64 runners don’t have all the pre-installed packages that are available on x64.
+GitHub 在 2025 年初推出了官方 arm64 執行器。但是，GitHub 不建立 arm64 映像；他們的合作夥伴建立。不幸的是，他們不像 x64 映像那樣發布 packer 範本。因此，Ubicloud 建立自己的 Ubuntu arm64 映像，我們的 arm64 執行器沒有 x64 上可用的所有預安裝套件。
 
-Arm shares a list of installed packages in the [actions/partner-runner-images](https://github.com/actions/partner-runner-images) repository, and we try to keep it similar. However, our images might not be identical to GitHub's arm64 images since they don't share the exact template and versions.
+Arm 在 [actions/partner-runner-images](https://github.com/actions/partner-runner-images) 儲存庫中分享已安裝套件的列表，我們嘗試保持相似。但是，我們的映像可能與 GitHub 的 arm64 映像不完全相同，因為他們不分享確切的範本和版本。
 
-If your workflow has a package dependency that doesn’t exist on Ubicloud’s arm64 image, we recommend installing the dependency manually for the time being.
+如果您的工作流程有 Ubicloud arm64 映像上不存在的套件依賴項，我們建議暫時手動安裝依賴項。
 
-If you need commonly used packages on arm64 that are already installed on x64, please contact us at support@ubicloud.com.
+如果您需要 arm64 上已在 x64 上安裝的常用套件，請透過 support@ubicloud.com 與我們聯繫。
