@@ -1,76 +1,76 @@
 ---
-title: 'Tutorial: Chat Completion (Python)'
-description: "A Python tutorial for using Ubicloud’s managed AI Inference Endpoints."
+title: '教學：聊天完成（Python）'
+description: "使用 Ubicloud 託管 AI 推論端點的 Python 教學。"
 ---
 
-The following is a step-by-step Python tutorial on using Ubicloud’s managed AI Inference Endpoints.
-This guide focuses on Python notebook environments like Google Colab or Jupyter Notebook but also works for a standard pip environment for running Python scripts locally.
-All scripts and examples are available in this [Google Colab Notebook](https://colab.research.google.com/drive/1jKedtEzpAJx5Tzn7KuYZUoM0ti5UJkXK?usp=sharing).
+以下是使用 Ubicloud 託管 AI 推論端點的逐步 Python 教學。
+本指南專注於 Python 筆記本環境，如 Google Colab 或 Jupyter Notebook，但也適用於在本地執行 Python 腳本的標準 pip 環境。
+所有腳本和範例都可在此 [Google Colab Notebook](https://colab.research.google.com/drive/1jKedtEzpAJx5Tzn7KuYZUoM0ti5UJkXK?usp=sharing) 中取得。
 
-## Overview of Concepts
+## 概念概述
 
-* Ubicloud AI Inference Endpoints: These endpoints host AI models that are compatible with the OpenAI API. This means you can use the familiar OpenAI Python SDK to interact with these models.
+* Ubicloud AI 推論端點：這些端點託管與 OpenAI API 相容的 AI 模型。這意味著您可以使用熟悉的 OpenAI Python SDK 與這些模型互動。
 
-* OpenAI Python SDK:
-The OpenAI SDK simplifies sending requests to an AI model and processing the responses. You’ll use it to send chat prompts, receive streaming or full responses, and even request structured (JSON) outputs.
+* OpenAI Python SDK：
+OpenAI SDK 簡化了向 AI 模型發送請求和處理回應的過程。您將使用它來發送聊天提示、接收串流或完整回應，甚至請求結構化（JSON）輸出。
 
-* API Key and Base URL:
-To authenticate and send requests to Ubicloud’s endpoints, you need your API key and the endpoint’s base URL (both available from your Ubicloud Dashboard).
+* API 金鑰和基礎 URL：
+要驗證並向 Ubicloud 的端點發送請求，您需要您的 API 金鑰和端點的基礎 URL（兩者都可從您的 Ubicloud 儀表板取得）。
 
-* Chat Completion modes: Ubicloud supports several ways to interact with the AI models:
+* 聊天完成模式：Ubicloud 支援多種與 AI 模型互動的方式：
 
-  * Non-Streaming: Returns the full response in one go.
- 
-  * Streaming: Returns the response incrementally, which is useful for long answers or real-time processing.
+  * 非串流：一次性返回完整回應。
 
-  * JSON Output: Formats the response as a JSON object for structured data extraction.
+  * 串流：逐步返回回應，對於長答案或即時處理非常有用。
 
-  * Tool Calling: Invokes tools when needed.
+  * JSON 輸出：將回應格式化為 JSON 物件，用於結構化資料提取。
 
-## Install the OpenAI Python Package
+  * 工具呼叫：在需要時呼叫工具。
 
-In your Jupyter Notebook or Colab, start by installing (or upgrading) the openai package. You can do this using a cell with the following command:
+## 安裝 OpenAI Python 套件
+
+在您的 Jupyter Notebook 或 Colab 中，首先安裝（或升級）openai 套件。您可以使用包含以下命令的儲存格來執行此操作：
 
 ```%pip install openai --upgrade --quiet```
 
-This command installs the latest version of the OpenAI SDK, which is fully compatible with Ubicloud’s endpoints.
+此命令安裝最新版本的 OpenAI SDK，它與 Ubicloud 的端點完全相容。
 
-If you are using a terminal or a vanilla Python environment, you can run:
+如果您使用終端機或普通 Python 環境，可以執行：
 
 ```pip install openai --upgrade```
 
-## Import Libraries and Setup Your Environment
+## 匯入程式庫並設定您的環境
 
-Import the necessary libraries and set up your environment. Here we use Colab’s built-in methods for retrieving stored user data. If you’re on another notebook platform, adjust the API key retrieval accordingly.
+匯入必要的程式庫並設定您的環境。這裡我們使用 Colab 的內建方法來檢索儲存的使用者資料。如果您在另一個筆記本平台上，請相應地調整 API 金鑰檢索。
 
 ```python
-from google.colab import userdata  # This is specific to Colab; adjust if using another environment.
+from google.colab import userdata  # 這是 Colab 特有的；如果使用其他環境請調整。
 import json
 import openai
 
-# Retrieve your Ubicloud API key (replace with your method of storing or retrieving credentials)
-INFERENCE_API_KEY = userdata.get("UBICLOUD_API_KEY")  # or simply: INFERENCE_API_KEY = "your_api_key_here"
+# 檢索您的 Ubicloud API 金鑰（替換為您儲存或檢索憑證的方法）
+INFERENCE_API_KEY = userdata.get("UBICLOUD_API_KEY")  # 或簡單地：INFERENCE_API_KEY = "your_api_key_here"
 
-# Define the model name and base URL from your Ubicloud Dashboard
-MODEL = "llama-3-3-70b-turbo"  # Example model; update as needed.
+# 從您的 Ubicloud 儀表板定義模型名稱和基礎 URL
+MODEL = "llama-3-3-70b-turbo"  # 範例模型；根據需要更新。
 BASE_URL = f"https://{MODEL}.ai.ubicloud.com/v1"
 
-# Create the OpenAI client instance configured for Ubicloud endpoints.
+# 建立為 Ubicloud 端點配置的 OpenAI 客戶端實例。
 client = openai.OpenAI(
     api_key=INFERENCE_API_KEY,
     base_url=BASE_URL
 )
 ```
 
-The `INFERENCE_API_KEY` is used to authenticate your requests.
-The `MODEL` and `BASE_URL` are specific to your chosen model and Ubicloud deployment.
+`INFERENCE_API_KEY` 用於驗證您的請求。
+`MODEL` 和 `BASE_URL` 特定於您選擇的模型和 Ubicloud 部署。
 
-## Example 1: Non-Streaming Chat Completion
+## 範例 1：非串流聊天完成
 
-In this example, you will send a simple chat message to the model and print the full response at once.
+在此範例中，您將向模型發送一個簡單的聊天訊息，並一次性列印完整回應。
 
 ```python
-# Non-streaming chat completion: Send a simple message and get the full response.
+# 非串流聊天完成：發送一個簡單的訊息並獲得完整回應。
 completion = client.chat.completions.create(
     model=MODEL,
     messages=[
@@ -81,19 +81,19 @@ completion = client.chat.completions.create(
     ],
 )
 
-# Print the response message from the model.
+# 從模型列印回應訊息。
 print(completion.choices[0].message.content)
 ```
 
-The messages parameter is a list of dictionaries representing the conversation.
-The response is accessed through `completion.choices[0].message.content`.
+messages 參數是表示對話的字典列表。
+回應透過 `completion.choices[0].message.content` 存取。
 
-## Example 2: Streaming Chat Completion
+## 範例 2：串流聊天完成
 
-This example demonstrates how to receive the model’s output in a streaming manner (chunk by chunk). This is especially useful when dealing with long responses or when you want to start processing output before the entire response is ready.
+此範例示範如何以串流方式（逐塊）接收模型的輸出。這在處理長回應或當您想在整個回應準備好之前開始處理輸出時特別有用。
 
 ```python
-# Streaming chat completion: The response is returned in chunks.
+# 串流聊天完成：回應以塊的形式返回。
 stream = client.chat.completions.create(
     model=MODEL,
     messages=[
@@ -102,27 +102,27 @@ stream = client.chat.completions.create(
             "content": "How do I print hello world in Python?",
         },
     ],
-    stream=True,  # Enable streaming mode.
+    stream=True,  # 啟用串流模式。
 )
 
-# Iterate over the response chunks and print them as they are received.
+# 迭代回應塊並在接收時列印它們。
 for chunk in stream:
     if not chunk.choices:
-        continue  # Skip if there are no choices in this chunk.
-    
-    # Print each piece of content without a newline until the full message is complete.
+        continue  # 如果此塊中沒有選擇，則跳過。
+
+    # 列印每個內容片段，不換行，直到完整訊息完成。
     print(chunk.choices[0].delta.content, end="")
 
-# Finally, print a newline after the streaming output.
+# 最後，在串流輸出後列印換行。
 print()
 ```
 
-Setting `stream=True` tells the API to return partial results as they become available.
-The loop iterates over each chunk and prints the delta (the latest addition) of the message.
+設定 `stream=True` 告訴 API 在部分結果可用時返回它們。
+迴圈迭代每個塊並列印訊息的 delta（最新新增）。
 
-## Example 3: Chat Completion with JSON Output
+## 範例 3：帶有 JSON 輸出的聊天完成
 
-In some cases, you might want the model to produce a structured output, such as a JSON object. This example shows how to request JSON output directly from the model.
+在某些情況下，您可能希望模型產生結構化輸出，例如 JSON 物件。此範例顯示如何直接從模型請求 JSON 輸出。
 
 ```python
 json_completion = client.chat.completions.create(
@@ -137,35 +137,35 @@ Each field should represent the respective count of the mentioned fruits.
 """,
         },
     ],
-    response_format={"type": "json_object"},  # Request JSON output.
+    response_format={"type": "json_object"},  # 請求 JSON 輸出。
 )
 
-# Load the JSON string into a Python dictionary.
+# 將 JSON 字串載入到 Python 字典中。
 result = json.loads(json_completion.choices[0].message.content)
 print(result)
 ```
 
-The prompt instructs the model to output a JSON object.
-The response_format parameter specifies that the expected output is a JSON object.
-The `json.loads()` function converts the JSON-formatted string into a Python dictionary for further manipulation.
+提示指示模型輸出 JSON 物件。
+response_format 參數指定預期的輸出是 JSON 物件。
+`json.loads()` 函式將 JSON 格式的字串轉換為 Python 字典，以進行進一步操作。
 
-## Example 4: Chat Completion with Tool Calling
+## 範例 4：帶有工具呼叫的聊天完成
 
-You can define tools (functions) that the model can invoke to perform specific tasks. Here’s how you can set up a calculator function and integrate it using the model’s function calling capabilities:
+您可以定義模型可以呼叫以執行特定任務的工具（函式）。以下是如何設定計算器函式並使用模型的函式呼叫功能整合它：
 
 ```python
-# Define the calculator function
+# 定義計算器函式
 def calculator(expression: str):
     try:
-        result = eval(expression)  # Warning: using eval is unsafe!
+        result = eval(expression)  # 警告：使用 eval 不安全！
         return {"result": result}
     except Exception as e:
         return {"error": str(e)}
 
-# Define the task
+# 定義任務
 TASK = "Calculate 123*456+789"
 
-# Define the tools
+# 定義工具
 TOOLS = [{
     "type": "function",
     "function": {
@@ -184,7 +184,7 @@ TOOLS = [{
     }
 }]
 
-# Create a chat completion with tool calling
+# 建立帶有工具呼叫的聊天完成
 tool_completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[{"role": "user", "content": TASK}],
@@ -192,7 +192,7 @@ tool_completion = client.chat.completions.create(
     tool_choice="auto"
 )
 
-# Process the tool call
+# 處理工具呼叫
 message = tool_completion.choices[0].message
 if message.tool_calls:
     tool_call = message.tool_calls[0].function
@@ -205,21 +205,21 @@ else:
     print("No tool call detected in the response.")
 ```
 
-When making a chat completion request, we include the tool and set tool_choice="auto" so the model can decide whether to call it. If a tool call occurs, we extract the function name and arguments, execute the calculator, and print the result. If further interaction with the model is needed, we can construct a new message based on the result from the calculator.
+在進行聊天完成請求時，我們包含工具並設定 tool_choice="auto"，以便模型可以決定是否呼叫它。如果發生工具呼叫，我們提取函式名稱和參數，執行計算器，並列印結果。如果需要與模型進行進一步互動，我們可以根據計算器的結果建構新訊息。
 
-## Summary
+## 總結
 
-By following these steps, you have learned how to:
+透過遵循這些步驟，您已經學會如何：
 
-* Set up your environment: Install the OpenAI Python SDK and import required libraries.
+* 設定您的環境：安裝 OpenAI Python SDK 並匯入所需的程式庫。
 
-* Configure the client: Use your Ubicloud API key, model name, and base URL.
+* 配置客戶端：使用您的 Ubicloud API 金鑰、模型名稱和基礎 URL。
 
-* Perform chat completions: Both in non-streaming and streaming modes.
+* 執行聊天完成：在非串流和串流模式下。
 
-* Handle structured outputs: Request and process JSON output from the model.
+* 處理結構化輸出：從模型請求和處理 JSON 輸出。
 
-* Invoke tools: Enable the model to call tools when needed.
+* 呼叫工具：使模型在需要時能夠呼叫工具。
 
-This tutorial provides a foundation for using Ubicloud’s managed AI inference endpoints in your Python projects, leveraging the familiar OpenAI API interface.
-Feel free to customize the prompts, model names, and other parameters based on your specific use case and the models available in your Ubicloud Dashboard. Enjoy building with Ubicloud’s AI inference endpoints!
+本教學為在您的 Python 專案中使用 Ubicloud 的託管 AI 推論端點提供了基礎，利用熟悉的 OpenAI API 介面。
+請根據您的特定用例和 Ubicloud 儀表板中可用的模型，自由自訂提示、模型名稱和其他參數。享受使用 Ubicloud 的 AI 推論端點進行建置的樂趣！
